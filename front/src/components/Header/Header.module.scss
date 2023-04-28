@@ -1,0 +1,17 @@
+header{
+    color:white;
+}
+.navbar{
+    //background-color: #624e4e;
+    display:flex;
+    position:absolute;
+    align-items: center;
+    justify-content: space-evenly;
+    z-index:1;
+    right:0;
+    left:0;
+}
+.Carousel{
+    width:100vw;
+    position:relative;
+}
