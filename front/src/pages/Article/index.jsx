@@ -26,10 +26,10 @@ function Article() {
                 </div>
                 <div className={style.taille}>
                     <p className={style.taille__unite}>40</p>
-                    <p className={style.taille__unite}>42</p>
+                    <p className={style.taille__unite__epuise}>42</p>
                     <p className={style.taille__unite}>44</p>
                     <p className={style.taille__unite}>46</p>
-                    <p className={style.taille__unite}>48</p>
+                    <p className={style.taille__unite__epuise}>48</p>
                 </div>
                 <Link to='/panier'>
                     <button className={style.button}>

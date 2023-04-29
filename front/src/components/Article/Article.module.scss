@@ -8,6 +8,7 @@
     width: 100%;
     height:100%;
     object-fit: cover;
+    //box-shadow:5px 5px 5px #4d626a;
 }
 
 .description,
@@ -24,8 +25,9 @@
 .fenetreepuise {
     position: absolute;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     width:100%;
     height:100%;
     top:0;
@@ -34,4 +36,7 @@
 .articleepuise {
     background: rgb(208,182,159);
     position: relative;
+}
+.texteepuise{
+    font-size: 24px;;
 }

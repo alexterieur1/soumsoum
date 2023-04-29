@@ -45,6 +45,24 @@
         justify-content: center;
         padding-inline:10px;
         padding-block:5px;
+        &__epuise{
+            position:relative;
+            color:grey;
+            border: solid #E6D7CA 2px;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            padding-inline:10px;
+            padding-block:5px;
+            &::after{
+                content:"";
+                height:2px;
+                width:139%;
+                position:absolute;
+                background-color: #E6D7CA;
+                transform:rotate(40deg)
+            }
+        }
     }
 }
 .button{
@@ -54,5 +72,5 @@
     color:white;
     border:none;
     padding:1em;
-    border-radius: 5px;;
+    border-radius: 5px;
 }
