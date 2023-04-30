@@ -9,10 +9,16 @@ function HeaderAccueil() {
     return (
         <header>
             <div className={style.navbar}>
-                <div className={style.menuBurger}><img src={burger} alt='menu'/></div>
+                <div className={style.menuBurger}>
+                    <img src={burger} alt='menu' />
+                </div>
                 <div className={style.logo}>Mille et une Merveille</div>
-                <div className={style.recherche}><img src={loupe} alt='recherche'/></div>
-                <div className={style.panier}><img src={panier} alt='panier'/></div>
+                <div className={style.recherche}>
+                    <img src={loupe} alt='recherche' />
+                </div>
+                <div className={style.panier}>
+                    <img src={panier} alt='panier' />
+                </div>
             </div>
             <div className={style.Carousel}>
                 <Carousel />
