@@ -4,15 +4,35 @@ import loupe from '../../assets/loupe.svg'
 import panier from '../../assets/panier.svg'
 import burger from '../../assets/burger.svg'
 import Carousel from '../Carousel'
+import { useState } from 'react'
 
-const menu = () => {
+function menuBurger(){
+    var menu = document.getElementById('menu')
+    let valeurWidth = 0
+    const widthMenu = setInterval(() => {
+        menu.style.width = `${valeurWidth}vw`
+        console.log(`${valeurWidth} vw`)
+        console.log(menu)
+        valeurWidth++
+        if(valeurWidth === 80){
+            clearInterval(widthMenu)
+        }
+    }, 5)
 }
+
 function HeaderAccueil() {
-    menu()
+    const [menu, updateMenu] = useState(false)
     return (
         <header>
+            {menu ? (
+                <div  id='menu' className={style.headerBalise__gauche}>
+                    <p onClick={() => {updateMenu(false)}}>aurevoir</p>
+                </div>
+            ) : (
+                <></>
+            )}
             <div className={style.navbar}>
-                <div className={style.menuBurger}>
+                <div onClick={() => {setTimeout(menuBurger,0);updateMenu(true)}} className={style.menuBurger}>
                     <img src={burger} alt='menu' />
                 </div>
                 <div className={style.logo}>Mille et une Merveille</div>

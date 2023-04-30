@@ -17,3 +17,16 @@ header{
     position:relative;
     background: linear-gradient(to bottom, black, rgb(133, 133, 133) 5%, white);
 }
+.test{
+    color:black;
+}
+.headerBalise{
+    &__gauche{
+        position:absolute;
+        z-index:2;
+        height:100vh;
+        background-color: black;
+        display:flex;
+        justify-content: flex-end;
+    }
+}
