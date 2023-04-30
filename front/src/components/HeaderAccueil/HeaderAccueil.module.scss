@@ -10,12 +10,13 @@ header{
     z-index:1;
     right:0;
     left:0;
+    top:1em;
 }
 .Carousel{
     width:100vw;
     height:auto;
     position:relative;
-    background: linear-gradient(to bottom, black, rgb(133, 133, 133) 5%, white);
+    background: linear-gradient(to bottom, black, rgb(133, 133, 133) 15%, white);
 }
 .test{
     color:black;

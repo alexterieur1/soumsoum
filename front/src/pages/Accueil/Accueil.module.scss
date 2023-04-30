@@ -13,8 +13,16 @@
     background-color: #dcd9d7;
     padding: 30px 20px 30px 20px;
     display:grid;
-    grid-template: "a b" 50vw "c d" 50vw;
+    grid-template: "b c" 40vw "d e" 40vw;
     gap:20px;
+    position:relative;
+    & .scroll{
+        animation: 2000ms ease-in 0ms 1 affichage;
+        animation-fill-mode: both;
+    }
+    & .cache{
+        opacity:0;
+    }
     &__element{
         position:relative;
         display:flex;
@@ -26,6 +34,21 @@
         height:100%;
         width:100%;
         object-fit: cover;
+        position:absolute;
+        &__bottom{
+            height:100%;
+            width:100%;
+            object-fit: cover;
+            position:absolute;
+            object-position: bottom;
+        }
+        &__top{
+            height:100%;
+            width:100%;
+            object-fit: cover;
+            position:absolute;
+            object-position: top;
+        }
     }
     &__description{
         display:flex;
@@ -39,5 +62,15 @@
         //background: radial-gradient(ellipse closest-side, rgba(83, 66, 58, 1) 0,rgba(0, 0, 0, 0)100% );
         width:70%;
         text-transform: capitalize;
+    }
+}
+@keyframes affichage{
+    from{
+        transform:translateY(5px);
+        opacity:0;
+    }
+    to{
+        opacity:1;
+        transform:translateY(0px);
     }
 }

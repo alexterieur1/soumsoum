@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState }from 'react';
 import style from './Article.module.scss'
 import Banner from '../../components/Header'
-import image from '../../assets/image.JPG'
+import image1 from '../../assets/imagearticle1.webp'
+import image2 from '../../assets/imagearticle2.webp'
+import image3 from '../../assets/imagearticle3.webp'
+import image4 from '../../assets/imagearticle4.webp'
 import { Link } from 'react-router-dom'
 
+let images = Array.from(document.querySelectorAll(`.${style.listePhoto__img}`))
+const selectionImage = () => {
+    images.map((e) => (
+        console.log('t')
+    ))
+}
 function Article() {
+    console.log(image1)
+    const [image, updateImage] = useState(image1)
+    //console.log(`${images[0].currentSrc}`)
     return (
         <>
             <Banner />
@@ -14,10 +26,10 @@ function Article() {
                         <img className={style.photoGrand__img} src={image} alt="" />
                     </div>
                     <div className={style.listePhoto}>
-                        <img className={style.listePhoto__img} src={image} alt="" />
-                        <img className={style.listePhoto__img} src={image} alt="" />
-                        <img className={style.listePhoto__img} src={image} alt="" />
-                        <img className={style.listePhoto__img} src={image} alt="" />
+                        <img onClick={()=> {selectionImage(); updateImage(image1)}} className={style.listePhoto__img} src={image1} alt="" />
+                        <img onClick={()=> {selectionImage(); updateImage(image2)}} className={style.listePhoto__img} src={image2} alt="" />
+                        <img onClick={()=> {selectionImage(); updateImage(image3)}} className={style.listePhoto__img} src={image3} alt="" />
+                        <img onClick={()=> {selectionImage(); updateImage(image4)}} className={style.listePhoto__img} src={image4} alt="" />
                     </div>
                 </div>
                 <div className={style.description}>
@@ -38,6 +50,7 @@ function Article() {
                 </Link>
             </>
         </>
+        
     )
 }
 

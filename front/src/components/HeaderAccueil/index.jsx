@@ -11,8 +11,6 @@ function menuBurger(){
     let valeurWidth = 0
     const widthMenu = setInterval(() => {
         menu.style.width = `${valeurWidth}vw`
-        console.log(`${valeurWidth} vw`)
-        console.log(menu)
         valeurWidth++
         if(valeurWidth === 80){
             clearInterval(widthMenu)

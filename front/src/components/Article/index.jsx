@@ -3,7 +3,7 @@ import style from './Article.module.scss'
 import { Link } from 'react-router-dom'
 import ceintre from '../../assets/ceintre.svg'
 
-function Article({ image, description, prix, epuise }) {
+function Article({ image, description, prix, epuise}) {
     return (
         <div className={style.article}>
             {epuise ? <>

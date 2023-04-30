@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState} from 'react';
 import Banner from '../../components/Header'
 import style from './Panier.module.scss'
-import image from '../../assets/image.JPG'
+import image from '../../assets/image.jpg'
+import plus from '../../assets/plus.svg'
+import moins from '../../assets/moins.svg'
+
 
 function Panier() {
+    const [number1, updateNumber1] = useState(1)
+    const [number2, updateNumber2] = useState(1)
+    console.log(number1)
+    console.log(number2)
     return (
         <>
             <Banner />
@@ -18,8 +25,9 @@ function Panier() {
                             <p className={style.description__titre}>lorem ipsum</p>
                             <p className={style.description__prix}>25,00 €</p>
                             <div className={style.quantite}>
-                                <label for='quantite'>Quantité : </label>
-                                <input id='quantite' type="number" value="1" min='1' max='5' />
+                                <img onClick={()=> updateNumber1(number1 - 1)} src={moins} alt='diminuer'/>
+                                <p>{number1}</p>
+                                <img onClick={()=> updateNumber1(number1 + 1)} src={plus} alt='augmenter'/>
                             </div>
                             <button className={style.button}>
                                 supprimer
@@ -36,8 +44,9 @@ function Panier() {
                             <p className={style.description__titre}>lorem ipsum</p>
                             <p className={style.description__prix}>25,00 €</p>
                             <div className={style.quantite}>
-                                <label for='quantite'>Quantité : </label>
-                                <input id='quantite' type="number" value="1" min='1' max='5' />
+                                <img onClick={()=> updateNumber1(number2 - 1)} src={moins} alt='diminuer'/>
+                                <p>{number2}</p>
+                                <img onClick={()=> updateNumber2(number2 + 1)} src={plus} alt='augmenter'/>
                             </div>
                             <button className={style.button}>
                                 supprimer
