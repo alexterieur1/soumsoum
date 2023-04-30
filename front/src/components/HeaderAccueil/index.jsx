@@ -5,7 +5,10 @@ import panier from '../../assets/panier.svg'
 import burger from '../../assets/burger.svg'
 import Carousel from '../Carousel'
 
+const menu = () => {
+}
 function HeaderAccueil() {
+    menu()
     return (
         <header>
             <div className={style.navbar}>
