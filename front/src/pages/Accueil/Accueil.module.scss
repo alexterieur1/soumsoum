@@ -2,15 +2,19 @@
     display:flex;
     justify-content: center;
     padding-block: 1em 0.3em;
+    font-weight: 700;
+    font-size: 30px;
 }
 .article{
     display:grid;
     grid-template-columns: auto auto;
-    gap: 5px;
-    padding: 10px 5px 20px 5px;
+    gap: 20px;
+    padding: 20px 20px 20px 20px;
+    row-gap: 20px;
 }
 .categorie{
-    background-color: #dcd9d7;
+    //background-color: #DBCAC3;
+    background: url('http://192.168.1.56:3000/static/media/marbre_blanc.00d1bf09bb96c732cf3a.png');
     padding: 30px 20px 30px 20px;
     display:grid;
     grid-template: "b c" 40vw "d e" 40vw;
@@ -62,6 +66,7 @@
         //background: radial-gradient(ellipse closest-side, rgba(83, 66, 58, 1) 0,rgba(0, 0, 0, 0)100% );
         width:70%;
         text-transform: capitalize;
+        font-weight: 600;
     }
 }
 @keyframes affichage{

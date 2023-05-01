@@ -2,21 +2,22 @@ header{
     color:white;
 }
 .navbar{
-    //background-color: #624e4e;
+    //background-color: #FDEDE7;
     display:flex;
     position:absolute;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     z-index:1;
     right:0;
     left:0;
     top:1em;
+    padding-inline: 2em;;
 }
 .Carousel{
     width:100vw;
     height:auto;
     position:relative;
-    background: linear-gradient(to bottom, black, rgb(133, 133, 133) 15%, white);
+    //background: linear-gradient(to bottom, black, rgb(133, 133, 133) 15%, white);
 }
 .test{
     color:black;
@@ -26,8 +27,12 @@ header{
         position:absolute;
         z-index:2;
         height:100vh;
-        background-color: black;
+        background-color: #D0B69F;
         display:flex;
         justify-content: flex-end;
     }
+}
+.menu__droite{
+    display:flex;
+    gap:2em;
 }

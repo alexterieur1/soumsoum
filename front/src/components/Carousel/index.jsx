@@ -1,11 +1,12 @@
 import React from 'react';
-import image from '../../assets/image.jpg'
+//import image from '../../assets/image.jpg'
 import style from './Carousel.module.scss'
+import logo from '../../assets/logo.png'
 
 function Carousel() {
     return (
         <>
-        <img className={style.image} src={image} alt='carousel'/>
+        <img className={style.image} src={logo} alt='carousel'/>
         </>
     )
 }

@@ -4,7 +4,10 @@ a{
 img{
   display:block;
 }
-
+body{
+  background-color: #efefef;
+  font-family: 'Cormorant';
+}
 .App {
   text-align: center;
 }

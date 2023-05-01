@@ -33,11 +33,15 @@
     width:90vw;
     background-color:#D0B69F;
     border-radius: 2px;
+    margin-top: 0.5em;
 }
 .taille{
     display:flex;
     justify-content: space-evenly;
     padding-inline: 10vw;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 14px;
+    padding-block: 1em;
     &__unite{
         border: solid #D0B69F 2px;
         display:flex;

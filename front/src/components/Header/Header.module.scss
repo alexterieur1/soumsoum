@@ -6,9 +6,21 @@ header{
     display:flex;
     align-items: center;
     justify-content: space-evenly;
-    background-color: black;
+    background-color: #efefef;
     height:3em;
 }
-a{
-    color:white;
+.logo{
+    font-family: 'Cinzel';
+    font-weight: 500;
+    color:#D0B69F;
+}
+.headerBalise{
+    &__gauche{
+        position:absolute;
+        z-index:2;
+        height:100vh;
+        background-color: #D0B69F;
+        display:flex;
+        justify-content: flex-end;
+    }
 }

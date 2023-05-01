@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import style from './Accueil.module.scss'
 import Article from '../../components/Article'
 import image1 from '../../assets/image1.jpg'
@@ -14,38 +14,43 @@ import imagehaut from '../../assets/imagehaut.jpg'
 import imagebas from '../../assets/imagebas.jpg'
 import imageaccessoire from '../../assets/imageaccessoire.jpg'
 import Banner from '../../components/HeaderAccueil'
+import marbre from '../../assets/marbre_blanc.png'
 
 
 function Accueil() {
-  const [affichage, updateAffichage] = useState("")
+  let elementCategorie = document.querySelector(`.${style.categorie}`)
+  console.log(elementCategorie)
+  console.log({marbre})
+  //setTimeout(elementCategorie.style.background = `http://192.168.1.56:3000/${marbre}`, 10)
+  /* const [affichage, updateAffichage] = useState("")
   const [fait, updateFait] = useState(false)
   window.addEventListener('scroll', function () {
-    if (window.scrollY > 200 || fait ) {
+    if (window.scrollY > 0 || fait ) {
       updateAffichage(`${style.scroll}`)
       updateFait(true)
       console.log(fait)
     } else {
       updateAffichage(``)
     }
-  })
+  }) */
   return (
     <>
       <Banner />
       <div className={style.categorie}>
         {/* <h2 className={style.titre}>Les catégories</h2> */}
-        <div className={`${style.categorie__element} ${fait ? affichage : `${style.cache}`}`}>
+        <div className={`${style.categorie__element} ${style.scroll}`}>
           <img className={style.categorie__image__bottom} src={imagechaussure} alt='chaussures' />
           <p className={style.categorie__description}>chaussures</p>
         </div>
-        <div className={`${style.categorie__element} ${fait ? affichage : `${style.cache}`}`}>
+        <div className={`${style.categorie__element} ${style.scroll}`}>
           <img className={style.categorie__image__top} src={imagehaut} alt='hauts' />
           <p className={style.categorie__description}>hauts</p>
         </div>
-        <div className={`${style.categorie__element} ${fait ? affichage : `${style.cache}`}`}>
+        <div className={`${style.categorie__element} ${style.scroll}`}>
           <img className={style.categorie__image__bottom} src={imagebas} alt='bas' />
           <p className={style.categorie__description}>bas</p>
         </div>
-        <div className={`${style.categorie__element} ${fait ? affichage : `${style.cache}`}`}>
+        <div className={`${style.categorie__element} ${style.scroll}`}>
           <img className={style.categorie__image} src={imageaccessoire} alt='accessoires' />
           <p className={style.categorie__description}>accessoires</p>
         </div>

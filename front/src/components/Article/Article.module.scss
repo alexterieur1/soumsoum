@@ -17,6 +17,9 @@
     display: flex;
     justify-content: center;
 }
+.description{
+    font-style: italic;
+}
 
 .imageepuise {
     position: relative;
@@ -40,4 +43,8 @@
 }
 .texteepuise{
     font-size: 24px;
+    color:white;
+}
+a{
+    color:white;
 }
