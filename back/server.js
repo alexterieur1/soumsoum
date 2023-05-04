@@ -1,5 +1,7 @@
 const express = require('express')
+const produitRoute = require('./routes/client.js')
 const mysql = require('mysql2')
+
 
 const app = express()
 
@@ -14,25 +16,11 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extented: false }))
 
+app.use("/", produitRoute)
+
 require('dotenv').config()
 
 
-var pool = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: 'mydb'
-})
-
-
-
-app.get('/', (req, res) => {
-    var sql = "SELECT * from customers LIMIT 10";
-    pool.query(sql, async function (err, result) {
-        if (err) throw err;
-        await res.send(result)
-    });
-})
 app.listen(process.env.PORT || 3000, () => console.log(`l'aplication est lancée au port ${process.env.PORT}`))
 
 module.exports = app
