@@ -15,9 +15,17 @@ import imagebas from '../../assets/imagebas.jpg'
 import imageaccessoire from '../../assets/imageaccessoire.jpg'
 import Banner from '../../components/HeaderAccueil'
 import marbre from '../../assets/marbre_blanc.png'
+import { getAllProduit } from '../../api';
+import { useLoaderData } from 'react-router-dom';
 
+export async function loadData() {
+  const produit = await getAllProduit()
+  console.log(produit[0])
+  return { produit }
+}
 
 function Accueil() {
+  const { produit } = useLoaderData()
   let elementCategorie = document.querySelector(`.${style.categorie}`)
   console.log(elementCategorie)
   console.log({marbre})
@@ -57,6 +65,11 @@ function Accueil() {
       </div>
       <h2 className={style.titre}>Les dernières nouveautés</h2>
       <div className={style.article}>
+        {produit ? (
+          produit.map((produit, index)=>(
+            <Article index={index} image={produit.liens} description={produit.nomProduit} prix={"25,00"} epuise={false} />
+          ))
+        ) : <>chargement ...</>}
         <Article image={image1} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
         <Article image={image2} description={"lorem ipsum"} prix={"25,00"} epuise={true} />
         <Article image={image3} description={"lorem ipsum"} prix={"25,00"} epuise={false} />

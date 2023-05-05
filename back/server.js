@@ -1,6 +1,5 @@
 const express = require('express')
-const produitRoute = require('./routes/client.js')
-const mysql = require('mysql2')
+const produitRoute = require('./routes/produit.js')
 
 
 const app = express()
@@ -21,6 +20,6 @@ app.use("/", produitRoute)
 require('dotenv').config()
 
 
-app.listen(process.env.PORT || 3000, () => console.log(`l'aplication est lancée au port ${process.env.PORT}`))
+app.listen(process.env.PORT || 3001, () => console.log(`l'aplication est lancée au port ${process.env.PORT}`))
 
 module.exports = app

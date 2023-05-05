@@ -1,6 +1,5 @@
 import React, { useState }from 'react';
 import style from './Article.module.scss'
-import Banner from '../../components/Header'
 import image1 from '../../assets/imagearticle1.webp'
 import image2 from '../../assets/imagearticle2.webp'
 import image3 from '../../assets/imagearticle3.webp'
@@ -19,7 +18,6 @@ function Article() {
     //console.log(`${images[0].currentSrc}`)
     return (
         <>
-            <Banner />
             <>
                 <div className={style.photos}>
                     <div className={style.photoGrand}>

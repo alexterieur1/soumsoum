@@ -1,30 +1,36 @@
 import App from './App'
 import Erreur from './pages/Erreur'
-import Accueil from './pages/Accueil'
+import Accueil, { loadData as homeloader } from './pages/Accueil'
 import Article from './pages/Article'
 import Panier from './pages/Panier'
+import Admin from './pages/Admin'
 import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App/>,
-        children:[
+        element: <App />,
+        children: [
             {
                 path: '/',
-                element: <Accueil/>
+                element: <Accueil />,
+                loader: homeloader
             },
             {
                 path: '/article',
-                element: <Article/>
+                element: <Article />
             },
             {
                 path: '/panier',
-                element: <Panier/>
+                element: <Panier />
+            },
+            {
+                path: '/admin',
+                element: <Admin />
             },
             {
                 path: '*',
-                element: <Erreur/>
+                element: <Erreur />
             },
         ]
     }

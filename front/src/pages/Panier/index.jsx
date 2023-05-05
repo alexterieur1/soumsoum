@@ -1,7 +1,6 @@
 import React, { useState} from 'react';
-import Banner from '../../components/Header'
 import style from './Panier.module.scss'
-import image from '../../assets/image.jpg'
+import image from '../../assets/image.JPG'
 import plus from '../../assets/plus.svg'
 import moins from '../../assets/moins.svg'
 
@@ -9,11 +8,8 @@ import moins from '../../assets/moins.svg'
 function Panier() {
     const [number1, updateNumber1] = useState(1)
     const [number2, updateNumber2] = useState(1)
-    console.log(number1)
-    console.log(number2)
     return (
         <>
-            <Banner />
             <h1 className={style.titre}>Mon Panier</h1>
             <div className={style.listePanier}>
                 <div className={style.article}>
