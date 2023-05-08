@@ -1,5 +1,6 @@
 const express = require('express')
 const produitRoute = require('./routes/produit.js')
+const path = require('path')
 
 
 const app = express()
@@ -16,6 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extented: false }))
 
 app.use("/", produitRoute)
+app.use('/images', express.static(path.join(__dirname, 'images')))
+
 
 require('dotenv').config()
 

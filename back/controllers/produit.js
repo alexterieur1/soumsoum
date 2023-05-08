@@ -25,18 +25,31 @@ exports.affichageAllProduit = async (req, res) => {
     })
 }
 exports.creation = async (req, res) => {
+    //console.log(req)
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
-        console.log(req.body)
         var sql = `INSERT INTO produits (nomProduit, descriptionProduit, idProduit, prix, stockProduits) VALUES ('${req.body.nomProduit}', '${req.body.descriptionProduit}', '${req.body.idProduit}', '${req.body.prix}', '${req.body.stockProduit}')`
         console.log(sql)
         con.query(sql, (err, result, fields) => {
             if (err) {
-                return res.status(500).json({ message: 'bad request' })
+                return res.status(500).json({ message: 'bad request requete' })
             }
             try {
-                return res.status(200).json(result)
+                var sql = `INSERT INTO photoproduits (liens, idProduit) VALUES ('${req.protocol}://${req.get('host')}/images/${req.file.filename}', '${req.body.idProduit}')`
+                console.log(sql)
+                //console.log(req.headers)
+                con.query(sql, (err, result, fields) => {
+                    if (err) {
+                        return res.status(500).json({ message: 'bad request image' })
+                    }
+                    try {
+                        return res.status(200).json(result)
+                    }
+                    catch (err) {
+                        return res.status(400).json({ err })
+                    }
+                })
             }
             catch (err) {
                 return res.status(400).json({ err })

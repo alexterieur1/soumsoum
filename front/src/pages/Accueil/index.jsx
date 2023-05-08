@@ -26,9 +26,9 @@ export async function loadData() {
 
 function Accueil() {
   const { produit } = useLoaderData()
-  let elementCategorie = document.querySelector(`.${style.categorie}`)
-  console.log(elementCategorie)
-  console.log({marbre})
+  //let elementCategorie = document.querySelector(`.${style.categorie}`)
+  //console.log(elementCategorie)
+  //console.log({marbre})
   //setTimeout(elementCategorie.style.background = `http://192.168.1.56:3000/${marbre}`, 10)
   /* const [affichage, updateAffichage] = useState("")
   const [fait, updateFait] = useState(false)
