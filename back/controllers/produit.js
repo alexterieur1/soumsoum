@@ -24,8 +24,8 @@ exports.affichageAllProduit = async (req, res) => {
         })
     })
 }
-exports.creation = async (req, res) => {
-    //console.log(req)
+exports.creation = (req, res) => {
+    console.log(req.headers)
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
@@ -38,13 +38,12 @@ exports.creation = async (req, res) => {
             try {
                 var sql = `INSERT INTO photoproduits (liens, idProduit) VALUES ('${req.protocol}://${req.get('host')}/images/${req.file.filename}', '${req.body.idProduit}')`
                 console.log(sql)
-                //console.log(req.headers)
                 con.query(sql, (err, result, fields) => {
                     if (err) {
                         return res.status(500).json({ message: 'bad request image' })
                     }
                     try {
-                        return res.status(200).json(result)
+                        return res.status(200).json({ message: 'enregstrement image réussi !' })
                     }
                     catch (err) {
                         return res.status(400).json({ err })

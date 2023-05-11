@@ -8,10 +8,11 @@ export const getAllProduit = async () => {
             tableauProduit.push(produit)
             return tableauProduit
         })
+        console.log(tableauProduit)
     return tableauProduit[0]
 }
 
-export const creationProduit = (produit) => {
+export const creationProduit =  async (produit) => {
     let dataProduit = new FormData()
     dataProduit.append("nomProduit", produit.nomProduit)
     dataProduit.append("descriptionProduit", produit.descriptionProduit)
@@ -19,11 +20,14 @@ export const creationProduit = (produit) => {
     dataProduit.append("prix", produit.prix)
     dataProduit.append("stockProduit", produit.stockProduit)
     dataProduit.append("image", produit.image)
-    fetch('http://192.168.1.56:4200/produit', {
+    let test =  fetch('http://192.168.1.56:4200/produit', {
         method: 'POST',
         mode: 'cors',
         body: dataProduit,
     })
-        .then(function (res) { return res.json(); })
-        .then(function (data) { return (JSON.stringify(data)) })
+        //.then(function (res) { alert(res.status) })
+        //.then(function (res) { return res.json(); })
+        //.then(function (data) { alert(data.message) })
+        //.then(function (data) { return data })
+        return (await test)
 }

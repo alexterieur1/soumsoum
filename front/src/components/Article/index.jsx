@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import ceintre from '../../assets/ceintre.svg'
 
 function Article({ image, description, prix, epuise}) {
+    let prixEuros = prix.split(',')
     return (
         <div className={style.article}>
             {epuise ? <>
@@ -19,7 +20,7 @@ function Article({ image, description, prix, epuise}) {
                     <img className={style.image} src={image} alt='descritpion' />
                 </Link>}
             <p className={style.description}>{description}</p>
-            <p className={style.prix}>{prix} €</p>
+            <p className={style.prix}>{prixEuros[0]},{prixEuros[1]} €</p>
         </div>
     )
 }
