@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import style from './Formulaire.module.scss'
 import { creationProduit } from '../../api'
 
@@ -7,10 +7,17 @@ function Formulaire() {
   const [nom, setNom] = useState('');
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState('');
-  const [stock, setStock] = useState('');
   const [image, setImage] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [imageTelechargee, setimageTelechargee] = useState(false);
+  const [xs, setXs] = useState(-1);
+  const [s, setS] = useState(-1);
+  const [sm, setSm] = useState(-1);
+  const [m, setM] = useState(-1);
+  const [ml, setMl] = useState(-1);
+  const [l, setL] = useState(-1);
+  const [lxl, setLxl] = useState(-1);
+  const [xl, setXl] = useState(-1);
 
   const envoieFormulaire = async () => {
     let valeurFormulaire = {
@@ -18,7 +25,14 @@ function Formulaire() {
       "descriptionProduit": description,
       "prix": prix,
       "idProduit": '12345678',
-      "stockProduit": stock,
+      "xs": xs,
+      "s": s,
+      "sm": sm,
+      "m": m,
+      "ml": ml,
+      "l": l,
+      "lxl": lxl,
+      "xl": xl,
       "image": image,
     }
     let test = creationProduit(valeurFormulaire)
@@ -27,7 +41,14 @@ function Formulaire() {
       setNom('')
       setDescription('')
       setPrix('')
-      setStock('')
+      setXs('')
+      setS('')
+      setSm('')
+      setM('')
+      setMl('')
+      setL('')
+      setLxl('')
+      setXl('')
       document.getElementById('file').value = ''
       setImage('')
       setimageTelechargee(false)
@@ -66,10 +87,43 @@ function Formulaire() {
       <input value={description} onChange={(e) => setDescription(e.target.value)} />
       <label>prix :</label>
       <input value={prix} onChange={(e) => setPrix(e.target.value)} />
-      <label>stock :</label>
-      <input value={stock} onChange={(e) => setStock(e.target.value)} />
+      <p>stock :</p>
+      <div className={style.formulaire__stock}>
+        <div>
+          <label>xs :</label>
+          <input type='number' value={xs} onChange={(e) => setXs(e.target.value)} />
+        </div>
+        <div>
+          <label>s :</label>
+          <input type='number' value={s} onChange={(e) => setS(e.target.value)} />
+        </div>
+        <div>
+          <label>sm :</label>
+          <input type='number' value={sm} onChange={(e) => setSm(e.target.value)} />
+        </div>
+        <div>
+          <label>m :</label>
+          <input type='number' value={m} onChange={(e) => setM(e.target.value)} />
+        </div>
+        <div>
+          <label>m-l :</label>
+          <input type='number' value={ml} onChange={(e) => setMl(e.target.value)} />
+        </div>
+        <div>
+          <label>l :</label>
+          <input type='number' value={l} onChange={(e) => setL(e.target.value)} />
+        </div>
+        <div>
+          <label>l-xl :</label>
+          <input type='number' value={lxl} onChange={(e) => setLxl(e.target.value)} />
+        </div>
+        <div>
+          <label>xl :</label>
+          <input type='number' value={xl} onChange={(e) => setXl(e.target.value)} />
+        </div>
+      </div>
       <input type='file' id='file' onChange={(e) => previewFile(e.target.files[0])} />
-      { imageTelechargee ? <img src={`${imagePreview}`} id='imagePreview' alt='test' /> :<></>}
+      {imageTelechargee ? <img src={`${imagePreview}`} id='imagePreview' alt='test' /> : <></>}
       <button type='button' onClick={envoieFormulaire} value='ajouter le produit'>ajouter le produit </button>
     </form >
   )

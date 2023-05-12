@@ -10,7 +10,8 @@ exports.affichageAllProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
-        var sql = "SELECT * from produits INNER JOIN photoproduits ON produits.idProduit = photoproduits.idProduit"
+        var sql = "SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit"
+
         con.query(sql, (err, result, fields) => {
             if (err) {
                 return res.status(500).json({ message: 'bad request' })
@@ -29,7 +30,7 @@ exports.affichageUnProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
-        var sql = `SELECT * from produits INNER JOIN photoproduits ON produits.idProduit = photoproduits.idProduit WHERE produits.idProduit = ${req.params.id}`
+        var sql = `SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit WHERE produits.idProduit = ${req.params.id}`
         con.query(sql, (err, result, fields) => {
             if (err) {
                 return res.status(500).json({ message: 'bad request' })
@@ -45,24 +46,37 @@ exports.affichageUnProduit = async (req, res) => {
 }
 exports.creation = (req, res) => {
     console.log(req.headers)
+    console.log(typeof(Number(req.body.xs)))
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
-        var sql = `INSERT INTO produits (nomProduit, descriptionProduit, idProduit, prix, stockProduits) VALUES ('${req.body.nomProduit}', '${req.body.descriptionProduit}', '${req.body.idProduit}', '${req.body.prix}', '${req.body.stockProduit}')`
+        var sql = `INSERT INTO produits (nomProduit, descriptionProduit, idProduit, prix) VALUES ('${req.body.nomProduit}', '${req.body.descriptionProduit}', '${req.body.idProduit}', '${req.body.prix}')`
         console.log(sql)
         con.query(sql, (err, result, fields) => {
             if (err) {
-                return res.status(500).json({ message: 'bad request requete' })
+                return res.status(500).json({ message: 'bad request produit' })
             }
             try {
-                var sql = `INSERT INTO photoproduits (liens, idProduit) VALUES ('${req.protocol}://${req.get('host')}/images/${req.file.filename}', '${req.body.idProduit}')`
+                var sql = `INSERT INTO stockproduits (idProduit, xs, s, sm, m, ml, l, lxl, xl) VALUES ('${req.body.idProduit}',${Number(req.body.xs)},${Number(req.body.s)},${Number(req.body.sm)},${Number(req.body.m)},${Number(req.body.ml)},${Number(req.body.l)},${Number(req.body.lxl)},${Number(req.body.xl)})`
                 console.log(sql)
                 con.query(sql, (err, result, fields) => {
                     if (err) {
-                        return res.status(500).json({ message: 'bad request image' })
+                        return res.status(500).json({ message: 'bad request stock' })
                     }
                     try {
-                        return res.status(200).json({ message: 'enregstrement image réussi !' })
+                        var sql = `INSERT INTO photoproduits (liens, idProduit) VALUES ('${req.protocol}://${req.get('host')}/images/${req.file.filename}', '${req.body.idProduit}')`
+                        console.log(sql)
+                        con.query(sql, (err, result, fields) => {
+                            if (err) {
+                                return res.status(500).json({ message: 'bad request image' })
+                            }
+                            try {
+                                return res.status(200).json({ message: 'enregistrement image réussi !' })
+                            }
+                            catch (err) {
+                                return res.status(400).json({ err })
+                            }
+                        })
                     }
                     catch (err) {
                         return res.status(400).json({ err })

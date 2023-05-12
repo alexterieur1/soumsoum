@@ -3,4 +3,23 @@
     flex-direction: column;
     max-width: 80vw;
     margin:0 auto;
+    & > input{
+        margin-bottom: 1em;
+    }
+    &__stock{
+        display:grid;
+        align-items: center;
+        justify-items: center;
+        grid-template-columns: auto auto auto auto;
+        margin-bottom: 1em;
+        &>div{
+            display:flex;
+            flex-direction: column;
+            margin-bottom: 0px;
+            & > input{
+                max-width: 5em;
+                max-height: 2em;
+            }
+        }
+    }
 }

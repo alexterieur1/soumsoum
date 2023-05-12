@@ -4,7 +4,7 @@ import image2 from '../../assets/imagearticle2.webp'
 import image3 from '../../assets/imagearticle3.webp'
 import image4 from '../../assets/imagearticle4.webp'
 import { getUnProduit } from '../../api';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 
 export async function loadData(props) {
@@ -16,7 +16,6 @@ export async function loadData(props) {
 function Article() {
     const { produit } = useLoaderData()
     const [image, updateImage] = useState(produit.liens)
-    console.log(produit)
     return (
         <>
             <>
@@ -36,11 +35,14 @@ function Article() {
                     <p>{produit.prix} €</p>
                 </div>
                 <div className={style.taille}>
-                    <p className={style.taille__unite}>40</p>
-                    <p className={style.taille__unite__epuise}>42</p>
-                    <p className={style.taille__unite}>44</p>
-                    <p className={style.taille__unite}>46</p>
-                    <p className={style.taille__unite__epuise}>48</p>
+                    {Number(produit.xs) >=0 ? <p className={Number(produit.xs) !== 0 ? style.taille__unite: style.taille__unite__epuise}>xs</p>:<></>}
+                    {Number(produit.s) >=0 ? <p className={Number(produit.s) !== 0 ? style.taille__unite: style.taille__unite__epuise}>s</p>:<></>}
+                    {Number(produit.sm) >=0 ? <p className={Number(produit.sm) !== 0 ? style.taille__unite: style.taille__unite__epuise}>s-m</p>:<></>}
+                    {Number(produit.m) >=0 ? <p className={Number(produit.m) !== 0 ? style.taille__unite: style.taille__unite__epuise}>m</p>:<></>}
+                    {Number(produit.ml) >=0 ? <p className={Number(produit.ml) !== 0 ? style.taille__unite: style.taille__unite__epuise}>m-l</p>:<></>}
+                    {Number(produit.l) >=0 ? <p className={Number(produit.l) !== 0 ? style.taille__unite: style.taille__unite__epuise}>l</p>:<></>}
+                    {Number(produit.lxl) >=0 ? <p className={Number(produit.lxl) !== 0 ? style.taille__unite: style.taille__unite__epuise}>l-xl</p>:<></>}
+                    {Number(produit.xl) >=0 ? <p className={Number(produit.xl) !== 0 ? style.taille__unite: style.taille__unite__epuise}>xl</p>:<></>}
                 </div>
                 <Link to='/panier'>
                     <button className={style.button}>
