@@ -11,6 +11,19 @@ export const getAllProduit = async () => {
         console.log(tableauProduit)
     return tableauProduit[0]
 }
+export const getUnProduit = async (id) => {
+    const tableauProduit = []
+    await fetch(`http://192.168.1.56:4200/produit/${id}`)
+        .then((produit) => {
+            return produit.json()
+        })
+        .then((produit) => {
+            tableauProduit.push(produit[0])
+            return tableauProduit
+        })
+        console.log(tableauProduit)
+    return tableauProduit[0]
+}
 
 export const creationProduit =  async (produit) => {
     let dataProduit = new FormData()

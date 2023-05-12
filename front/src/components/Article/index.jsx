@@ -3,12 +3,14 @@ import style from './Article.module.scss'
 import { Link } from 'react-router-dom'
 import ceintre from '../../assets/ceintre.svg'
 
-function Article({ image, description, prix, epuise}) {
+function Article({ image, description, prix, epuise, id }) {
     let prixEuros = prix.split(',')
+    console.log(id)
+    console.log('composant article')
     return (
         <div className={style.article}>
             {epuise ? <>
-                <Link to='/article/' className={style.articleepuise}>
+                <Link to={`/article/${id}`} className={style.articleepuise}>
                     <img className={style.imageepuise} src={image} alt='descritpion' />
                     <div className={style.fenetreepuise}>
                         <img src={ceintre} alt='article epuisé'/>
@@ -16,7 +18,7 @@ function Article({ image, description, prix, epuise}) {
                     </div>
                 </Link>
             </>
-                : <Link to='/article/' className={style.article}>
+                : <Link to={`/article/${id}`} className={style.article}>
                     <img className={style.image} src={image} alt='descritpion' />
                 </Link>}
             <p className={style.description}>{description}</p>

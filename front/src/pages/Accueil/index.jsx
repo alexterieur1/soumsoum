@@ -1,26 +1,16 @@
 import React from 'react';
 import style from './Accueil.module.scss'
 import Article from '../../components/Article'
-import image1 from '../../assets/image1.jpg'
-import image2 from '../../assets/image2.jpg'
-import image3 from '../../assets/image3.jpg'
-import image4 from '../../assets/image4.jpg'
-import image5 from '../../assets/image5.jpg'
-import image6 from '../../assets/image6.jpg'
-import image7 from '../../assets/image7.jpg'
-import image8 from '../../assets/image8.jpg'
+import logo from '../../assets/logo.png'
 import imagechaussure from '../../assets/imagechaussure.jpg'
 import imagehaut from '../../assets/imagehaut.jpg'
 import imagebas from '../../assets/imagebas.jpg'
 import imageaccessoire from '../../assets/imageaccessoire.jpg'
-import Banner from '../../components/HeaderAccueil'
-import marbre from '../../assets/marbre_blanc.png'
 import { getAllProduit } from '../../api';
 import { useLoaderData } from 'react-router-dom';
 
 export async function loadData() {
   const produit = await getAllProduit()
-  console.log(produit[0])
   return { produit }
 }
 
@@ -43,7 +33,7 @@ function Accueil() {
   }) */
   return (
     <>
-      <Banner />
+      <img className={style.image} src={logo} alt='carousel'/>
       <div className={style.categorie}>
         {/* <h2 className={style.titre}>Les catégories</h2> */}
         <div className={`${style.categorie__element} ${style.scroll}`}>
@@ -63,21 +53,15 @@ function Accueil() {
           <p className={style.categorie__description}>accessoires</p>
         </div>
       </div>
-      <h2 className={style.titre}>Les dernières nouveautés</h2>
+      <h2 className={style.titre}>Les dernières nouveautées</h2>
       <div className={style.article}>
         {produit ? (
           produit.map((produit, index)=>(
-            <Article key={index} image={produit.liens} description={produit.nomProduit} prix={produit.prix} epuise={false} />
+            <Article key={index} id={produit.idProduit} image={produit.liens} description={produit.nomProduit} prix={produit.prix} epuise={false} />
           ))
         ) : <>chargement ...</>}
-        <Article image={image1} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
-        <Article image={image2} description={"lorem ipsum"} prix={"25,00"} epuise={true} />
-        <Article image={image3} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
-        <Article image={image4} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
-        <Article image={image5} description={"lorem ipsum"} prix={"25,00"} epuise={true} />
-        <Article image={image6} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
-        <Article image={image7} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
-        <Article image={image8} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
+        {/* <Article image={image1} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
+        <Article image={image2} description={"lorem ipsum"} prix={"25,00"} epuise={true} /> */}
       </div>
     </>
   )

@@ -24,6 +24,25 @@ exports.affichageAllProduit = async (req, res) => {
         })
     })
 }
+exports.affichageUnProduit = async (req, res) => {
+    console.log(req.params)
+    con.connect((err) => {
+        if (err) throw err;
+        console.log('connecté !')
+        var sql = `SELECT * from produits INNER JOIN photoproduits ON produits.idProduit = photoproduits.idProduit WHERE produits.idProduit = ${req.params.id}`
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                return res.status(200).json(result)
+            }
+            catch (err) {
+                return res.status(400).json({ err })
+            }
+        })
+    })
+}
 exports.creation = (req, res) => {
     console.log(req.headers)
     con.connect((err) => {
