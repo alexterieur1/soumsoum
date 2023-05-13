@@ -16,20 +16,27 @@ function Header() {
 
     useEffect(() => {
         var menudiv = document.getElementById('menu')
+        let menuAutreFond = document.getElementById('fondOpose')
         if (menu) {
             menudiv.classList.add(`${style.headerBalise__gauche__animationOuverture}`)
             menudiv.classList.remove(`${style.headerBalise__gauche__fermeture}`)
+            menuAutreFond.classList.remove(`${style.headerBalise__gauche__fondOpose__ouvert}`)
+            menuAutreFond.classList.add(`${style.headerBalise__gauche__fondOpose__fermer}`)
         }
         else {
             menudiv.classList.add(`${style.headerBalise__gauche__fermeture}`)
             menudiv.classList.remove(`${style.headerBalise__gauche__animationOuverture}`)
+            menuAutreFond.classList.add(`${style.headerBalise__gauche__fondOpose__ouvert}`)
+            menuAutreFond.classList.remove(`${style.headerBalise__gauche__fondOpose__fermer}`)
         }
     }, [menu])
     return (
         <header>
             <div className={style.navbar}>
-                <div onClick={() => updateMenu(true)} className={style.menuBurger}>
+                <div onClick={() => updateMenu(menu => !menu)} className={style.menuBurger}>
                     <img src={burger} alt='menu' />
+                </div>
+                <div id='fondOpose' className={style.headerBalise__gauche__fondOpose} onClick={() => updateMenu(menu => !menu)}>
                 </div>
                 <div id='menu' className={style.headerBalise__gauche}>
                     <img className={style.headerBalise__gauche__logo} src={logo} alt='mille et une merveilles' />
@@ -81,7 +88,7 @@ function Header() {
                     </div>
                     <div className={style.connexion}>
                         <p>Mon compte</p>
-                        <img src={connexion} alt='test'/>
+                        <img src={connexion} alt='test' />
                     </div>
                 </div>
                 <Link to='/'>

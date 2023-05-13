@@ -26,9 +26,9 @@ li {
     &__gauche {
         position: fixed;
         left: 40vw;
-        z-index: 2;
+        z-index: 10;
         top: 0;
-        left: -80vw;
+        left: -100vw;
         height: 100vh;
         width: 80vw;
         background-color: #D0B69F;
@@ -37,7 +37,7 @@ li {
         transition: transform 500ms ease-in-out;
 
         &__animationOuverture {
-            transform: translate(80vw, 0vw);
+            transform: translate(100vw, 0vw);
         }
 
         &__animationFermeture {
@@ -49,10 +49,34 @@ li {
             height: 30%;
             object-fit: contain;
         }
-    }&::after{
+
+        &__fondOpose {
+            background-color: grey;
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+            left: 0;
+            top:0;
+            opacity: 0;
+            display: none;
+            z-index: 1;
+
+            &__fermer {
+                display:block;
+                animation: fermetureMenu 500ms 300ms forwards;
+            }
+
+            &__ouvert {
+                display: none;
+                animation: ouvertureMenu 500ms 300ms forwards;
+            }
+        }
+    }
+
+    &::after {
         content: "bonjour";
-        height:100vh;
-        width:20vw;
+        height: 100vh;
+        width: 20vw;
         background-color: black;
     }
 }
@@ -76,20 +100,42 @@ li {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width:50%;
+        width: 50%;
 
         &>img {
             height: 20px;
         }
     }
-    &__contenue{
-        display:block;
+
+    &__contenue {
+        display: block;
     }
 }
-.connexion{
+
+.connexion {
     font-size: 20px;
-    display:flex;
+    display: flex;
     padding-left: 1em;
-    height:50px;
+    height: 50px;
     align-items: center;
+}
+
+@keyframes fermetureMenu {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes ouvertureMenu {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
