@@ -5,7 +5,7 @@ import loupe from '../../assets/loupe.svg'
 import panier from '../../assets/panier.svg'
 import burger from '../../assets/burger.svg'
 import logo from '../../assets/logo-header.webp'
-import connexion from '../../assets/connexion.svg'
+//import connexion from '../../assets/connexion.svg'
 import { Link } from 'react-router-dom'
 
 
@@ -13,6 +13,16 @@ import { Link } from 'react-router-dom'
 function Header() {
     const [menu, updateMenu] = useState(false)
     const [isOpen, setisOpen] = useState(false)
+    const [isAuth, setisAuth] = useState(true)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    
+const envoieFormulaire = () => {
+    let objetConnexion={
+        "email": email,
+        "password" : password
+    }
+    }
 
     useEffect(() => {
         var menudiv = document.getElementById('menu')
@@ -87,8 +97,7 @@ function Header() {
                         </ul>
                     </div>
                     <div className={style.connexion}>
-                        <p>Mon compte</p>
-                        <img src={connexion} alt='test' />
+                        <p onClick={() => setisAuth(isAuth => !isAuth)}>Mon compte</p>
                     </div>
                 </div>
                 <Link to='/'>
@@ -97,6 +106,18 @@ function Header() {
                 <div className={style.recherche}><img src={loupe} alt='recherche' /></div>
                 <div className={style.panier}><img src={panier} alt='panier' /></div>
             </div>
+            {isAuth ? (
+                <div className={style.auth}>
+                    <p>incrivez-vous / connectez-vous</p>
+                    <form className={style.formulaire}>
+                        <label>email :</label>
+                        <input value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <label>mot de passe :</label>
+                        <input value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <button type='button' onClick={envoieFormulaire} value='ajouter le produit'>se connecter</button>
+                    </form >
+                </div>
+            ) : <></>}
         </header>
     )
 }

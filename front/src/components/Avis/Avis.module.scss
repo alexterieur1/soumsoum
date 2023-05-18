@@ -1,0 +1,38 @@
+.avis {
+    height:500px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    &:before {
+        content: '';
+        height: 3px;
+        width: 90vw;
+        background-color: #D0B69F;
+        border-radius: 2px;
+        margin-bottom: 0.5em;
+    }&:after {
+        content: '';
+        height: 3px;
+        width: 90vw;
+        background-color: #D0B69F;
+        border-radius: 2px;
+        margin-top: 0.5em;
+    }
+}
+.contenue{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width:100vW;
+    font-size: 18px;
+    font-weight: 600;
+}
+.etoiles{
+    display:flex;
+    flex-direction: row;
+    width:50%;
+    padding-block: 1em;
+    &>svg{
+        height:2em;
+    }
+}

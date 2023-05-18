@@ -10,6 +10,7 @@ exports.affichageAllProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
+        console.log(req.body)
         var sql = "SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit"
 
         con.query(sql, (err, result, fields) => {

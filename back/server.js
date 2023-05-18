@@ -1,5 +1,6 @@
 const express = require('express')
 const produitRoute = require('./routes/produit.js')
+const produitClient = require('./routes/client.js')
 const path = require('path')
 
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extented: false }))
 
 app.use("/", produitRoute)
+app.use("/", produitClient)
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 
