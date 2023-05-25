@@ -1,5 +1,5 @@
 export const getAllProduit = async () => {
-    const tableauProduit = []
+    let tableauProduit = []
     await fetch('http://192.168.1.56:4200/produit')
         .then((produit) => {
             return produit.json()
@@ -28,7 +28,7 @@ export const getUnProduit = async (id) => {
 export const creationProduit = async (produit) => {
     console.log(produit.xs.length)
     console.log(produit.xs)
-    console.log(typeof(produit.xs))
+    console.log(typeof (produit.xs))
     let dataProduit = new FormData()
     dataProduit.append("nomProduit", produit.nomProduit)
     dataProduit.append("descriptionProduit", produit.descriptionProduit)
@@ -53,4 +53,45 @@ export const creationProduit = async (produit) => {
     //.then(function (data) { alert(data.message) })
     //.then(function (data) { return data })
     return (await test)
+}
+export const getPanier = async () => {
+    let tableauPanier = []
+    await fetch('http://192.168.1.56:4200/panier', {
+        method: "GET",
+        headers: {
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaWVudCI6IjAxMjM0NTY3ODkiLCJpYXQiOjE2ODUwMzQ5NjAsImV4cCI6MTY4NTEyMTM2MH0.39RfENwmgsw4WWU5xkf-vZ6BMcvmllnGFZEV66TCm24"
+        }
+    })
+        .then((panier) => {
+            return panier.json()
+        })
+        .then((panier) => {
+            tableauPanier.push(panier)
+            return tableauPanier
+        })
+    return tableauPanier[0]
+}
+export const connexion = async (objetConnexion) => {
+    await fetch('http://192.168.1.56:4200/connexion', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: {
+            'mail': objetConnexion.mail,
+            'password': objetConnexion.password
+        }
+    })
+}
+export const addPanier = async (taille, idProduit, idClient) => {
+    let dataPanier = new FormData()
+    dataPanier.append('taille', taille)
+    await fetch('http://192.168.1.56:4200/panier', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaWVudCI6IjAxMjM0NTY3ODkiLCJpYXQiOjE2ODUwMzQ5NjAsImV4cCI6MTY4NTEyMTM2MH0.39RfENwmgsw4WWU5xkf-vZ6BMcvmllnGFZEV66TCm24"
+        },
+        body: dataPanier
+    })
 }

@@ -7,5 +7,7 @@ const auth = require('../middleware/auth')
 router.get('/produit', produitControllers.affichageAllProduit)
 router.get('/produit/:id', produitControllers.affichageUnProduit)
 router.post('/produit', multer, produitControllers.creation)
+router.get('/panier', auth, produitControllers.panier)
+router.post('/panier', auth, produitControllers.addPanier)
 
 module.exports = router

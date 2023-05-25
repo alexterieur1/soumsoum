@@ -44,9 +44,9 @@ exports.connexion = async (req, res) => {
                 }
                 else {
                     return res.status(200).json({
-                        userId: result[0].id,
+                        idClient: result[0].idClient,
                         token: jwt.sign(
-                            { userId: result[0].id },
+                            { idClient: result[0].idClient },
                             process.env.PHRASECRYPT,
                             { expiresIn: '24h' }
                         )
@@ -54,6 +54,7 @@ exports.connexion = async (req, res) => {
                 }
             }
             catch (err) {
+                console.log(err)
                 return res.status(400).json({ err })
             }
         })

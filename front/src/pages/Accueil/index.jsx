@@ -16,6 +16,7 @@ export async function loadData() {
 
 function Accueil() {
   const { produit } = useLoaderData()
+  console.log(produit)
   //let elementCategorie = document.querySelector(`.${style.categorie}`)
   //console.log(elementCategorie)
   //console.log({marbre})

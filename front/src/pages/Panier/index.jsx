@@ -1,56 +1,33 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState } from 'react'
 import style from './Panier.module.scss'
-import image from '../../assets/image.JPG'
-import plus from '../../assets/plus.svg'
-import moins from '../../assets/moins.svg'
+import { getPanier } from '../../api'
+import { useLoaderData } from 'react-router-dom'
+import Article from '../../components/ArticlePanier'
 
-
+export async function loadData() {
+    const panier = await getPanier()
+    return { panier }
+}
 function Panier() {
-    const [number1, updateNumber1] = useState(1)
-    const [number2, updateNumber2] = useState(1)
+    const { panier } = useLoaderData()
+    const [Total, updateTotal] = useState(0)
+    const [test, setTest] = useState(0)
+    useEffect(() => {
+        console.log(test)
+        console.log('a regarder audessus')
+        updateTotal(Number(test))
+    }, [test])
+    console.log(panier)
     return (
         <>
             <h1 className={style.titre}>Mon Panier</h1>
             <div className={style.listePanier}>
-                <div className={style.article}>
-                    <div className={style.article__image}>
-                        <img className={style.article__image__contenu} src={image} alt="article 1 panier" />
-                    </div>
-                    <div>
-                        <div className={style.description}>
-                            <p className={style.description__titre}>lorem ipsum</p>
-                            <p className={style.description__prix}>25,00 €</p>
-                            <div className={style.quantite}>
-                                <img onClick={()=> updateNumber1(number1 - 1)} src={moins} alt='diminuer'/>
-                                <p>{number1}</p>
-                                <img onClick={()=> updateNumber1(number1 + 1)} src={plus} alt='augmenter'/>
-                            </div>
-                            <button className={style.button}>
-                                supprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div className={style.article}>
-                    <div className={style.article__image}>
-                        <img className={style.article__image__contenu} src={image} alt="article 1 panier" />
-                    </div>
-                    <div>
-                        <div className={style.description}>
-                            <p className={style.description__titre}>lorem ipsum</p>
-                            <p className={style.description__prix}>25,00 €</p>
-                            <div className={style.quantite}>
-                                <img onClick={()=> updateNumber1(number2 - 1)} src={moins} alt='diminuer'/>
-                                <p>{number2}</p>
-                                <img onClick={()=> updateNumber2(number2 + 1)} src={plus} alt='augmenter'/>
-                            </div>
-                            <button className={style.button}>
-                                supprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                {panier.map((article, index) => (
+                    <Article key={index} panier={article} seTest={setTest} test={test} />
+                ))}
             </div >
+
+            <p>total : {Total}</p>
         </>
     )
 }

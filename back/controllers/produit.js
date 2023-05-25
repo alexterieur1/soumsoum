@@ -12,7 +12,6 @@ exports.affichageAllProduit = async (req, res) => {
         console.log('connecté !')
         console.log(req.body)
         var sql = "SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit"
-
         con.query(sql, (err, result, fields) => {
             if (err) {
                 return res.status(500).json({ message: 'bad request' })
@@ -47,7 +46,9 @@ exports.affichageUnProduit = async (req, res) => {
 }
 exports.creation = (req, res) => {
     console.log(req.headers)
-    console.log(typeof(Number(req.body.xs)))
+    console.log(req.auth)
+    console.log(req.body)
+    console.log(typeof (Number(req.body.xs)))
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
@@ -55,6 +56,7 @@ exports.creation = (req, res) => {
         console.log(sql)
         con.query(sql, (err, result, fields) => {
             if (err) {
+                console.log(err)
                 return res.status(500).json({ message: 'bad request produit' })
             }
             try {
@@ -88,5 +90,36 @@ exports.creation = (req, res) => {
                 return res.status(400).json({ err })
             }
         })
+    })
+}
+exports.panier = (req, res) => {
+    console.log(req.auth)
+    var sql = "SELECT prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit"
+    con.query(sql, (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({ message: 'bad request' })
+        }
+        try {
+            return res.status(200).json(result)
+        }
+        catch (err) {
+            return res.status(400).json({ err })
+        }
+    })
+}
+exports.addPanier = (req, res) => {
+    console.log(req.body)
+    let sql = `INSERT INTO panier (idProduit, idClient, quantite, taille) VALUES (${req.body.idProduit}, ${req.body.idClient}, ${req.body.quantite}, '${req.body.taille}')`
+    con.query(sql, (err, result, fields) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: 'bad request' })
+        }
+        try {
+            return res.status(200).json({ message: 'enregistrement panier réussi !' })
+        }
+        catch (err) {
+            return res.status(400).json({ err })
+        }
     })
 }

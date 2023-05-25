@@ -24,7 +24,7 @@ function Formulaire() {
       "nomProduit": nom,
       "descriptionProduit": description,
       "prix": prix,
-      "idProduit": '12345678',
+      "idProduit": Date.now(),
       "xs": xs,
       "s": s,
       "sm": sm,
