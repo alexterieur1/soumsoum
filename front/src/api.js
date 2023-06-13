@@ -59,7 +59,7 @@ export const getPanier = async () => {
     await fetch('http://192.168.1.56:4200/panier', {
         method: "GET",
         headers: {
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaWVudCI6IjAxMjM0NTY3ODkiLCJpYXQiOjE2ODUwMzQ5NjAsImV4cCI6MTY4NTEyMTM2MH0.39RfENwmgsw4WWU5xkf-vZ6BMcvmllnGFZEV66TCm24"
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaWVudCI6IjAxMjM0NTY3ODkiLCJpYXQiOjE2ODU3OTQ2NDUsImV4cCI6MTY4NTg4MTA0NX0.iVfpgAui_D1MMOzZ7wSTDCpYAQO_SXBJ02dE3Hwvcfs"
         }
     })
         .then((panier) => {
@@ -71,27 +71,49 @@ export const getPanier = async () => {
         })
     return tableauPanier[0]
 }
-export const connexion = async (objetConnexion) => {
-    await fetch('http://192.168.1.56:4200/connexion', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: {
-            'mail': objetConnexion.mail,
-            'password': objetConnexion.password
-        }
-    })
-}
 export const addPanier = async (taille, idProduit, idClient) => {
-    let dataPanier = new FormData()
+    let dataPanier = new URLSearchParams()
     dataPanier.append('taille', taille)
+    dataPanier.append('idProduit', idProduit)
+    dataPanier.append('idClient', idClient)
+    dataPanier.append('quantite', 1)
     await fetch('http://192.168.1.56:4200/panier', {
         method: "POST",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaWVudCI6IjAxMjM0NTY3ODkiLCJpYXQiOjE2ODUwMzQ5NjAsImV4cCI6MTY4NTEyMTM2MH0.39RfENwmgsw4WWU5xkf-vZ6BMcvmllnGFZEV66TCm24"
         },
         body: dataPanier
     })
+}
+
+export const connexion = async (objetConnexion) => {
+    let dataConnexion = new FormData()
+    dataConnexion.append('mail', objetConnexion.email)
+    dataConnexion.append('password', objetConnexion.password)
+    try{
+        let apiPlayload = await fetch('http://192.168.1.56:4200/connexion', {
+        method: "POST",
+        /* headers: {
+            'Content-Type': 'multipart/form-data; boundary=----azertyuiop',
+        }, */
+        body: dataConnexion
+    })
+    let playload = await apiPlayload.json()
+    console.log(playload)
+    return playload
+    }
+    catch(err){
+        console.log(err)
+        return err
+    }
+}
+export const informationClient = async () => {
+    await fetch(`http://192.168.1.56:4200/informationClient`,{
+        headers: {
+            'cookie': 's%3Aj7Oq9fb5ZMDwr5dKhfjunfPlfznBQyB_.wsbO2GiBhwSkpIf9SiUEUf%2Fp2KpzYUKxjdiu%2FGxXH3M'
+        }
+    })
+        .then((response) => {
+            console.log(response)
+        })
 }

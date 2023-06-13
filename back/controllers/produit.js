@@ -10,7 +10,6 @@ exports.affichageAllProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
-        console.log(req.body)
         var sql = "SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit"
         con.query(sql, (err, result, fields) => {
             if (err) {
@@ -94,10 +93,10 @@ exports.creation = (req, res) => {
 }
 exports.panier = (req, res) => {
     console.log(req.auth)
-    var sql = "SELECT prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit"
+    var sql = `SELECT prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {
-            return res.status(500).json({ message: 'bad request' })
+            return res.status(500).json(err/* { message: 'bad request' } */)
         }
         try {
             return res.status(200).json(result)

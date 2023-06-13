@@ -1,0 +1,30 @@
+.liste {
+    padding-left: 1em;
+    font-size: 20px;
+
+    &__categorie {
+        padding-bottom: 1em;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+
+        &>ul {
+            padding-left: 1.5em;
+        }
+    }
+
+    &__balise__titre {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 50%;
+
+        &>img {
+            height: 20px;
+        }
+    }
+
+    &__contenue {
+        display: block;
+    }
+}

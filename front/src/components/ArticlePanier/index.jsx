@@ -14,13 +14,13 @@ function Panier({ panier, test, seTest }) {
             if (prixTotalArrondi / 100 >= 1) {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(5)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest( Number(prixTotalArrondi))
+                seTest(number1)
                 updateNumber2(number1)
             }
             else {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(4)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest( Number(prixTotalArrondi))
+                seTest(number1)
                 updateNumber2(number1)
             }
 
@@ -30,18 +30,18 @@ function Panier({ panier, test, seTest }) {
             if (prixTotalArrondi / 100 >= 1) {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(5)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest(Number(prixTotalArrondi))
+                seTest(number1)
                 updateNumber2(number1)
             }
             else {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(4)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest( Number(prixTotalArrondi))
+                seTest(number1)
                 updateNumber2(number1)
             }
 
         }
-    }, [number1])
+    }, [number1, number2, prixArticle, seTest])
     return (
         <div className={style.article}>
             <div className={style.article__image}>

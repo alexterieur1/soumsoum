@@ -6,7 +6,7 @@ import Banner from './components/Header'
 function App() {
   return (
     <>
-      <Banner />
+      <Banner/>
       <main>
         <Outlet />
       </main>
