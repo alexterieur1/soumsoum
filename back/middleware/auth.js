@@ -3,10 +3,15 @@ require('dotenv').config()
 
 module.exports = (req, res, next) => {
    try {
-    console.log(req.sessionStore.sessions)
+      let idSession = req.headers.id
+      console.log(idSession)
+      let tokenSession = JSON.parse(req.sessionStore.sessions[idSession]).token
+      
+      console.log(tokenSession)
+      console.log('test')
     //console.log(req.headers.cookie)
        const token = req.session.token;
-       const decodedToken = jwt.verify(token, process.env.PHRASECRYPT);
+       const decodedToken = jwt.verify(tokenSession, process.env.PHRASECRYPT);
        //console.log(decodedToken)
        req.auth = {
            token: decodedToken

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import ceintre from '../../assets/ceintre.svg'
 
 function Article({ image, description, prix, epuise, id }) {
-    let prixEuros = prix.split(',')
+    let prixEuros = prix.split('.')
     console.log(id)
     console.log('composant article')
     return (

@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router'
 import './App.css';
 import Banner from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <main>
         <Outlet />
       </main>
+      <Footer/>
     </>
   )
 }

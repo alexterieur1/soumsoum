@@ -20,11 +20,15 @@
     }
 }
 .description{
+    font-size: 18px;
     display:flex;
     flex-direction: column;
     align-items:flex-end;
     justify-content: space-around;
     height:100%;
+    &>p, .quantite{
+        font-weight: 500;
+    }
 }
 .button{
     display:flex;
@@ -32,9 +36,13 @@
     background-color: #D0B69F;
     color:white;
     border:none;
-    padding:1em;
+    padding:1em 2em;
     border-radius: 5px;
 }
 .quantite{
     display:flex;
+    align-items: center;
+    &>p{
+        font-size: 20px;
+    }
 }

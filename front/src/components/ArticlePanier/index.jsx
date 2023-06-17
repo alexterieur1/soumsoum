@@ -3,45 +3,49 @@ import style from './ArticlePanier.module.scss'
 import plus from '../../assets/plus.svg'
 import moins from '../../assets/moins.svg'
 
-function Panier({ panier, test, seTest }) {
+function Panier({ index, panier, quantite, updateindex }) {
     const [number1, updateNumber1] = useState(panier.quantite)
     const [number2, updateNumber2] = useState(Number(panier.quantite) - 1)
-    let prixArticle = Number(panier.prix.split(',')[0] + '.' + panier.prix.split(',')[1])
+    let prixArticle = panier.prix.split('.')[0] + ',' + panier.prix.split('.')[1]
     const [prixTotal, updatePrixTotal] = useState(prixArticle)
     useEffect(() => {
         if (number1 > number2) {
-            let prixTotalArrondi = prixArticle * number1
+            let prixTotalArrondi = panier.prix * number1
             if (prixTotalArrondi / 100 >= 1) {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(5)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest(number1)
+                quantite(number1)
+                updateindex(index)
                 updateNumber2(number1)
             }
             else {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(4)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest(number1)
+                quantite(number1)
+                updateindex(index)
                 updateNumber2(number1)
             }
 
         }
         if (number1 < number2) {
-            let prixTotalArrondi = prixArticle * number1
+            let prixTotalArrondi = panier.prix * number1
             if (prixTotalArrondi / 100 >= 1) {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(5)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest(number1)
+                quantite(number1)
+                updateindex(index)
                 updateNumber2(number1)
             }
             else {
                 prixTotalArrondi = prixTotalArrondi.toPrecision(4)
                 updatePrixTotal(prixTotalArrondi.split('.')[0] + ',' + prixTotalArrondi.split('.')[1])
-                seTest(number1)
+                quantite(number1)
+                updateindex(index)
                 updateNumber2(number1)
             }
 
         }
-    }, [number1, number2, prixArticle, seTest])
+    }, [number1, number2, panier.prix, quantite, index, prixTotal, updateindex])
     return (
         <div className={style.article}>
             <div className={style.article__image}>
@@ -50,7 +54,7 @@ function Panier({ panier, test, seTest }) {
             <div>
                 <div className={style.description}>
                     <p className={style.description__titre}>{panier.nomProduit}</p>
-                    <p className={style.description__prix}>{panier.prix} €</p>
+                    <p className={style.description__prix}>{prixArticle} €</p>
                     <div className={style.quantite}>
                         <img onClick={() => {
                             if (number1 > 1) {
@@ -64,11 +68,11 @@ function Panier({ panier, test, seTest }) {
                             }
                         }} src={plus} alt='augmenter' />
                     </div>
-                    <p>taille : {panier.taille}</p>
+                    <p>Taille : {panier.taille}</p>
                     <button className={style.button}>
-                        supprimer
+                        Supprimer
                     </button>
-                    <p>total : {prixTotal} €</p>
+                    <p>Total : {prixTotal} €</p>
                 </div>
             </div>
         </div>

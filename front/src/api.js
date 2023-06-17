@@ -54,12 +54,12 @@ export const creationProduit = async (produit) => {
     //.then(function (data) { return data })
     return (await test)
 }
-export const getPanier = async () => {
+export const getPanier = async (userID) => {
     let tableauPanier = []
     await fetch('http://192.168.1.56:4200/panier', {
         method: "GET",
         headers: {
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZENsaWVudCI6IjAxMjM0NTY3ODkiLCJpYXQiOjE2ODU3OTQ2NDUsImV4cCI6MTY4NTg4MTA0NX0.iVfpgAui_D1MMOzZ7wSTDCpYAQO_SXBJ02dE3Hwvcfs"
+            'id': userID
         }
     })
         .then((panier) => {
@@ -107,13 +107,16 @@ export const connexion = async (objetConnexion) => {
         return err
     }
 }
-export const informationClient = async () => {
+export const informationClient = async (userID) => {
+    let test = ''
     await fetch(`http://192.168.1.56:4200/informationClient`,{
+        method: "GET",
         headers: {
-            'cookie': 's%3Aj7Oq9fb5ZMDwr5dKhfjunfPlfznBQyB_.wsbO2GiBhwSkpIf9SiUEUf%2Fp2KpzYUKxjdiu%2FGxXH3M'
+            'id': userID
         }
     })
         .then((response) => {
-            console.log(response)
+            test = response
         })
+        return test.json()
 }

@@ -6,7 +6,7 @@ const multer = require('../middleware/multer-config')
 const session = require('../middleware/session')
 
 router.post('/inscription', clientControllers.inscription)
-router.post('/connexion', session, multer, clientControllers.connexion)
-router.get('/informationClient', session, auth, clientControllers.informationClient)
- 
+router.post('/connexion', multer, session, clientControllers.connexion)
+router.get('/informationClient', multer, session, auth, clientControllers.informationClient)
+
 module.exports = router

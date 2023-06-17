@@ -92,8 +92,9 @@ exports.creation = (req, res) => {
     })
 }
 exports.panier = (req, res) => {
-    console.log(req.auth)
-    var sql = `SELECT prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.idClient}`
+    console.log(req.auth.token)
+    console.log('audessus')
+    var sql = `SELECT prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.token.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {
             return res.status(500).json(err/* { message: 'bad request' } */)

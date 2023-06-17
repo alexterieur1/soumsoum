@@ -4,7 +4,7 @@ import image2 from '../../assets/imagearticle2.webp'
 import image3 from '../../assets/imagearticle3.webp'
 import image4 from '../../assets/imagearticle4.webp'
 import { getUnProduit, addPanier } from '../../api'
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 import { useLoaderData } from 'react-router-dom'
 //import Avis from '../../components/Avis'
 

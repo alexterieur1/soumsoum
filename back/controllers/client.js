@@ -31,7 +31,7 @@ exports.inscription = (req, res) => {
 exports.connexion = async (req, res) => {
     con.connect(async (err) => {
         if (err) throw err;
-        console.log('connecté !')
+        console.log('connecté ! connexion')
         var sql = `SELECT * from client WHERE mail='${req.body.mail}'`
         con.query(sql, async (err, result, fields) => {
             if (err) {
@@ -50,7 +50,7 @@ exports.connexion = async (req, res) => {
                             { idClient: result[0].idClient,
                             mail: result[0].mail },
                             process.env.PHRASECRYPT,
-                            { expiresIn: '1h' }
+                            { expiresIn: '24h' }
                         )
                     }
                     req.session.token = jwtClient.token
@@ -80,7 +80,7 @@ exports.informationClient = async (req, res) => {
                 return res.status(500).json({ message: 'bad request' })
             }
             try {
-                return res.status(200).json(req.sessionID)
+                return res.status(200).json(result)
             }
             catch (err) {
                 return res.status(400).json({ err })

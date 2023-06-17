@@ -45,8 +45,7 @@ li {
         }
 
         &__logo {
-            width: 75%;
-            height: 30%;
+            width: 90%;
             object-fit: contain;
         }
 
@@ -82,11 +81,13 @@ li {
 }
 
 .liste {
+    padding-top: 1em;
     padding-left: 1em;
     font-size: 20px;
+    display: grid;
+    gap: 0.5em;
 
     &__categorie {
-        padding-bottom: 1em;
         display: flex;
         flex-direction: column;
         align-content: space-between;
@@ -169,11 +170,12 @@ li {
         background-color: #D0B69F;
         width: 80%;
     }
-    &__croix{
-        height:40px;
+
+    &__croix {
+        height: 40px;
         aspect-ratio: 1/1;
         position: absolute;
-        right:0px;
+        right: 0px;
     }
 }
 
@@ -203,19 +205,21 @@ li {
         border: none;
         padding: 1em;
         border-radius: 5px;
-        font-size: 16px;;
+        font-size: 16px;
+        ;
     }
 
     &__entier {
         display: grid;
-        gap:1em;
+        gap: 1em;
 
         &>div {
             display: flex;
             flex-direction: column;
-            gap:0.5em;
+            gap: 0.5em;
 
-            &>input, select {
+            &>input,
+            select {
                 border: #D0B69F 2px solid;
                 padding: 0.5em;
                 background-color: white;
@@ -224,4 +228,22 @@ li {
             }
         }
     }
+}
+
+.listeRS {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+}
+.liensRS {
+    height: 25px;
+}
+.logoETRS{
+    display: grid;
+    justify-items: stretch;
+    width: 95%;
+    grid-template-columns: auto 1fr;
+    padding-inline: 1 em;
 }
