@@ -3,3 +3,6 @@
   padding:0px;
   box-sizing: border-box;
 }
+main{
+  padding-inline: 5vw;
+}

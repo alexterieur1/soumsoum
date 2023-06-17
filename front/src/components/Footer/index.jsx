@@ -12,23 +12,23 @@ function Footer() {
                 <div className={style.liste}>
                     <p>commandes</p>
                     <ul>
-                        <li>Mon compte</li>
-                        <li>Suivi de commande</li>
-                        <li>Retour</li>
+                        <li><Link to='/moncompte'>Mon compte</Link></li>
+                        <li><Link to='/suividecommande'>Suivi de commande</Link></li>
+                        <li><Link to='/retour'>Retour</Link></li>
                     </ul>
                 </div>
                 <div className={style.liste}>
                     <p>à Propos</p>
                     <ul>
-                        <li>Conditions générales de vente</li>
-                        <li>Crédit</li>
-                        <li>Mentions légales</li>
+                        <li><Link to='/CGV'>Conditions générales de vente</Link></li>
+                        <li><Link to='/credit'>Crédit</Link></li>
+                        <li><Link to='/mentionslegales'>Mentions légales</Link></li>
                     </ul>
                 </div>
                 <div className={style.liste}>
                     <p>contact</p>
                     <ul>
-                        <li>Contactez-moi</li>
+                        <li><Link to='/contact'>Contactez-moi</Link></li>
                     </ul>
                 </div>
             </div>

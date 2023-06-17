@@ -24,6 +24,7 @@ exports.affichageAllProduit = async (req, res) => {
         })
     })
 }
+
 exports.affichageUnProduit = async (req, res) => {
     console.log(req.params)
     con.connect((err) => {
@@ -43,6 +44,27 @@ exports.affichageUnProduit = async (req, res) => {
         })
     })
 }
+
+exports.affichageCategorieProduit = async (req, res) => {
+    console.log(req.params)
+    con.connect((err) => {
+        if (err) throw err;
+        console.log('connecté !')
+        var sql = `SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit WHERE produits.categorie = ``${req.params.categorie}```
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                return res.status(200).json(result)
+            }
+            catch (err) {
+                return res.status(400).json({ err })
+            }
+        })
+    })
+}
+
 exports.creation = (req, res) => {
     console.log(req.headers)
     console.log(req.auth)
@@ -91,6 +113,7 @@ exports.creation = (req, res) => {
         })
     })
 }
+
 exports.panier = (req, res) => {
     console.log(req.auth.token)
     console.log('audessus')
@@ -107,6 +130,7 @@ exports.panier = (req, res) => {
         }
     })
 }
+
 exports.addPanier = (req, res) => {
     console.log(req.body)
     let sql = `INSERT INTO panier (idProduit, idClient, quantite, taille) VALUES (${req.body.idProduit}, ${req.body.idClient}, ${req.body.quantite}, '${req.body.taille}')`

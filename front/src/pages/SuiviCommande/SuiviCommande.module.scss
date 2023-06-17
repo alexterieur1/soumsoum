@@ -1,0 +1,30 @@
+.input {
+    &__numcolis {
+        display: flex;
+        margin:1em auto;
+        border: #D0B69F 2px solid;
+        padding: 0.5em;
+        background-color: white;
+        color: black;
+
+        &:focus-visible {
+            outline: none;
+            border: #D0B69F 3px solid;
+        }
+    }
+}
+
+button {
+    display: flex;
+    margin: 1em auto;
+    background-color: #D0B69F;
+    color: white;
+    border: none;
+    padding: 1em;
+    border-radius: 5px;
+    font-size: 16px;
+}
+label{
+    display: flex;
+    justify-content: center;
+}

@@ -7,7 +7,7 @@ import imagehaut from '../../assets/imagehaut.jpg'
 import imagebas from '../../assets/imagebas.jpg'
 import imageaccessoire from '../../assets/imageaccessoire.jpg'
 import { getAllProduit } from '../../api';
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import Cookies from 'js-cookie'
 
 export async function loadData() {
@@ -40,28 +40,28 @@ function Accueil() {
       <img className={style.image} src={logo} alt='carousel'/>
       <div className={style.categorie}>
         {/* <h2 className={style.titre}>Les catégories</h2> */}
-        <div className={`${style.categorie__element} ${style.scroll}`}>
+        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/chaussures">
           <img className={style.categorie__image__bottom} src={imagechaussure} alt='chaussures' />
           <p className={style.categorie__description}>chaussures</p>
-        </div>
-        <div className={`${style.categorie__element} ${style.scroll}`}>
+        </Link>
+        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/hauts">
           <img className={style.categorie__image__top} src={imagehaut} alt='hauts' />
           <p className={style.categorie__description}>hauts</p>
-        </div>
-        <div className={`${style.categorie__element} ${style.scroll}`}>
+        </Link>
+        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/bas">
           <img className={style.categorie__image__bottom} src={imagebas} alt='bas' />
           <p className={style.categorie__description}>bas</p>
-        </div>
-        <div className={`${style.categorie__element} ${style.scroll}`}>
+        </Link>
+        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/accessoires">
           <img className={style.categorie__image} src={imageaccessoire} alt='accessoires' />
           <p className={style.categorie__description}>accessoires</p>
-        </div>
+        </Link>
       </div>
       <h2 className={style.titre}>Les dernières nouveautées</h2>
       <div className={style.article}>
         {produit ? (
           produit.map((produit, index)=>(
-            <Article key={index} id={produit.idProduit} image={produit.liens} description={produit.nomProduit} prix={produit.prix} epuise={false} />
+            <Article key={index} id={produit.idProduit} image={produit.liens} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} epuise={false} />
           ))
         ) : <>chargement ...</>}
         {/* <Article image={image1} description={"lorem ipsum"} prix={"25,00"} epuise={false} />

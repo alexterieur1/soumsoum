@@ -1,0 +1,83 @@
+{
+    "lang": "fr_FR",
+    "scope": "open",
+    "returnCode": 200,
+    "shipment": {
+        "holder": 1,
+        "idShip": "2M04841131282",
+        "product": "Lettre expert",
+        "isFinal": false,
+        "entryDate": "2019-07-17T00:00:00+02:00",
+        "event": [
+            {
+                "date": "2019-07-20T00:00:00+02:00",
+                "label": "Votre courrier est disponible en point de retrait. Il y sera conservé pendant 15 jours et sera remis au destinataire sur présentation d'une pièce d'identité.",
+                "code": "AG1"
+            },
+            {
+                "date": "2019-07-18T00:00:00+02:00",
+                "label": "Votre courrier est arrivé dans le site en vue de sa distribution.",
+                "code": "ET1"
+            },
+            {
+                "date": "2019-07-18T00:00:00+02:00",
+                "label": "Votre courrier est arrivé dans le site en vue de sa distribution.",
+                "code": "ET1"
+            },
+            {
+                "date": "2019-07-17T00:00:00+02:00",
+                "label": "Votre courrier a été remis à La Poste par l'expéditeur.",
+                "code": "PC1"
+            }
+        ],
+        "timeline": [
+            {
+                "id": 1,
+                "shortLabel": "Pris en charge par La Poste",
+                "longLabel": "",
+                "date": "2019-07-17T00:00:00+02:00",
+                "country": "",
+                "status": true,
+                "type": 1
+            },
+            {
+                "id": 2,
+                "shortLabel": "En cours d'acheminement",
+                "longLabel": "",
+                "country": "",
+                "status": true,
+                "type": 1
+            },
+            {
+                "id": 3,
+                "shortLabel": "Arrivé sur le site de distribution",
+                "longLabel": "",
+                "country": "",
+                "status": true,
+                "type": 1
+            },
+            {
+                "id": 4,
+                "shortLabel": "A disposition en point de retrait",
+                "longLabel": "Votre courrier est disponible en point de retrait. Il y sera conservé pendant 15 jours et sera remis au destinataire sur présentation d'une pièce d'identité.",
+                "country": "",
+                "status": true,
+                "type": 1
+            },
+            {
+                "id": 5,
+                "shortLabel": "Courrier distribué",
+                "longLabel": "",
+                "country": "",
+                "status": false,
+                "type": 1
+            }
+        ],
+        "contextData": {
+            "removalPoint": {
+                "name": "PARIS FAIDHERBE BP",
+                "type": "LP"
+            }
+        }
+    }
+}

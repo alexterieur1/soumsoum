@@ -11,9 +11,25 @@ export const getAllProduit = async () => {
     console.log(tableauProduit)
     return tableauProduit[0]
 }
+
 export const getUnProduit = async (id) => {
     const tableauProduit = []
     await fetch(`http://192.168.1.56:4200/produit/${id}`)
+        .then((produit) => {
+            return produit.json()
+        })
+        .then((produit) => {
+            tableauProduit.push(produit[0])
+            return tableauProduit
+        })
+    console.log(tableauProduit)
+    return tableauProduit[0]
+}
+
+export const getCategorieProduit = async (categorie) => {
+    console.log(categorie)
+    const tableauProduit = []
+    await fetch(`http://192.168.1.56:4200/produit/${categorie}`)
         .then((produit) => {
             return produit.json()
         })
@@ -54,6 +70,7 @@ export const creationProduit = async (produit) => {
     //.then(function (data) { return data })
     return (await test)
 }
+
 export const getPanier = async (userID) => {
     let tableauPanier = []
     await fetch('http://192.168.1.56:4200/panier', {
@@ -71,6 +88,7 @@ export const getPanier = async (userID) => {
         })
     return tableauPanier[0]
 }
+
 export const addPanier = async (taille, idProduit, idClient) => {
     let dataPanier = new URLSearchParams()
     dataPanier.append('taille', taille)
@@ -107,6 +125,7 @@ export const connexion = async (objetConnexion) => {
         return err
     }
 }
+
 export const informationClient = async (userID) => {
     let test = ''
     await fetch(`http://192.168.1.56:4200/informationClient`,{
@@ -119,4 +138,8 @@ export const informationClient = async (userID) => {
             test = response
         })
         return test.json()
+}
+
+export const suiviLaPoste = async () =>{
+
 }
