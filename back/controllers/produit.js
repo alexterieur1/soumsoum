@@ -117,7 +117,7 @@ exports.creation = (req, res) => {
 exports.panier = (req, res) => {
     console.log(req.auth.token)
     console.log('audessus')
-    var sql = `SELECT prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.token.idClient}`
+    var sql = `SELECT panier.id, prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.token.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {
             return res.status(500).json(err/* { message: 'bad request' } */)
@@ -132,6 +132,23 @@ exports.panier = (req, res) => {
 }
 
 exports.addPanier = (req, res) => {
+    console.log(req.body)
+    let sql = `INSERT INTO panier (idProduit, idClient, quantite, taille) VALUES (${req.body.idProduit}, ${req.body.idClient}, ${req.body.quantite}, '${req.body.taille}')`
+    con.query(sql, (err, result, fields) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ message: 'bad request' })
+        }
+        try {
+            return res.status(200).json({ message: 'enregistrement panier réussi !' })
+        }
+        catch (err) {
+            return res.status(400).json({ err })
+        }
+    })
+}
+
+exports.deleteUnProduitPanier = (req, res) => {
     console.log(req.body)
     let sql = `INSERT INTO panier (idProduit, idClient, quantite, taille) VALUES (${req.body.idProduit}, ${req.body.idClient}, ${req.body.quantite}, '${req.body.taille}')`
     con.query(sql, (err, result, fields) => {

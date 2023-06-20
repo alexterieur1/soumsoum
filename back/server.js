@@ -22,13 +22,13 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extented: false }))
 
-/* app.use(session({
+app.use(session({
   name: 'session',
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
   //cookie: { secure: true }
-})) */
+}))
 app.use("/", produitRoute)
 app.use("/", produitClient)
 //app.use("/", paypalClient)

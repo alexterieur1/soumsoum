@@ -1,0 +1,37 @@
+.header {
+    padding-block: 2em 0em;
+    display: flex;
+    justify-content: space-around;
+
+    &_selected {
+        //text-decoration: underline solid #D0B69F;
+        font-weight: 700;
+    }
+
+    &>p {
+        font-size: 20px;
+    }
+}
+
+.MonCompte_body {
+    padding-inline: 1em;
+
+    &>h2 {
+        padding-block: 2em 1em;
+    }
+}
+
+.informationClient {
+    width: 80vw;
+    display: grid;
+    gap: 1em;
+
+    &__element {
+        display: flex;
+        gap: 1em;
+    }
+}
+
+h2 {
+    font-weight: 600;
+}

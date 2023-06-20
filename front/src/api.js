@@ -127,17 +127,17 @@ export const connexion = async (objetConnexion) => {
 }
 
 export const informationClient = async (userID) => {
-    let test = ''
-    await fetch(`http://192.168.1.56:4200/informationClient`,{
+    let arrayResponse =[]
+    let requete = await fetch(`http://192.168.1.56:4200/informationClient`,{
         method: "GET",
         headers: {
             'id': userID
         }
     })
-        .then((response) => {
-            test = response
-        })
-        return test.json()
+    let requetejson = await requete.json()
+    arrayResponse.push(requetejson[0])
+    arrayResponse.push(requete.status)
+        return arrayResponse
 }
 
 export const suiviLaPoste = async () =>{

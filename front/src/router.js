@@ -7,7 +7,7 @@ import ArticleCategorie, {loadData as articleCategorieloader} from './pages/Arti
 import Admin from './pages/Admin'
 import { createBrowserRouter } from 'react-router-dom'
 import SuiviCommande from './pages/SuiviCommande'
-import MonCompte from './pages/MonCompte'
+import MonCompte, { loadData as compteloader } from './pages/MonCompte'
 import Retour from './pages/Retour'
 import CGV from './pages/CGV'
 import Credit from './pages/Crédit'
@@ -77,7 +77,8 @@ const router = createBrowserRouter([
             },
             {
                 path: 'moncompte',
-                element: <MonCompte />
+                element: <MonCompte />,
+                loader: compteloader
             },
             {
                 path: 'suividecommande',

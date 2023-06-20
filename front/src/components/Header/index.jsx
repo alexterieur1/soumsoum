@@ -6,7 +6,7 @@ import burger from '../../assets/burger.svg'
 import logo from '../../assets/logo-header.webp'
 //import connexion from '../../assets/connexion.svg'
 import croix from '../../assets/croix.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { connexion, informationClient } from '../../api'
 import ListeHeader from '../ListeHeader'
 import Cookies from 'js-cookie'
@@ -28,6 +28,7 @@ function Header() {
     const [anniv, setAnniv] = useState('')
     const [emailInscription, setEmailInscription] = useState('')
     const [passwordInscription, setPasswordInscription] = useState('')
+    const navigate = useNavigate()
 
 
     const envoieFormulaire = async (e) => {
@@ -41,9 +42,9 @@ function Header() {
                 let cookieplayload = await connexion(objetConnexion)
                 console.log(cookieplayload)
                 Cookies.set('userId', cookieplayload)
-                let cookieUser = Cookies.get('userId')
-                let informationClientResult = await informationClient(cookieUser)
-                console.log(informationClientResult)
+                updateMenu(false)
+                setisAuth(false)
+                navigate('./moncompte')
             }
             catch (err) {
                 console.log(err)

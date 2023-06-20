@@ -2,8 +2,14 @@ import React, { useEffect, useState } from 'react';
 import style from './ArticlePanier.module.scss'
 import plus from '../../assets/plus.svg'
 import moins from '../../assets/moins.svg'
+import { getPanier } from '../../api';
 
+const supprimerArticle = async () =>{
+    let panier = await getPanier(panier.id)
+    console.log(panier)
+}
 function Panier({ index, panier, quantite, updateindex }) {
+    console.log(panier.id)
     const [number1, updateNumber1] = useState(panier.quantite)
     const [number2, updateNumber2] = useState(Number(panier.quantite) - 1)
     let prixArticle = panier.prix.split('.')[0] + ',' + panier.prix.split('.')[1]
@@ -69,7 +75,7 @@ function Panier({ index, panier, quantite, updateindex }) {
                         }} src={plus} alt='augmenter' />
                     </div>
                     <p>Taille : {panier.taille}</p>
-                    <button className={style.button}>
+                    <button className={style.button} onClick={supprimerArticle}>
                         Supprimer
                     </button>
                     <p>Total : {prixTotal} €</p>
