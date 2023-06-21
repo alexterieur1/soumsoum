@@ -23,6 +23,10 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Accueil />,
                 loader: homeloader
+            },{
+                path: 'article/:categorie',
+                element: <ArticleCategorie/>,
+                loader: articleCategorieloader
             },/* 
             {
                 path: 'article/',

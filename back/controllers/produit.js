@@ -50,12 +50,13 @@ exports.affichageCategorieProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
         console.log('connecté !')
-        var sql = `SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit WHERE produits.categorie = ``${req.params.categorie}```
+        var sql = `SELECT * FROM produits JOIN photoproduits ON produits.idProduit=photoproduits.idProduit JOIN stockproduits ON produits.idProduit=stockproduits.idProduit WHERE produits.categorie = '${req.params.categorie}'`
         con.query(sql, (err, result, fields) => {
             if (err) {
-                return res.status(500).json({ message: 'bad request' })
+                return res.status(500).json({err,  message: 'bad request' })
             }
             try {
+                console.log(result)
                 return res.status(200).json(result)
             }
             catch (err) {

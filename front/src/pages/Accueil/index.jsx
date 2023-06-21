@@ -37,30 +37,38 @@ function Accueil() {
   }) */
   return (
     <>
-      <img className={style.image} src={logo} alt='carousel'/>
+      <img className={style.image} src={logo} alt='carousel' />
       <div className={style.categorie}>
         {/* <h2 className={style.titre}>Les catégories</h2> */}
-        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/chaussures">
-          <img className={style.categorie__image__bottom} src={imagechaussure} alt='chaussures' />
-          <p className={style.categorie__description}>chaussures</p>
-        </Link>
         <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/hauts">
-          <img className={style.categorie__image__top} src={imagehaut} alt='hauts' />
-          <p className={style.categorie__description}>hauts</p>
+          <img className={style.categorie__image__bottom} src={imagechaussure} alt='Les Hauts' />
+          <p className={style.categorie__description}>Les Hauts</p>
         </Link>
         <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/bas">
-          <img className={style.categorie__image__bottom} src={imagebas} alt='bas' />
-          <p className={style.categorie__description}>bas</p>
+          <img className={style.categorie__image__top} src={imagehaut} alt='Les Bas' />
+          <p className={style.categorie__description}>Les Bas</p>
+        </Link>
+        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/ensembles">
+          <img className={style.categorie__image__bottom} src={imagebas} alt='Les Ensembles' />
+          <p className={style.categorie__description}>Les Ensembles</p>
         </Link>
         <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/accessoires">
-          <img className={style.categorie__image} src={imageaccessoire} alt='accessoires' />
-          <p className={style.categorie__description}>accessoires</p>
+          <img className={style.categorie__image} src={imageaccessoire} alt='Les Accessoires' />
+          <p className={style.categorie__description}>Les Accessoires</p>
+        </Link>
+        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/baskets">
+          <img className={style.categorie__image__bottom} src={imagechaussure} alt='Les Baskets' />
+          <p className={style.categorie__description}>Les Baskets</p>
+        </Link>
+        <Link className={`${style.categorie__element} ${style.scroll}`} to="./article/sandales">
+          <img className={style.categorie__image__top} src={imagehaut} alt='Les Sandales' />
+          <p className={style.categorie__description}>Les sandales</p>
         </Link>
       </div>
       <h2 className={style.titre}>Les dernières nouveautées</h2>
       <div className={style.article}>
         {produit ? (
-          produit.map((produit, index)=>(
+          produit.map((produit, index) => (
             <Article key={index} id={produit.idProduit} image={produit.liens} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} epuise={false} />
           ))
         ) : <>chargement ...</>}

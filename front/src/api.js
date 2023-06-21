@@ -29,12 +29,12 @@ export const getUnProduit = async (id) => {
 export const getCategorieProduit = async (categorie) => {
     console.log(categorie)
     const tableauProduit = []
-    await fetch(`http://192.168.1.56:4200/produit/${categorie}`)
+    await fetch(`http://192.168.1.56:4200/categorie/${categorie}`)
         .then((produit) => {
             return produit.json()
         })
         .then((produit) => {
-            tableauProduit.push(produit[0])
+            tableauProduit.push(produit)
             return tableauProduit
         })
     console.log(tableauProduit)
