@@ -74,12 +74,13 @@ exports.informationClient = async (req, res) => {
     con.connect(async (err) => {
         if (err) throw err;
         console.log('connecté !')
-        var sql = `SELECT nom, prenom, adresse, mail, tel, annee, mois, jours from client WHERE mail='${req.auth.token.mail}'`
+        var sql = `SELECT nom, prenom, adresse, codePostale, ville, mail, tel, annee, mois, jours from client WHERE mail='${req.auth.token.mail}'`
         con.query(sql, async (err, result, fields) => {
             if (err) {
                 return res.status(500).json({ message: 'bad request' })
             }
             try {
+                console.log(result)
                 return res.status(200).json(result)
             }
             catch (err) {
