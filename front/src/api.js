@@ -72,21 +72,19 @@ export const creationProduit = async (produit) => {
 }
 
 export const getPanier = async (userID) => {
-    let tableauPanier = []
-    await fetch('http://192.168.1.56:4200/panier', {
+    let requete = await fetch('http://192.168.1.56:4200/panier', {
         method: "GET",
         headers: {
             'id': userID
         }
     })
-        .then((panier) => {
-            return panier.json()
-        })
-        .then((panier) => {
-            tableauPanier.push(panier)
-            return tableauPanier
-        })
-    return tableauPanier[0]
+    if(requete.status === 200){
+        let requetejson = await requete.json()
+        return requetejson
+    }
+    if(requete.status === 400 || 401)
+    console.log(requete.status)
+    return requete.status
 }
 
 export const addPanier = async (taille, idProduit, idClient) => {

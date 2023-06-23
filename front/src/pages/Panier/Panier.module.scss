@@ -25,3 +25,10 @@
     font-weight: 600;
     font-size: 22px;
 }
+.panierVide{
+    height: calc(100vh - 48px - 90px);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

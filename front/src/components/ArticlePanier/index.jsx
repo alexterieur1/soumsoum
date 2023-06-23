@@ -9,7 +9,6 @@ const supprimerArticle = async () =>{
     console.log(panier)
 }
 function Panier({ index, panier, quantite, updateindex }) {
-    console.log(panier.id)
     const [number1, updateNumber1] = useState(panier.quantite)
     const [number2, updateNumber2] = useState(Number(panier.quantite) - 1)
     let prixArticle = panier.prix.split('.')[0] + ',' + panier.prix.split('.')[1]

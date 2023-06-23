@@ -7,7 +7,7 @@ import logo from '../../assets/logo-header.webp'
 //import connexion from '../../assets/connexion.svg'
 import croix from '../../assets/croix.svg'
 import { Link, useNavigate } from 'react-router-dom'
-import { connexion, informationClient } from '../../api'
+import { connexion } from '../../api'
 import ListeHeader from '../ListeHeader'
 import Cookies from 'js-cookie'
 import insta from '../../assets/instagram.svg'
@@ -106,6 +106,7 @@ function Header() {
                         </div>
                     </div>
                     <div className={style.liste}>
+                        {}
                         <h3>Nouveautés</h3>
                         <h3>Promotions</h3>
                         <ul>
