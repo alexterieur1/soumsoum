@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import style from './Panier.module.scss'
 import { getPanier } from '../../api'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import Article from '../../components/ArticlePanier'
 import Cookies from 'js-cookie'
 
@@ -84,6 +84,7 @@ function Panier() {
     const [Total, updateTotal] = useState()
     const [Quantite, setQuantite] = useState(1)
     const [indexModif, updateIndexModif] = useState()
+    const navigate = useNavigate()
     if (panier !== 401) {
         arrayQuantitePrix(panier)
         console.log(panier)
@@ -111,7 +112,7 @@ function Panier() {
                         )}
                     </div >
                     <p className={style.prixFinal}>Total : {Total} €</p>
-                    <button className={style.button}>
+                    <button onClick={()=>navigate('../commande')}className={style.button}>
                         Valider ma commande
                     </button>
                 </>

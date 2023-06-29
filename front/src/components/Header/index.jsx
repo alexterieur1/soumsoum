@@ -7,7 +7,7 @@ import logo from '../../assets/logo-header.webp'
 //import connexion from '../../assets/connexion.svg'
 import croix from '../../assets/croix.svg'
 import { Link, useNavigate } from 'react-router-dom'
-import { connexion } from '../../api'
+import { connexion, inscription } from '../../api'
 import ListeHeader from '../ListeHeader'
 import Cookies from 'js-cookie'
 import insta from '../../assets/instagram.svg'
@@ -30,7 +30,6 @@ function Header() {
     const [passwordInscription, setPasswordInscription] = useState('')
     const navigate = useNavigate()
 
-
     const envoieFormulaire = async (e) => {
         e.preventDefault()
         if (emailConnexion && passwordConnexion) {
@@ -44,7 +43,7 @@ function Header() {
                 Cookies.set('userId', cookieplayload)
                 updateMenu(false)
                 setisAuth(false)
-                navigate('./moncompte')
+                navigate('./')
             }
             catch (err) {
                 console.log(err)
@@ -58,11 +57,24 @@ function Header() {
                 "codePostal": codePostal,
                 "ville": ville,
                 "numTel": numTel,
-                "anniv": anniv,
+                "annee": anniv.split('-')[0],
+                "mois": anniv.split('-')[1],
+                "jours": anniv.split('-')[2],
                 "email": emailInscription,
                 "password": passwordInscription
             }
-            return objetInscription
+            try {
+                let cookieplayload = await inscription(objetInscription)
+                console.log(cookieplayload)
+                Cookies.set('userId', cookieplayload)
+                updateMenu(false)
+                setisAuth(false)
+                navigate('./')
+                
+            }
+            catch (err) {
+                console.log(err)
+            }
         }
     }
 
@@ -106,7 +118,7 @@ function Header() {
                         </div>
                     </div>
                     <div className={style.liste}>
-                        {}
+                        { }
                         <h3>Nouveautés</h3>
                         <h3>Promotions</h3>
                         <ul>
@@ -118,7 +130,15 @@ function Header() {
                         </ul>
                     </div>
                     <div className={style.connexion}>
-                        <h3 onClick={() => setisAuth(isAuth => !isAuth)}>Mon compte</h3>
+                        {
+                            Cookies.get('userId') ?
+                                <Link to='/moncompte'>
+                                    <h3 >Mon compte</h3>
+                                </Link>
+                                :
+                                <h3 onClick={() => setisAuth(isAuth => !isAuth)}>Mon compte</h3>
+                        }
+
                     </div>
                 </div>
                 <Link to='/'>
@@ -144,10 +164,10 @@ function Header() {
                     </div>
                     <div className={style.auth__formulaire__inscription}>
                         <p>Inscrivez-vous</p>
-                        <form className={style.formulaire}>
+                        <form onSubmit={envoieFormulaire} className={style.formulaire}>
                             <label htmlFor='prenom'>Prénom :</label>
                             <input name='prenom' value={prenom} onChange={(e) => setPrenom(e.target.value)} />
-                            <label htmlFor='nom' >om :</label>
+                            <label htmlFor='nom' >Nom :</label>
                             <input name='nom' value={nom} onChange={(e) => setNom(e.target.value)} />
                             <label htmlFor='adress'>Adresse :</label>
                             <input name='adress' value={adresse} onChange={(e) => setAdresse(e.target.value)} />
@@ -163,7 +183,7 @@ function Header() {
                             <input name='emailInscription' type='email' value={emailInscription} onChange={(e) => setEmailInscription(e.target.value)} />
                             <label htmlFor='passwordInscription'>Mot de passe :</label>
                             <input name='passwordInscription' type='password' value={passwordInscription} onChange={(e) => setPasswordInscription(e.target.value)} />
-                            <button type='button' onClick={envoieFormulaire} value="s'inscire">S'inscire</button>
+                            <button type='submit'>S'inscire</button>
                         </form >
                     </div>
                 </div>

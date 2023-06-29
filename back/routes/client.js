@@ -5,7 +5,7 @@ const auth = require('../middleware/auth')
 const multer = require('../middleware/multer-config')
 const session = require('../middleware/session')
 
-router.post('/inscription', clientControllers.inscription)
+router.post('/inscription', multer, session, clientControllers.inscription)
 router.post('/connexion', multer, session, clientControllers.connexion)
 router.get('/informationClient', multer, session, auth, clientControllers.informationClient)
 

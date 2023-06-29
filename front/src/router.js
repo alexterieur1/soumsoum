@@ -3,7 +3,7 @@ import Erreur from './pages/Erreur'
 import Accueil, { loadData as homeloader } from './pages/Accueil'
 import Article, { loadData as articleloader } from './pages/Article'
 import Panier, { loadData as panierloader } from './pages/Panier'
-import ArticleCategorie, {loadData as articleCategorieloader} from './pages/ArticleCategorie'
+import ArticleCategorie, { loadData as articleCategorieloader } from './pages/ArticleCategorie'
 import Admin from './pages/Admin'
 import { createBrowserRouter } from 'react-router-dom'
 import SuiviCommande from './pages/SuiviCommande'
@@ -13,6 +13,7 @@ import CGV from './pages/CGV'
 import Credit from './pages/Crédit'
 import MentionsLegales from './pages/MentionsLegales'
 import Contact from './pages/Contact'
+import Commande, { loadData as commandeloader } from './pages/Commande'
 
 const router = createBrowserRouter([
     {
@@ -23,48 +24,11 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Accueil />,
                 loader: homeloader
-            },{
+            }, {
                 path: 'article/:categorie',
-                element: <ArticleCategorie/>,
+                element: <ArticleCategorie />,
                 loader: articleCategorieloader
-            },/* 
-            {
-                path: 'article/',
-                children: [
-                    {
-                        path: 'hauts/',
-                        element: <ArticleCategorie />
-                    },
-                    {
-                        path: 'bas/',
-                        element: <ArticleCategorie />
-                    },
-                    {
-                        path: 'ensembles',
-                        element: <ArticleCategorie />,
-                        loader: articleCategorieloader,
-                        children: [
-                            {
-                                path: ':id',
-                                element: <Article />,
-                                loader: articleloader
-                            }
-                        ]
-                    },
-                    {
-                        path: 'accesoires/',
-                        element: <ArticleCategorie />
-                    },
-                    {
-                        path: 'baskets/',
-                        element: <ArticleCategorie />
-                    },
-                    {
-                        path: 'sandales/',
-                        element: <ArticleCategorie />
-                    }
-                ]
-            }, */
+            },
             {
                 path: 'article/:ensembles/:id',
                 element: <Article />,
@@ -74,6 +38,11 @@ const router = createBrowserRouter([
                 path: 'panier',
                 element: <Panier />,
                 loader: panierloader
+            },
+            {
+                path: 'commande',
+                element: <Commande />,
+                loader: commandeloader
             },
             {
                 path: 'admin',

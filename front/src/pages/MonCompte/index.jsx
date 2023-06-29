@@ -63,14 +63,6 @@ function MonCompte() {
                                             <p>Ville : </p>
                                             <p>{infoClient[0].ville}</p>
                                         </div>
-                                        <div className={style.informationClient__element}>
-                                            <p>Numéro de téléphone : </p>
-                                            <p>{infoClient[0].tel}</p>
-                                        </div>
-                                        <div className={style.informationClient__element}>
-                                            <p>Date d'anniversaire : </p>
-                                            <p>{infoClient[0].jours}/{infoClient[0].mois}/{infoClient[0].annee}</p>
-                                        </div>
                                     </div>
 
                                 </>
@@ -80,7 +72,7 @@ function MonCompte() {
                         : <p>chargement...</p>}
                 </> :
                 <>
-                <p>Vous n'etes pas connecté</p>
+                    <p>Vous n'etes pas connecté</p>
                 </>
             }
         </>

@@ -78,12 +78,12 @@ export const getPanier = async (userID) => {
             'id': userID
         }
     })
-    if(requete.status === 200){
+    if (requete.status === 200) {
         let requetejson = await requete.json()
         return requetejson
     }
-    if(requete.status === 400 || 401)
-    console.log(requete.status)
+    if (requete.status === 400 || 401)
+        console.log(requete.status)
     return requete.status
 }
 
@@ -106,27 +106,58 @@ export const connexion = async (objetConnexion) => {
     let dataConnexion = new FormData()
     dataConnexion.append('mail', objetConnexion.email)
     dataConnexion.append('password', objetConnexion.password)
-    try{
+    try {
         let apiPlayload = await fetch('http://192.168.1.56:4200/connexion', {
-        method: "POST",
-        /* headers: {
-            'Content-Type': 'multipart/form-data; boundary=----azertyuiop',
-        }, */
-        body: dataConnexion
-    })
-    let playload = await apiPlayload.json()
-    console.log(playload)
-    return playload
+            method: "POST",
+            /* headers: {
+                'Content-Type': 'multipart/form-data; boundary=----azertyuiop',
+            }, */
+            body: dataConnexion
+        })
+        let playload = await apiPlayload.json()
+        console.log(playload)
+        return playload
     }
-    catch(err){
+    catch (err) {
+        console.log(err)
+        return err
+    }
+}
+
+export const inscription = async (objetinscription) => {
+    let dataInscription = new FormData()
+    dataInscription.append('motDePasse', objetinscription.password)
+    dataInscription.append('nom', objetinscription.nom)
+    dataInscription.append('prenom', objetinscription.prenom)
+    dataInscription.append('adresse', objetinscription.adresse)
+    dataInscription.append('codePostale', objetinscription.codePostal)
+    dataInscription.append('ville', objetinscription.ville)
+    dataInscription.append('mail', objetinscription.email)
+    dataInscription.append('tel', objetinscription.numTel)
+    dataInscription.append('annee', objetinscription.annee)
+    dataInscription.append('mois', objetinscription.mois)
+    dataInscription.append('jours', objetinscription.jours)
+
+    try {
+        let apiPlayload = await fetch('http://192.168.1.56:4200/inscription', {
+            method: "POST",
+            /* headers: {
+                'Content-Type': 'multipart/form-data; boundary=----azertyuiop',
+            }, */
+            body: dataInscription
+        })
+        let playload = await apiPlayload.json()
+        return playload
+    }
+    catch (err) {
         console.log(err)
         return err
     }
 }
 
 export const informationClient = async (userID) => {
-    let arrayResponse =[]
-    let requete = await fetch(`http://192.168.1.56:4200/informationClient`,{
+    let arrayResponse = []
+    let requete = await fetch(`http://192.168.1.56:4200/informationClient`, {
         method: "GET",
         headers: {
             'id': userID
@@ -135,9 +166,9 @@ export const informationClient = async (userID) => {
     let requetejson = await requete.json()
     arrayResponse.push(requetejson[0])
     arrayResponse.push(requete.status)
-        return arrayResponse
+    return arrayResponse
 }
 
-export const suiviLaPoste = async () =>{
+export const suiviLaPoste = async () => {
 
 }

@@ -13,16 +13,29 @@ exports.inscription = (req, res) => {
         if (err) throw err;
         console.log('connecté !')
         console.log(req.body)
+        let idClient = Date.now()
         const hash = await bcrypt.hash(req.body.motDePasse, 8)
-        var sql = `INSERT INTO client (idClient, motDePasse, nom, prenom, adresse, mail, tel, annee, mois, jours) VALUES ('${req.body.idClient}', '${hash}', '${req.body.nom}', '${req.body.prenom}', '${req.body.adresse}', '${req.body.mail}', '${req.body.tel}', '${req.body.annee}', '${req.body.mois}', '${req.body.jours}')`
+        var sql = `INSERT INTO client (idClient, motDePasse, nom, prenom, adresse, codePostale, ville, mail, tel, annee, mois, jours) VALUES ('${idClient}', '${hash}', '${req.body.nom}', '${req.body.prenom}', '${req.body.adresse}', '${req.body.codePostale}', '${req.body.ville}', '${req.body.mail}', '${req.body.tel}', '${req.body.annee}', '${req.body.mois}', '${req.body.jours}')`
         con.query(sql, (err, result, fields) => {
             if (err) {
-                return res.status(500).json({ message: 'bad request' } )
+                return res.status(500).json({ err, message: 'bad request' } )
             }
             try {
-                return res.status(200).json(sql)
+                let jwtClient = {
+                    idClient: idClient,
+                    Mail: req.body.mail,
+                    token: jwt.sign(
+                        { idClient: idClient,
+                        mail: req.body.mail },
+                        process.env.PHRASECRYPT,
+                        { expiresIn: '24h' }
+                    )
+                }
+                req.session.token = jwtClient.token
+                return res.status(200).json(req.sessionID)
             }
             catch (err) {
+                console.log(err)
                 return res.status(400).json({ err })
             }
         })
