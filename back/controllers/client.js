@@ -41,6 +41,7 @@ exports.inscription = (req, res) => {
         })
     })
 }
+
 exports.connexion = async (req, res) => {
     con.connect(async (err) => {
         if (err) throw err;
@@ -80,6 +81,7 @@ exports.connexion = async (req, res) => {
         })
     })
 }
+
 exports.informationClient = async (req, res) => {
     //console.log(req.sessionID)
     console.log(req.auth.token.mail)

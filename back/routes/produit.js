@@ -10,7 +10,7 @@ router.get('/produit/:id', produitControllers.affichageUnProduit)
 router.get('/categorie/:categorie', produitControllers.affichageCategorieProduit)
 router.post('/produit', multer, produitControllers.creation)
 router.get('/panier', session, auth, produitControllers.panier)
-router.post('/panier', auth, produitControllers.addPanier)
+router.post('/panier', multer, session, auth, produitControllers.addPanier)
 router.post('/panier/:id', multer, session, auth, produitControllers.deleteUnProduitPanier)
 
 module.exports = router

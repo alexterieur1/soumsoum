@@ -1,6 +1,11 @@
 .article {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    &_element{
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .image,
@@ -10,6 +15,7 @@
     object-fit: cover;
     //box-shadow:5px 5px 5px #4d626a;
     display:block;
+    max-height: 500px;
 }
 
 .description,

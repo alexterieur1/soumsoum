@@ -29,6 +29,7 @@ function Footer() {
                     <p>contact</p>
                     <ul>
                         <li><Link to='/contact'>Contactez-moi</Link></li>
+                        <li>Newsletter</li>
                     </ul>
                 </div>
             </div>

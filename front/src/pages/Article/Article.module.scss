@@ -7,16 +7,20 @@
     width:inherit;
     &__img{
         width:inherit;
+        object-fit: contain;
+        max-height: 50vh;
     }
 }
 .listePhoto{
     display:grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 100vw;
     column-gap: 5px;
     padding-inline: 5px;
     &__img{
         width: 100%;
+        height:100%;
+        object-fit: cover;
     }
 }
 .description{

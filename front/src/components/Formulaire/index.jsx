@@ -8,6 +8,7 @@ function Formulaire() {
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState('');
   const [image, setImage] = useState('');
+  const [categorie, setCategorie] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [imageTelechargee, setimageTelechargee] = useState(false);
   const [xs, setXs] = useState(-1);
@@ -24,7 +25,6 @@ function Formulaire() {
       "nomProduit": nom,
       "descriptionProduit": description,
       "prix": prix,
-      "idProduit": Date.now(),
       "xs": xs,
       "s": s,
       "sm": sm,
@@ -34,6 +34,7 @@ function Formulaire() {
       "lxl": lxl,
       "xl": xl,
       "image": image,
+      "categorie": categorie
     }
     let test = creationProduit(valeurFormulaire)
     let resultat = (await test).status
@@ -87,6 +88,17 @@ function Formulaire() {
       <input value={description} onChange={(e) => setDescription(e.target.value)} />
       <label>prix :</label>
       <input value={prix} onChange={(e) => setPrix(e.target.value)} />
+      <label>catégorie :</label>
+      <select id='list' onChange={(e) => setCategorie(e.target.value)}>
+        <option value=''>--selectioner une categorie</option>
+        <option value='Hauts'>Hauts</option>
+        <option value='Bas'>Bas</option>
+        <option value='Ensembles'>Ensembles</option>
+        <option value='Accessoires'>Accessoires</option>
+        <option value='Baskets'>Baskets</option>
+        <option value='Sandales'>Sandales</option>
+      </select>
+      <p>{categorie}</p>
       <p>stock :</p>
       <div className={style.formulaire__stock}>
         <div>

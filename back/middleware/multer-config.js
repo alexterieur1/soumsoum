@@ -4,6 +4,8 @@ const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/webp': 'webp',
+  'video/webm': 'webm',
+  'video/mp4': 'mp4',
   'image/png': 'png'
 };
 
@@ -12,14 +14,14 @@ const storage = multer.diskStorage({
     callback(null, 'images');
   },
   filename: (req, file, callback) => {
-    const name = file.originalname.split(' ').join('_');
-    const nameWithoutExtension = name.split('.')[0]
     const extension = MIME_TYPES[file.mimetype];
-    callback(null, nameWithoutExtension + Date.now() + '.' + extension);
-    console.log(name)
-    console.log(nameWithoutExtension)
-    console.log(extension)
+    callback(null, req.body.categorie + '_' + req.body.nomProduit + '_' + Date.now() + '.' + extension);
   }
 });
-
-module.exports = multer({storage: storage}).single('image');
+module.exports = multer({ storage: storage }).fields(
+  [
+    { name: 'image1', maxCount: 1 },
+    { name: 'image2', maxCount: 1 },
+    { name: 'image3', maxCount: 1 },
+    { name: 'image4', maxCount: 1 }
+  ]);

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 module.exports = (req, res, next) => {
+   console.log(req)
    try {
       let idSession = req.headers.id
       console.log(idSession)
@@ -19,7 +20,7 @@ module.exports = (req, res, next) => {
 	next();
    }
    catch(e){
-    //console.log(e)
+    console.log(e)
        return res.status(401).json({e, message : `bad authentification`})
    }
 }

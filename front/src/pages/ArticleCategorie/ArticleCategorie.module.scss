@@ -1,7 +1,70 @@
+.none {
+    display: none;
+}
+
+.titre {
+    display: flex;
+    justify-content: center;
+}
+
 .article {
     display: grid;
     grid-template-columns: auto auto;
     gap: 20px;
     padding: 20px 20px 20px 20px;
     row-gap: 20px;
+}
+
+.filtre {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid #D0B69F 3px;
+    width: fit-content;
+    padding: 0.5em 1em;
+    margin: 0.5em 0em 0.5em 1.5em;
+
+    &_texte {
+        font-size: 22px;
+    }
+
+    &_img {
+        width: 1.5em;
+        height: 1.5em;
+    }
+
+    &_liste {
+        height: 200px;
+        width: 200px;
+        background-color: white;
+        position: absolute;
+        left: 1.5em;
+    }
+}
+
+.sousCategorie {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &_element {
+        display: flex;
+        flex-direction: column;
+        font-size: 16px;
+        width: 100%;
+        padding-top: 1em;
+        padding-left:1em;
+
+        &::after {
+            content: '';
+            height: 2px;
+            position: relative;
+            top: 0.5em;
+            left: -0.5em;
+            background-color: #D0B69F;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
 }

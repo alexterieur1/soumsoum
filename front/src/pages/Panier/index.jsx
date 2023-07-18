@@ -76,7 +76,6 @@ const arrayQuantitePrix = (panier) => {
 }
 export async function loadData() {
     const panier = await getPanier(Cookies.get('userId'))
-    console.log(panier)
     return { panier }
 }
 function Panier() {
@@ -85,13 +84,20 @@ function Panier() {
     const [Quantite, setQuantite] = useState(1)
     const [indexModif, updateIndexModif] = useState()
     const navigate = useNavigate()
+    const [supprimer, updateSupprimer] = useState(false)
+
     if (panier !== 401) {
         arrayQuantitePrix(panier)
         console.log(panier)
 
     }
     useEffect(() => {
+        console.log(supprimer)
         if (panier !== 401) {
+            if (supprimer) {
+                document.getElementById(`${indexModif}`)
+                updateSupprimer(false)
+            }
             if (indexModif >= 0) {
                 panier[indexModif].quantite = Quantite
                 arrayQuantitePrix(panier)
@@ -100,7 +106,7 @@ function Panier() {
             updateTotal(prixFinal)
         }
 
-    }, [Quantite, indexModif, panier])
+    }, [Quantite, supprimer])
     return (
         <>
             {panier !== 401 ?
@@ -108,11 +114,11 @@ function Panier() {
                     <h1 className={style.titre}>Mon Panier</h1>
                     <div className={style.listePanier}>
                         {panier.map((article, index) =>
-                            < Article key={index} index={index} panier={article} quantite={setQuantite} updateindex={updateIndexModif} />
+                            < Article key={index}  index={index} panier={article} sup={updateSupprimer} quantite={setQuantite} updateindex={updateIndexModif} />
                         )}
                     </div >
                     <p className={style.prixFinal}>Total : {Total} €</p>
-                    <button onClick={()=>navigate('../commande')}className={style.button}>
+                    <button onClick={() => navigate('../commande')} className={style.button}>
                         Valider ma commande
                     </button>
                 </>

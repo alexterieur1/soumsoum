@@ -19,7 +19,8 @@ export const getUnProduit = async (id) => {
             return produit.json()
         })
         .then((produit) => {
-            tableauProduit.push(produit[0])
+            console.log(produit)
+            tableauProduit.push(produit)
             return tableauProduit
         })
     console.log(tableauProduit)
@@ -27,7 +28,6 @@ export const getUnProduit = async (id) => {
 }
 
 export const getCategorieProduit = async (categorie) => {
-    console.log(categorie)
     const tableauProduit = []
     await fetch(`http://192.168.1.56:4200/categorie/${categorie}`)
         .then((produit) => {
@@ -37,7 +37,6 @@ export const getCategorieProduit = async (categorie) => {
             tableauProduit.push(produit)
             return tableauProduit
         })
-    console.log(tableauProduit)
     return tableauProduit[0]
 }
 
@@ -48,8 +47,8 @@ export const creationProduit = async (produit) => {
     let dataProduit = new FormData()
     dataProduit.append("nomProduit", produit.nomProduit)
     dataProduit.append("descriptionProduit", produit.descriptionProduit)
-    dataProduit.append("idProduit", produit.idProduit)
     dataProduit.append("prix", produit.prix)
+    dataProduit.append("categorie", produit.categorie)
     dataProduit.append("xs", (produit.xs.length > 0) ? Number(produit.xs) : -1)
     dataProduit.append("s", (produit.s.length > 0) ? Number(produit.s) : -1)
     dataProduit.append("sm", (produit.sm.length > 0) ? Number(produit.sm) : -1)
@@ -96,7 +95,21 @@ export const addPanier = async (taille, idProduit, idClient) => {
     await fetch('http://192.168.1.56:4200/panier', {
         method: "POST",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'id': idClient
+        },
+        body: dataPanier
+    })
+}
+
+export const deletePanier = async (idProduit, idClient) => {
+    let dataPanier = new URLSearchParams()
+    dataPanier.append('idProduit', idProduit)
+    dataPanier.append('idClient', idClient)
+    await fetch(`http://192.168.1.56:4200/panier/${idProduit}`, {
+        method: "POST",
+        headers: {
+            'id': idClient
+
         },
         body: dataPanier
     })

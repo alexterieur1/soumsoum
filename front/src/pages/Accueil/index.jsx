@@ -69,7 +69,7 @@ function Accueil() {
       <div className={style.article}>
         {produit ? (
           produit.map((produit, index) => (
-            <Article key={index} id={produit.idProduit} image={produit.liens} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} epuise={false} />
+            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} epuise={false} />
           ))
         ) : <>chargement ...</>}
         {/* <Article image={image1} description={"lorem ipsum"} prix={"25,00"} epuise={false} />

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import style from './Article.module.scss'
-import image2 from '../../assets/imagearticle2.webp'
-import image3 from '../../assets/imagearticle3.webp'
-import image4 from '../../assets/imagearticle4.webp'
 import { getUnProduit, addPanier } from '../../api'
 //import { Link } from 'react-router-dom'
 import { useLoaderData } from 'react-router-dom'
+import Cookies from 'js-cookie'
 //import Avis from '../../components/Avis'
 
 export async function loadData(props) {
@@ -14,8 +12,23 @@ export async function loadData(props) {
 }
 
 function Article() {
+
+    const videoRef = useRef(null);
+
+    const togglePlayback = () => {
+        const video = videoRef.current;
+
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    };
     const { produit } = useLoaderData()
-    const [image, updateImage] = useState(produit.liens)
+    let informationsProduit = produit[0]
+    let photosProduit = produit[1]
+    let stockProduit = produit[2]
+    const [image, updateImage] = useState(0)
     const [taille, setTaille] = useState('')
     useEffect(() => {
         let elementTaille = document.getElementById(taille)
@@ -33,34 +46,61 @@ function Article() {
         <>
             <div className={style.photos}>
                 <div className={style.photoGrand}>
-                    <img className={style.photoGrand__img} src={image} alt="" />
+                    {
+                        (produit[1][image].liens.split('.')[4] === 'webp') ?
+                            <img className={style.photoGrand__img} src={produit[1][image].liens} alt="" />
+                            :
+                            <video preload='auto' onClick={togglePlayback} muted loop ref={videoRef} className={style.photoGrand__img}>
+                                <source src={produit[1][image].liens} type="video/mp4" />
+                            </video>
+                    }
                 </div>
                 <div className={style.listePhoto}>
-                    <img onClick={() => updateImage(produit.liens)} className={style.listePhoto__img} src={produit.liens} alt="" />
-                    <img onClick={() => updateImage(image2)} className={style.listePhoto__img} src={image2} alt="" />
-                    <img onClick={() => updateImage(image3)} className={style.listePhoto__img} src={image3} alt="" />
-                    <img onClick={() => updateImage(image4)} className={style.listePhoto__img} src={image4} alt="" />
+                    {photosProduit ? (
+                        photosProduit.map((element, index) => {
+                            if (element.liens.split('.')[4] === 'webp') {
+                                return (
+                                    <img
+                                        key={index}
+                                        onClick={() => updateImage(index)}
+                                        className={style.listePhoto__img}
+                                        src={element.liens}
+                                        alt=""
+                                    />
+                                );
+                            } else {
+                                return (
+                                    <video key={index}onClick={() => updateImage(index)} muted loop ref={videoRef} className={style.listePhoto__img}>
+                                        <source src={element.liens} type="video/mp4" />
+                                    </video>
+                                );
+                            }
+                        })
+                    ) : (
+                        <></>
+                    )}
                 </div>
             </div>
             <div className={style.description}>
-                <p>{produit.nomProduit}</p>
-                <p>{produit.prix} €</p>
+                <p>{informationsProduit.nomProduit}</p>
+                <p>{informationsProduit.prix} €</p>
+                <p>{informationsProduit.descriptionProduit}</p>
             </div>
             <div className={style.taille}>
-                {Number(produit.xs) >= 0 ? <p id="xs" onClick={() => setTaille('xs')} className={Number(produit.xs) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xs</p> : <></>}
-                {Number(produit.s) >= 0 ? <p id="s" onClick={() => setTaille('s')} className={Number(produit.s) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s</p> : <></>}
-                {Number(produit.sm) >= 0 ? <p id="sm" onClick={() => setTaille('sm')} className={Number(produit.sm) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s-m</p> : <></>}
-                {Number(produit.m) >= 0 ? <p id="m" onClick={() => setTaille('m')} className={Number(produit.m) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m</p> : <></>}
-                {Number(produit.ml) >= 0 ? <p id="ml" onClick={() => setTaille('ml')} className={Number(produit.ml) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m-l</p> : <></>}
-                {Number(produit.l) >= 0 ? <p id="l" onClick={() => setTaille('l')} className={Number(produit.l) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l</p> : <></>}
-                {Number(produit.lxl) >= 0 ? <p id="lxl" onClick={() => setTaille('lxl')} className={Number(produit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
-                {Number(produit.xl) >= 0 ? <p id="xl" onClick={() => setTaille('xl')} className={Number(produit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
+                {Number(stockProduit.xs) >= 0 ? <p id="xs" onClick={() => setTaille('xs')} className={Number(produit.xs) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xs</p> : <></>}
+                {Number(stockProduit.s) >= 0 ? <p id="s" onClick={() => setTaille('s')} className={Number(produit.s) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s</p> : <></>}
+                {Number(stockProduit.sm) >= 0 ? <p id="sm" onClick={() => setTaille('sm')} className={Number(produit.sm) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s-m</p> : <></>}
+                {Number(stockProduit.m) >= 0 ? <p id="m" onClick={() => setTaille('m')} className={Number(produit.m) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m</p> : <></>}
+                {Number(stockProduit.ml) >= 0 ? <p id="ml" onClick={() => setTaille('ml')} className={Number(produit.ml) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m-l</p> : <></>}
+                {Number(stockProduit.l) >= 0 ? <p id="l" onClick={() => setTaille('l')} className={Number(produit.l) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l</p> : <></>}
+                {Number(stockProduit.lxl) >= 0 ? <p id="lxl" onClick={() => setTaille('lxl')} className={Number(produit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
+                {Number(stockProduit.xl) >= 0 ? <p id="xl" onClick={() => setTaille('xl')} className={Number(produit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
             </div>
-            <button onClick={(() => addPanier(taille, produit.idProduit, '0123456789'))} className={style.button}>
+            <button onClick={(() => addPanier(taille, informationsProduit.idProduit, Cookies.get('userId')))} className={style.button}>
                 ajouter au panier
             </button>
-            {/*             <Avis etoilesscore={4.5} />
- */}        </>
+            {/* <Avis etoilesscore={4.5} /> */}
+        </>
     )
 }
 

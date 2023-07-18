@@ -26,7 +26,7 @@ function Commande() {
     console.log(total, infoClient)
     const [livraison, setLivraison] = useState('domicile')
 
-    
+
     return (
         <>
             <h1>Récapitulatif de la commande</h1>
@@ -61,38 +61,44 @@ function Commande() {
                     <p>frais de port : <span>gratuit</span></p>
                     <p>sous-total : <span>{total} €</span></p>
                 </div>
-                {/* <input type='button'  value='payer' /> */}
-                    <PayPalScriptProvider
+                     <PayPalScriptProvider
+                        style={
+                            {
+                                disableMaxWidth: true,
+                                width: '100%',
+                                height:'100vh'
+                            }
+                        }
                         options={{
                             "clientId":
-                            "Ae7Ncikmzv1zaXolykUCsDMSSnu5J5CavM9djOBzqYy23lM_GVgd5W-4Mq3g8K5_VW1dJ7NgZrvrps7k"}}
+                                "Ae7Ncikmzv1zaXolykUCsDMSSnu5J5CavM9djOBzqYy23lM_GVgd5W-4Mq3g8K5_VW1dJ7NgZrvrps7k"
+                        }}
                     >
-                        <PayPalButtons 
-                        createOrder={(data, actions)=>{
-                            console.log(data, actions)
-                            return actions.order.create({
-                                purchase_units:[
-                                    {
-                                        amount:{
-                                            currency_code:"EUR",
-                                            value:"20.00",
+                        <PayPalButtons style={{ layout: 'vertical', shape: 'pill' }}
+                            createOrder={(data, actions) => {
+                                console.log(data, actions)
+                                return actions.order.create({
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                value: "20.00",
+                                            }
                                         }
-                                    }
-                                ]
-                            })
-                        }}
-                        onApprove={(data, actions) => {
-                            console.log(actions)
-                            console.log(data)
-                            return actions.order.capture().then((details) => {
-                                console.log(`Transaction completed by ${details.payer.name.given_name}`)
-                                console.log(details);
-                            });
-                        }}
-                        onCancel={(data)=>{
-                            console.log(data)
-                        }}/>
-                    </PayPalScriptProvider>
+                                    ]
+                                })
+                            }}
+                            onApprove={(data, actions) => {
+                                console.log(actions)
+                                console.log(data)
+                                return actions.order.capture().then((details) => {
+                                    console.log(`Transaction completed by ${details.payer.name.given_name}`)
+                                    console.log(details);
+                                });
+                            }}
+                            onCancel={(data, actions) => {
+                                console.log(data, actions)
+                            }} />
+                    </PayPalScriptProvider> 
             </div >
 
         </>
