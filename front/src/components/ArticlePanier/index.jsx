@@ -5,18 +5,19 @@ import moins from '../../assets/moins.svg'
 //import { deletePanier } from '../../api';
 //import Cookies from 'js-cookie';
 
-const supprimerArticle = async (panier, sup) => {
-    console.log(panier)
+const supprimerArticle = async (panier, sup, index) => {
     //let test = await deletePanier(panier.id, Cookies.get('userId'))
-    let test ='test'
-    console.log(test)
-sup(true)
+    let panierLocalStorage = JSON.parse(localStorage.getItem('panier'))
+    panierLocalStorage.splice(index, 1)
+    localStorage.setItem('panier', JSON.stringify(panierLocalStorage))
+    //sup(true)
 }
 function Panier({ index, panier, quantite, updateindex, sup }) {
     const [number1, updateNumber1] = useState(panier.quantite)
     const [number2, updateNumber2] = useState(Number(panier.quantite) - 1)
     let prixArticle = panier.prix.split('.')[0] + ',' + panier.prix.split('.')[1]
     const [prixTotal, updatePrixTotal] = useState(prixArticle)
+    //permet de calculer le prix des différents éléments
     useEffect(() => {
         if (number1 > number2) {
             let prixTotalArrondi = panier.prix * number1
@@ -59,7 +60,7 @@ function Panier({ index, panier, quantite, updateindex, sup }) {
         <div className={style.article} id={index}>
             <div className={style.article_main}>
                 <div className={style.article__image}>
-                    <img className={style.article__image__contenu} src={panier.liens} alt="article 1 panier" />
+                    <img className={style.article__image__contenu} src={panier.photoPrincipal} alt="article 1 panier" />
                 </div>
                 <div>
                     <div className={style.description}>
@@ -79,7 +80,7 @@ function Panier({ index, panier, quantite, updateindex, sup }) {
                             }} src={plus} alt='augmenter' />
                         </div>
                         <p>Taille : {panier.taille}</p>
-                        <button className={style.button} onClick={()=>{supprimerArticle(panier, sup)}}>
+                        <button className={style.button} onClick={() => { supprimerArticle(panier, sup, index) }}>
                             Supprimer
                         </button>
                         <p>Total : {prixTotal} €</p>

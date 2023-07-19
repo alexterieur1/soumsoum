@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 function ListeHeader(props) {
     const [isOpen, setisOpen] = useState(false)
-    console.log(props.elements)
     return (
         <li className={style.liste__categorie}>
             <div className={style.liste__balise__titre} onClick={() => { setisOpen(isOpen => !isOpen); console.log(isOpen) }}>

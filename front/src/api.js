@@ -1,43 +1,21 @@
 export const getAllProduit = async () => {
-    let tableauProduit = []
-    await fetch('http://192.168.1.56:4200/produit')
-        .then((produit) => {
-            return produit.json()
-        })
-        .then((produit) => {
-            tableauProduit.push(produit)
-            return tableauProduit
-        })
-    console.log(tableauProduit)
-    return tableauProduit[0]
+    let result = await fetch('http://192.168.1.56:4200/produit')
+    return result.json()
 }
 
 export const getUnProduit = async (id) => {
-    const tableauProduit = []
-    await fetch(`http://192.168.1.56:4200/produit/${id}`)
-        .then((produit) => {
-            return produit.json()
-        })
-        .then((produit) => {
-            console.log(produit)
-            tableauProduit.push(produit)
-            return tableauProduit
-        })
-    console.log(tableauProduit)
-    return tableauProduit[0]
+    let result = await fetch(`http://192.168.1.56:4200/produit/${id}`)
+    return result.json()
 }
 
 export const getCategorieProduit = async (categorie) => {
-    const tableauProduit = []
-    await fetch(`http://192.168.1.56:4200/categorie/${categorie}`)
-        .then((produit) => {
-            return produit.json()
-        })
-        .then((produit) => {
-            tableauProduit.push(produit)
-            return tableauProduit
-        })
-    return tableauProduit[0]
+    let result = await fetch(`http://192.168.1.56:4200/categorie/${categorie}`)
+    return result.json()
+}
+
+export const getCategorieRecherche = async () => {
+    let result = await fetch(`http://192.168.1.56:4200/recherche`)
+    return result.json()
 }
 
 export const creationProduit = async (produit) => {
@@ -71,19 +49,25 @@ export const creationProduit = async (produit) => {
 }
 
 export const getPanier = async (userID) => {
-    let requete = await fetch('http://192.168.1.56:4200/panier', {
-        method: "GET",
-        headers: {
-            'id': userID
+    if (userID) {
+        let requete = await fetch('http://192.168.1.56:4200/panier', {
+            method: "GET",
+            headers: {
+                'id': userID
+            }
+        })
+        if (requete.status === 200) {
+            let requetejson = await requete.json()
+            return requetejson
         }
-    })
-    if (requete.status === 200) {
-        let requetejson = await requete.json()
-        return requetejson
+        if (requete.status === 401) {
+            console.log(requete.status)
+        }
+        return requete.status
     }
-    if (requete.status === 400 || 401)
-        console.log(requete.status)
-    return requete.status
+    else{
+        return []
+    }
 }
 
 export const addPanier = async (taille, idProduit, idClient) => {
@@ -184,4 +168,15 @@ export const informationClient = async (userID) => {
 
 export const suiviLaPoste = async () => {
 
+}
+
+export const mailVerification = async (userID) => {
+    let requete = await fetch(`http://192.168.1.56:4200/mailVerification`, {
+        method: "GET",
+        headers: {
+            'id': userID
+        }
+    })
+    let requetejson = await requete.json()
+    return requetejson
 }

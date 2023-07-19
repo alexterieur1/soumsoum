@@ -8,12 +8,17 @@ export async function loadData() {
     const infoClient = await informationClient(Cookies.get('userId'))
     console.log(infoClient)
     return { infoClient }
-}
+}/*
+const envoiemail = async()=>{
+    let test = await mailVerification(Cookies.get('userId'))
+    console.log(test)
+}*/
 
 function MonCompte() {
     const { infoClient } = useLoaderData()
     const [affichage, updateAffichage] = useState(true)
     console.log(infoClient[1])
+    //envoiemail()
     return (
         <>
             {infoClient[1] === 200 ?
@@ -48,8 +53,21 @@ function MonCompte() {
                                             <p>Date d'anniversaire : </p>
                                             <p>{infoClient[0].jours}/{infoClient[0].mois}/{infoClient[0].annee}</p>
                                         </div>
+
+                                        <div className={style.informationClient__element}>
+                                            {infoClient[0].verifier ?
+                                                <>
+                                                    <p>Mon adresse mail vérifié est : </p>
+                                                    <p>{infoClient[0].mail}</p>
+                                                </> :
+                                                <>
+                                                    <p>Vérifier mon adresse mail : </p>
+                                                    <p>{infoClient[0].mail}</p>
+                                                </>
+                                            }
+                                        </div>
                                     </div>
-                                    <h2>informations Personnelles</h2>
+                                    <h2>Mon adresse Postale</h2>
                                     <div className={style.informationClient}>
                                         <div className={style.informationClient__element}>
                                             <p>Prénom : </p>

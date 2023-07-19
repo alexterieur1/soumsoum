@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import style from './ArticleCategorie.module.scss'
 import { useLoaderData } from 'react-router-dom'
 import Article from '../../components/Article'
-import imgFiltre from '../../assets/filtre.svg'
+//import imgFiltre from '../../assets/filtre.svg'
 import { getCategorieProduit } from '../../api'
 
 export async function loadData(props) {
@@ -53,15 +53,14 @@ function ArticleCategorie() {
     <>
       <h1 className={style.titre}>Les {categorieProduit}</h1>
       <div className={style.filtre}>
-        <p onClick={() => updateListeFiltre(filtre => !filtre)} className={style.filtre_texte}>filtre</p>
-        <img className={style.filtre_img} src={imgFiltre} alt='filtre' />
-      </div>
+        <p onClick={() => updateListeFiltre(filtre => !filtre)} className={style.filtre_texte}>Filtre</p>
+{/*         <img className={style.filtre_img} src={imgFiltre} alt='filtre' />
+ */}      </div>
       <div className={listeFiltre ? style.filtre_liste : style.none}>
-        <p>les catégories</p>
         <ul className={style.sousCategorie}>
           {listeSousCategorie.map((element, index) => (
             <li key={index} className={style.sousCategorie_element}>
-              <label>
+              <label className={style.sousCategorie_label}>
                 <input type="checkbox" checked={isChecked[index]} onChange={() => handleOnChange(index)} />
                 {element}
               </label>

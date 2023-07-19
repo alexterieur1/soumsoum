@@ -236,13 +236,68 @@ li {
     justify-content: space-evenly;
     height: 100%;
 }
+
 .liensRS {
     height: 25px;
 }
-.logoETRS{
+
+.logoETRS {
     display: grid;
     justify-items: stretch;
     width: 95%;
     grid-template-columns: auto 1fr;
-    padding-inline: 1 em;
+    padding-inline: 1em;
+}
+
+.recherche {
+    color: black;
+    position: relative;
+
+    &__open {
+        //box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        //min-height: 5em;
+        //width: 75vw;
+        background-color: #efefef;
+        //border: solid 2px #D0B69F;
+        //position: absolute;
+        z-index: 1;
+        right: 0px;
+        top: 40px;
+/*
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            top: -15px;
+            right: 0px;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 15px solid white;
+        }*/
+    }
+
+    &__input {
+        position: relative;
+        height: 2em;
+        border: none;
+        border-bottom: 2px solid #D0B69F;
+        margin: 0.5em;
+        background-color: #efefef;
+        &:focus-visible{
+            outline:none;
+        }
+    }
+    &__resultat{
+        color: black;
+        position:absolute;
+        background-color: #efefef;
+        top:48px;
+        left:0px;
+        right:0px;
+        bottom: 0px;
+    }
+
+    &__close {
+        display: none;
+    }
 }

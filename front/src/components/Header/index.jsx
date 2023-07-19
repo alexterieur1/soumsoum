@@ -7,14 +7,50 @@ import logo from '../../assets/logo-header.webp'
 //import connexion from '../../assets/connexion.svg'
 import croix from '../../assets/croix.svg'
 import { Link, useNavigate } from 'react-router-dom'
-import { connexion, inscription } from '../../api'
+import { connexion, inscription, getCategorieRecherche, getAllProduit } from '../../api'
 import ListeHeader from '../ListeHeader'
 import Cookies from 'js-cookie'
 import insta from '../../assets/instagram.svg'
 import tiktok from '../../assets/tiktok.svg'
 import snapchat from '../../assets/snapchat.svg'
 
+const Rechercher = async (valeur) => {
+    //initilisation
+
+    let listeCategorie = await getCategorieRecherche()
+    let listeProduit = await getAllProduit()
+    let resultatListeCategroie = []
+    let resultatProduitFiltre = []
+    listeCategorie.map((element) => {
+        if (element.includes(valeur)) {
+            resultatListeCategroie.push(element)
+        }
+        return resultatListeCategroie
+    })
+    //filtre le tableau en fonction de l'input
+    resultatListeCategroie.map((element) => {
+        for (let i = 0; i < listeProduit.length; i++) {
+            if (element.includes(listeProduit[i].nomProduit) || element.includes(listeProduit[i].sousCategorie) || element.includes(listeProduit[i].categorie)) {
+                resultatProduitFiltre.push(listeProduit[i])
+            }
+        }
+        return resultatProduitFiltre
+    })
+    //supprimer les doublons
+    let objetsUniques = {}
+    let tableauSansDoublons = resultatProduitFiltre.filter(objet => {
+        if (!objetsUniques[objet.id]) {
+            objetsUniques[objet.id] = true;
+            return true;
+        }
+        return false;
+    })
+    return tableauSansDoublons
+}
 function Header() {
+    const [isRecherche, updateIsRecherche] = useState(false)
+    const [valeurRecherche, updateValeurRecherche] = useState('')
+    const [listeProduitRecherche, updateListeProduitRecherche] = useState('')
     const [menu, updateMenu] = useState(false)
     const [isAuth, setisAuth] = useState(false)
     const [emailConnexion, setEmailConnexion] = useState('')
@@ -70,7 +106,7 @@ function Header() {
                 updateMenu(false)
                 setisAuth(false)
                 navigate('./')
-                
+
             }
             catch (err) {
                 console.log(err)
@@ -94,6 +130,13 @@ function Header() {
             menuAutreFond.classList.remove(`${style.headerBalise__gauche__fondOpose__fermer}`)
         }
     }, [menu, isAuth])
+    useEffect(() => {
+        let testfunction = async () => {
+            let resultRecherche = await Rechercher(valeurRecherche)
+            updateListeProduitRecherche(resultRecherche)
+        }
+        testfunction()
+    }, [valeurRecherche])
     return (
         <header>
             <div className={style.navbar}>
@@ -141,14 +184,37 @@ function Header() {
 
                     </div>
                 </div>
-                <Link to='/'>
-                    <p className={style.logo}>Mille et une Merveilles</p>
-                </Link>
-                <div className={style.recherche}><img src={loupe} alt='recherche' /></div>
+                {isRecherche ?
+                    <span className={style.recherche__open}>
+                        <input type="text" className={style.recherche__input} value={valeurRecherche} onChange={(e) => updateValeurRecherche(e.target.value)} />
+                        {console.log(listeProduitRecherche)}
+                        <span className={style.recherche__resultat}>
+                            {valeurRecherche.length > 2 ?
+                                listeProduitRecherche.length !== 0 ? listeProduitRecherche.map((element) =>
+                                    <>
+                                        <p>nom: {element.nomProduit}</p>
+                                        <p>categorie: {element.categorie}</p>
+                                        <p>prix: {element.prix}</p>
+                                        <p>type: {element.sousCategorie}</p><br />
+                                        {/* <img src={element.photoPrincipal} alt='article' /> */}
+
+                                    </>
+                                ) : <p>désoler, nous n'avons trouver aucun article pour {valeurRecherche}</p>
+                                : <></>}
+                        </span>
+                    </span> : <Link to='/'>
+                        <p className={style.logo}>Mille et une Merveilles</p>
+                    </Link>}
+
+                <div className={`${style.recherche}`}>
+                    <img onClick={() => updateIsRecherche(isRecherche => !isRecherche)} src={loupe} alt='recherche' />
+
+                </div>
                 <Link to='./panier'>
                     <div className={style.panier}><img src={panier} alt='panier' /></div>
                 </Link>
             </div>
+
             {isAuth ? (
                 <div id='auth' className={style.auth}>
                     <img onClick={() => setisAuth(isAuth => !isAuth)} className={style.auth__croix} src={croix} alt='enlever' />

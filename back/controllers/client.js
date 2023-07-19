@@ -1,6 +1,8 @@
 const mysql = require('mysql2')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
+
 
 var con = mysql.createConnection({
     host: "127.0.0.1",
@@ -18,15 +20,17 @@ exports.inscription = (req, res) => {
         var sql = `INSERT INTO client (idClient, motDePasse, nom, prenom, adresse, codePostale, ville, mail, tel, annee, mois, jours) VALUES ('${idClient}', '${hash}', '${req.body.nom}', '${req.body.prenom}', '${req.body.adresse}', '${req.body.codePostale}', '${req.body.ville}', '${req.body.mail}', '${req.body.tel}', '${req.body.annee}', '${req.body.mois}', '${req.body.jours}')`
         con.query(sql, (err, result, fields) => {
             if (err) {
-                return res.status(500).json({ err, message: 'bad request' } )
+                return res.status(500).json({ err, message: 'bad request' })
             }
             try {
                 let jwtClient = {
                     idClient: idClient,
                     Mail: req.body.mail,
                     token: jwt.sign(
-                        { idClient: idClient,
-                        mail: req.body.mail },
+                        {
+                            idClient: idClient,
+                            mail: req.body.mail
+                        },
                         process.env.PHRASECRYPT,
                         { expiresIn: '24h' }
                     )
@@ -61,8 +65,10 @@ exports.connexion = async (req, res) => {
                         idClient: result[0].idClient,
                         Mail: result[0].mail,
                         token: jwt.sign(
-                            { idClient: result[0].idClient,
-                            mail: result[0].mail },
+                            {
+                                idClient: result[0].idClient,
+                                mail: result[0].mail
+                            },
                             process.env.PHRASECRYPT,
                             { expiresIn: '24h' }
                         )
@@ -83,13 +89,12 @@ exports.connexion = async (req, res) => {
 }
 
 exports.informationClient = async (req, res) => {
-    //console.log(req.sessionID)
     console.log(req.auth.token.mail)
     console.log('information client')
     con.connect(async (err) => {
         if (err) throw err;
         console.log('connecté !')
-        var sql = `SELECT nom, prenom, adresse, codePostale, ville, mail, tel, annee, mois, jours from client WHERE mail='${req.auth.token.mail}'`
+        var sql = `SELECT nom, prenom, adresse, codePostale, ville, mail, tel, annee, mois, jours, verifier from client WHERE mail='${req.auth.token.mail}'`
         con.query(sql, async (err, result, fields) => {
             if (err) {
                 return res.status(500).json({ message: 'bad request' })
@@ -104,3 +109,33 @@ exports.informationClient = async (req, res) => {
         })
     })
 }
+/*
+exports.mailVerification = (req, res) => {
+    const transporter = nodemailer.createTransport({
+        host: process.env.host,
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.authUser,
+            pass: process.env.authPass,
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.authUser,
+        to: `alexandrerichard45@sfr.fr`,
+        subject: 'test avec ovh',
+        text: 'This email was sent with Nodejs and nodemailer using gmail SMTP server',
+        html: process.env.contenueVerifMail,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error)
+            return res.status(500).json(error)
+        } else {
+            console.log(info)
+            return res.status(200).json(info)
+        }
+    });
+}*/

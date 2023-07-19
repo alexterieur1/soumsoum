@@ -8,7 +8,6 @@ import imagebas from '../../assets/imagebas.jpg'
 import imageaccessoire from '../../assets/imageaccessoire.jpg'
 import { getAllProduit } from '../../api';
 import { Link, useLoaderData } from 'react-router-dom';
-import Cookies from 'js-cookie'
 
 export async function loadData() {
   const produit = await getAllProduit()
@@ -16,10 +15,7 @@ export async function loadData() {
 }
 
 function Accueil() {
-  let test = Cookies.get('session')
-  console.log(test)
   const { produit } = useLoaderData()
-  console.log(produit)
   //let elementCategorie = document.querySelector(`.${style.categorie}`)
   //console.log(elementCategorie)
   //console.log({marbre})

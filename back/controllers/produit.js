@@ -10,14 +10,12 @@ var con = mysql.createConnection({
 exports.affichageAllProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
-        console.log('connecté !')
         var sql = "SELECT * FROM produits"
         con.query(sql, (err, result, fields) => {
             if (err) {
                 return res.status(500).json({ message: 'bad request' })
             }
             try {
-                console.log(fields)
                 return res.status(200).json(result)
             }
             catch (err) {
@@ -28,15 +26,12 @@ exports.affichageAllProduit = async (req, res) => {
 }
 
 exports.affichageUnProduit = async (req, res) => {
-    console.log(req.params)
     con.connect(async (err) => {
         if (err) throw err;
-        console.log('connecté !')
         let arrayResponse = []
         const informationProduit = async () => {
             try {
                 const [rows, fields] = await con.promise().query(`SELECT idProduit, categorie, nomProduit, descriptionProduit, prix, photoPrincipal FROM produits WHERE produits.idProduit = ${req.params.id}`)
-                //console.log(rows)
                 arrayResponse.push(rows[0])
                 res.status(200)
                 return rows
@@ -50,7 +45,6 @@ exports.affichageUnProduit = async (req, res) => {
         const photoProduit = async () => {
             try {
                 const [rows, fields] = await con.promise().query(`SELECT liens FROM photoproduits WHERE photoproduits.idProduit = ${req.params.id} ORDER BY 'liens' DESC`)
-                //console.log(rows)
                 arrayResponse.push(rows)
                 res.status(200)
                 return rows
@@ -64,7 +58,6 @@ exports.affichageUnProduit = async (req, res) => {
         const stockProduit = async () => {
             try {
                 const [rows, fields] = await con.promise().query(`SELECT xs, s, sm, m, ml, l, lxl, xl FROM stockproduits WHERE stockproduits.idProduit = ${req.params.id}`)
-                //console.log(rows)
                 arrayResponse.push(rows[0])
                 res.status(200)
                 return rows
@@ -88,9 +81,8 @@ exports.affichageUnProduit = async (req, res) => {
 exports.affichageCategorieProduit = async (req, res) => {
     con.connect(async (err) => {
         if (err) throw err;
-        console.log('connecté !')
-        let arrayResponse=[]
-        const informationProduit = async() => {
+        let arrayResponse = []
+        const informationProduit = async () => {
             const [rows, fields] = await con.promise().query(`SELECT * FROM produits WHERE produits.categorie = '${req.params.categorie}'`)
             if (err) {
                 res.status(500)
@@ -106,7 +98,7 @@ exports.affichageCategorieProduit = async (req, res) => {
                 return res.statusCode
             }
         }
-        const sousCategorie = async() => {
+        const sousCategorie = async () => {
             const [rows, fields] = await con.promise().query(`SELECT distinct sousCategorie FROM produits WHERE produits.categorie = '${req.params.categorie}'`)
             if (err) {
                 res.status(500)
@@ -127,14 +119,44 @@ exports.affichageCategorieProduit = async (req, res) => {
         console.log(resultInformationProduit)
         let resultSousCategorie = await sousCategorie()
         console.log(resultSousCategorie)
-        if(resultInformationProduit===200 && resultSousCategorie===200){
+        if (resultInformationProduit === 200 && resultSousCategorie === 200) {
             return res.status(200).json(arrayResponse)
-        }else{
+        } else {
             return res.status(400).json(arrayResponse)
         }
     })
 }
 
+exports.affichageRecherche = async (req, res) => {
+    con.connect(async (err) => {
+        if (err) throw err;
+        let arrayResponse = []
+        let sql = `SELECT nomProduit, categorie, sousCategorie FROM produits`
+        con.query(sql, (err, result) => {
+            if (err) {
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                result.map((element)=>{
+                    if(!arrayResponse.find(item => item === element.nomProduit)){
+                        arrayResponse.push(element.nomProduit)
+                    }
+                    if(!arrayResponse.find(item => item === element.categorie)){
+                        arrayResponse.push(element.categorie)
+                    }
+                    if(!arrayResponse.find(item => item === element.sousCategorie)){
+                        arrayResponse.push(element.sousCategorie)
+                    }
+                })
+                return res.status(200).json(arrayResponse)
+            }
+            catch (err) {
+                console.log(err)
+                return res.status(400).json({ err })
+            }
+        })
+    })
+}
 exports.creation = async (req, res) => {
     res.status(500)
     let idProduit = Date.now()
@@ -142,7 +164,6 @@ exports.creation = async (req, res) => {
         if (err) throw err
         const insertProduit = async () => {
             try {
-                console.log(req)
                 await con.promise().query(`INSERT INTO produits (nomProduit, descriptionProduit, idProduit, prix, categorie, photoPrincipal, sousCategorie) VALUES ('${req.body.nomProduit}', '${req.body.descriptionProduit}', '${idProduit}', '${req.body.prix}', '${req.body.categorie}', '${req.protocol}://${req.get('host')}/images/${Object.values(req.files)[0][0].filename}', '${req.body.sousCategorie}')`)
                 res.status(200)
                 return res.statusCode
@@ -170,7 +191,6 @@ exports.creation = async (req, res) => {
             try {
                 while (i <= elementimage.length) {
                     await con.promise().query(`INSERT INTO photoproduits (liens, idProduit) VALUES ('${req.protocol}://${req.get('host')}/images/${Object.values(req.files)[i - 1][0].filename}', '${String(idProduit)}')`)
-                    console.log(Object.values(req.files))
                     i++
                 }
                 //console.log('test')
@@ -199,14 +219,14 @@ exports.creation = async (req, res) => {
 }
 
 exports.panier = (req, res) => {
-    console.log(req.auth.token)
-    console.log('audessus')
-    var sql = `SELECT panier.id, prix, nomProduit, liens, quantite, taille FROM panier JOIN photoproduits ON panier.idProduit=photoproduits.idProduit JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.token.idClient}`
+    var sql = `SELECT  photoPrincipal, panier.id, prix, nomProduit, quantite, taille FROM panier JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.token.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {
+            console.log(err)
             return res.status(500).json(err/* { message: 'bad request' } */)
         }
         try {
+            console.log(result)
             return res.status(200).json(result)
         }
         catch (err) {
@@ -216,11 +236,9 @@ exports.panier = (req, res) => {
 }
 
 exports.addPanier = (req, res) => {
-    console.log(req)
     let sql = `INSERT INTO panier (idProduit, idClient, quantite, taille) VALUES (${req.body.idProduit}, ${req.auth.token.idClient}, ${req.body.quantite}, '${req.body.taille}')`
     con.query(sql, (err, result, fields) => {
         if (err) {
-            console.log(err)
             return res.status(500).json({ message: 'bad request' })
         }
         try {
@@ -233,8 +251,6 @@ exports.addPanier = (req, res) => {
 }
 
 exports.deleteUnProduitPanier = (req, res) => {
-    console.log(req)
-    console.log('body')
     let sql = `DELETE  from panier where id=${req.body.idProduit} and idClient=${req.auth.token.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {
