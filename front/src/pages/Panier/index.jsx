@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import style from './Panier.module.scss'
-import { getPanier } from '../../api'
+import { getAllProduit, getPanier, addPanier } from '../../api'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import Article from '../../components/ArticlePanier'
 import Cookies from 'js-cookie'
 
 let array = []
 const prixTotalArrondi = (prixInitial) => {
+    console.log(prixInitial)
     if (prixInitial / 1000 >= 1) {
         let prixArrondi = prixInitial.toPrecision(6)
         let prixMilier = String((prixArrondi / 1000).toFixed(3))
@@ -23,15 +24,17 @@ const prixTotalArrondi = (prixInitial) => {
         return prixArrondi.split('.')[0] + ',' + prixArrondi.split('.')[1]
     }
 }
-const arrayQuantitePrix = (panier) => {
+const arrayQuantitePrix = (panierLocal, panierLocalStorage) => {
+    //console.log(panierLocal)
+    let arrayQuantite = []
+    let arrayPrix = []
+    let arrayPrixElement = []
     if (array.length === 0) {
-        let arrayQuantite = []
-        let arrayPrix = []
-        let arrayPrixElement = []
-        panier.map((element) => {
+        panierLocal.map((element) => {
             return arrayQuantite.push(element.quantite)
         })
-        panier.map((element) => {
+        //console.log(test)
+        panierLocal.map((element) => {
             return arrayPrix.push(element.prix)
         })
         array.push(arrayQuantite, arrayPrix)
@@ -49,13 +52,10 @@ const arrayQuantitePrix = (panier) => {
         array.push(totalFinal)
     }
     else {
-        let arrayQuantite = []
-        let arrayPrix = []
-        let arrayPrixElement = []
-        panier.map((element) => {
+        panierLocalStorage.map((element) => {
             return arrayQuantite.push(element.quantite)
         })
-        panier.map((element) => {
+        panierLocal.map((element) => {
             return arrayPrix.push(element.prix)
         })
         array.splice(0, 1, arrayQuantite)
@@ -74,54 +74,66 @@ const arrayQuantitePrix = (panier) => {
         array.splice(3, 1, totalFinal)
     }
 }
+/* const ajoutLocalstorageApi = () => {
+    let localStrg = localStorage.getItem('panier')
+
+} */
 export async function loadData() {
-    const panier = await getPanier(Cookies.get('userId'))
-    return { panier }
+    const infoProduit = await getAllProduit()
+    const panierAPI = await getPanier(Cookies.get('userId'))
+    return { panierAPI, infoProduit }
 }
 function Panier() {
-    const { panier } = useLoaderData()
-    localStorage.setItem('panier', JSON.stringify(panier))
-    let panierLocal = JSON.parse(localStorage.getItem('panier'))
+    const { panierAPI, infoProduit } = useLoaderData()
+    const [panierLocal, updatePanierLocal] = useState(JSON.parse(localStorage.getItem('panier')))
+    console.log(panierLocal)
     const [Total, updateTotal] = useState()
     const [Quantite, setQuantite] = useState(1)
     const [indexModif, updateIndexModif] = useState()
     const navigate = useNavigate()
-    const [supprimer, updateSupprimer] = useState(false)
 
-    if (panier.length > 0) {
-        arrayQuantitePrix(panier)
-
-    }
-
-    //calcul le prix final en faisant une somme
-    useEffect(() => {
-        console.log(indexModif)
+    const listeInfoProduit = useMemo(() => {
+        const updatedListeInfoProduit = []
         if (panierLocal.length > 0) {
-            if (supprimer) {
-                let test = document.getElementById(`${indexModif}`)
-                test.remove()
-                updateSupprimer(false)
-            }
-            if (indexModif >= 0) {
-                panierLocal[indexModif].quantite = Quantite
-                arrayQuantitePrix(panierLocal)
-            }
-            let prixFinal = prixTotalArrondi(array[3])
-            updateTotal(prixFinal)
+            panierLocal.forEach((elementLocal) => {
+                for (let i = 0; i < infoProduit.length; i++) {
+                    if (elementLocal.produit === infoProduit[i].idProduit) {
+                        let object = { ...infoProduit[i] }
+                        object.quantite = elementLocal.quantite
+                        object.taille = elementLocal.tailleProduit
+                        updatedListeInfoProduit.push(object)
+                    }
+                }
+            })
         }
 
-    }, [Quantite, supprimer, indexModif, panierLocal])
+        return updatedListeInfoProduit
+    }, [panierLocal, infoProduit])
     useEffect(() => {
-        panierLocal = JSON.parse(localStorage.getItem('panier'))
-    }, [panierLocal])
+        if (indexModif >= 0) {
+            panierLocal[indexModif].quantite = Quantite
+            let modiflocalStorage = JSON.parse(localStorage.getItem('panier'))
+            console.log(indexModif, Quantite, panierLocal)
+            modiflocalStorage[indexModif].quantite = Quantite
+            localStorage.setItem('panier', JSON.stringify(modiflocalStorage))
+            console.log(panierAPI[0].idPanier)
+            addPanier(Number(panierAPI[0].idPanier), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
+        }
+        arrayQuantitePrix(listeInfoProduit, panierLocal)
+        console.log(array)
+        let prixFinal = prixTotalArrondi(array[3])
+        updateTotal(prixFinal)
+
+    }, [Quantite, indexModif, panierLocal, listeInfoProduit, panierAPI])
     return (
         <>
-            {panierLocal.length > 0 ?
+
+            {listeInfoProduit.length > 0 ?
                 <>
                     <h1 className={style.titre}>Mon Panier</h1>
                     <div className={style.listePanier}>
-                        {panierLocal.map((article, index) =>
-                            < Article key={index} index={index} panier={article} sup={updateSupprimer} quantite={setQuantite} updateindex={updateIndexModif} />
+                        {listeInfoProduit.map((article, index) =>
+                            < Article key={index} index={index} panier={article} constpanierLocal={panierLocal} functionPanierLocal={updatePanierLocal} quantite={setQuantite} updateindex={updateIndexModif} />
                         )}
                     </div >
                     <p className={style.prixFinal}>Total : {Total} €</p>
@@ -149,6 +161,7 @@ function Panier() {
                     <p>oh non... votre panier est vide !</p>
                 </div>
             }
+            <h2 className={style.titre}>Mes autres paniers</h2>
         </>
     )
 }

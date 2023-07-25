@@ -4,6 +4,7 @@ require('dotenv').config()
 module.exports = (req, res, next) => {
    try {
       let idSession = req.headers.id
+      console.log(req.headers.id)
       let tokenSession = JSON.parse(req.sessionStore.sessions[idSession]).token
       
     //console.log(req.headers.cookie)

@@ -146,6 +146,7 @@ li {
 }
 
 .auth {
+    border-radius: 15px;
     color: black;
     position: fixed;
     height: 80vh;
@@ -175,7 +176,8 @@ li {
         height: 40px;
         aspect-ratio: 1/1;
         position: absolute;
-        right: 0px;
+        top:5px;
+        right: 5px;
     }
 }
 
@@ -299,5 +301,11 @@ li {
 
     &__close {
         display: none;
+    }
+}
+
+@media (min-width:820px){
+    .navbar{
+        background-color: red;
     }
 }

@@ -70,11 +70,11 @@ export const getPanier = async (userID) => {
     }
 }
 
-export const addPanier = async (taille, idProduit, idClient) => {
+export const addPanier = async (idPanier, contenu, idClient) => {
     let dataPanier = new URLSearchParams()
-    dataPanier.append('taille', taille)
-    dataPanier.append('idProduit', idProduit)
+    dataPanier.append('idPanier', idPanier ? idPanier : Date.now())
     dataPanier.append('idClient', idClient)
+    dataPanier.append('contenu', contenu)
     dataPanier.append('quantite', 1)
     await fetch('http://192.168.1.56:4200/panier', {
         method: "POST",

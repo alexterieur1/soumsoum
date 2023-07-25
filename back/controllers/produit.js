@@ -137,14 +137,14 @@ exports.affichageRecherche = async (req, res) => {
                 return res.status(500).json({ message: 'bad request' })
             }
             try {
-                result.map((element)=>{
-                    if(!arrayResponse.find(item => item === element.nomProduit)){
+                result.map((element) => {
+                    if (!arrayResponse.find(item => item === element.nomProduit)) {
                         arrayResponse.push(element.nomProduit)
                     }
-                    if(!arrayResponse.find(item => item === element.categorie)){
+                    if (!arrayResponse.find(item => item === element.categorie)) {
                         arrayResponse.push(element.categorie)
                     }
-                    if(!arrayResponse.find(item => item === element.sousCategorie)){
+                    if (!arrayResponse.find(item => item === element.sousCategorie)) {
                         arrayResponse.push(element.sousCategorie)
                     }
                 })
@@ -219,11 +219,29 @@ exports.creation = async (req, res) => {
 }
 
 exports.panier = (req, res) => {
+    //recherche paniers client
+    con.connect((err) => {
+        if (err) throw err;
+        var sql = `SELECT contenu, idPanier FROM panier WHERE idClient=${req.auth.token.idClient}`
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                console.log(result)
+                return res.status(200).json(result)
+            }
+            catch (err) {
+                console.log(err)
+                return res.status(400).json({ err })
+            }
+        })
+    })/*
     var sql = `SELECT  photoPrincipal, panier.id, prix, nomProduit, quantite, taille FROM panier JOIN produits ON panier.idProduit=produits.idProduit LEFT JOIN client on client.idClient=panier.idClient WHERE client.idClient=${req.auth.token.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {
             console.log(err)
-            return res.status(500).json(err/* { message: 'bad request' } */)
+            return res.status(500).json(err/* { message: 'bad request' } *//*)
         }
         try {
             console.log(result)
@@ -232,17 +250,47 @@ exports.panier = (req, res) => {
         catch (err) {
             return res.status(400).json({ err })
         }
-    })
+    })*/
 }
 
 exports.addPanier = (req, res) => {
-    let sql = `INSERT INTO panier (idProduit, idClient, quantite, taille) VALUES (${req.body.idProduit}, ${req.auth.token.idClient}, ${req.body.quantite}, '${req.body.taille}')`
-    con.query(sql, (err, result, fields) => {
+    let sql = `SELECT * FROM panier WHERE panier.idClient=${req.auth.token.idClient} AND panier.idPanier=${req.body.idPanier}`
+    con.query(sql, (err, result) => {
         if (err) {
+            console.log(err)
             return res.status(500).json({ message: 'bad request' })
         }
         try {
-            return res.status(200).json({ message: 'enregistrement panier réussi !' })
+            if (result.length === 0) {
+                let sql = `INSERT INTO panier (idClient, idPanier, contenu) VALUES (${req.auth.token.idClient}, ${req.body.idPanier}, '${req.body.contenu}')`
+                con.query(sql, (err,) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({ message: 'bad request select' })
+                    }
+                    try {
+                        return res.status(200).json({ message: 'enregistrement panier réussi !' })
+                    }
+                    catch (err) {
+                        return res.status(400).json({ err })
+                    }
+                })
+            }
+            else {
+                let sql = `UPDATE panier SET contenu='${req.body.contenu}' WHERE idClient='${req.auth.token.idClient}' AND idPanier='${req.body.idPanier}'`
+                con.query(sql, (err, result, fields) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(500).json({ message: 'bad request update' })
+                    }
+                    try {
+                        return res.status(200).json({ message: 'enregistrement panier réussi !' })
+                    }
+                    catch (err) {
+                        return res.status(400).json({ err })
+                    }
+                })
+            }
         }
         catch (err) {
             return res.status(400).json({ err })

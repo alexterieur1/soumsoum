@@ -5,14 +5,16 @@ import moins from '../../assets/moins.svg'
 //import { deletePanier } from '../../api';
 //import Cookies from 'js-cookie';
 
-const supprimerArticle = async (panier, sup, index) => {
+const supprimerArticle = async (constpanierLocal, functionPanierLocal, index, updateindex) => {
     //let test = await deletePanier(panier.id, Cookies.get('userId'))
-    let panierLocalStorage = JSON.parse(localStorage.getItem('panier'))
-    panierLocalStorage.splice(index, 1)
-    localStorage.setItem('panier', JSON.stringify(panierLocalStorage))
-    //sup(true)
+    let nouveauPanier = [...constpanierLocal]
+    updateindex(index)
+    console.log(index)
+    nouveauPanier.splice(index, 1)
+    console.log(nouveauPanier)
+    functionPanierLocal(nouveauPanier)
 }
-function Panier({ index, panier, quantite, updateindex, sup }) {
+function Panier({ index, panier, quantite, updateindex, constpanierLocal, functionPanierLocal }) {
     const [number1, updateNumber1] = useState(panier.quantite)
     const [number2, updateNumber2] = useState(Number(panier.quantite) - 1)
     let prixArticle = panier.prix.split('.')[0] + ',' + panier.prix.split('.')[1]
@@ -53,9 +55,8 @@ function Panier({ index, panier, quantite, updateindex, sup }) {
                 updateindex(index)
                 updateNumber2(number1)
             }
-
         }
-    }, [number1, number2, panier.prix, quantite, index, prixTotal, updateindex])
+    }, [number1, number2, panier.prix, quantite, index, prixTotal, updateindex, panier.quantite])
     return (
         <div className={style.article} id={index}>
             <div className={style.article_main}>
@@ -80,7 +81,7 @@ function Panier({ index, panier, quantite, updateindex, sup }) {
                             }} src={plus} alt='augmenter' />
                         </div>
                         <p>Taille : {panier.taille}</p>
-                        <button className={style.button} onClick={() => { supprimerArticle(panier, sup, index) }}>
+                        <button className={style.button} onClick={() => { supprimerArticle(constpanierLocal, functionPanierLocal, index, updateindex); console.log('test') }}>
                             Supprimer
                         </button>
                         <p>Total : {prixTotal} €</p>

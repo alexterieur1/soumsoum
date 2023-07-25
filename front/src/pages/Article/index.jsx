@@ -1,16 +1,34 @@
 import React, { useEffect, useState, useRef } from 'react'
 import style from './Article.module.scss'
-import { getUnProduit, addPanier } from '../../api'
+import { getUnProduit } from '../../api'
 //import { Link } from 'react-router-dom'
 import { useLoaderData } from 'react-router-dom'
-import Cookies from 'js-cookie'
+//import Cookies from 'js-cookie'
 //import Avis from '../../components/Avis'
 
 export async function loadData(props) {
     const produit = await getUnProduit(props.params.id)
     return { produit }
 }
-
+const addPanier = (taille, idProduit) => {
+    let panierLocal = localStorage.getItem('panier')
+    let objectaddPanier = {
+        produit: idProduit,
+        tailleProduit: taille,
+        quantite: 1
+    }
+    // verfier que le panier existe
+    if (panierLocal) {
+        let JSONPanierLocal = JSON.parse(panierLocal)
+        JSONPanierLocal.push(objectaddPanier)
+        localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+    }
+    else {
+        let JSONPanierLocal = []
+        JSONPanierLocal.push(objectaddPanier)
+        localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+    }
+}
 function Article() {
 
     const videoRef = useRef(null);
@@ -70,7 +88,7 @@ function Article() {
                                 );
                             } else {
                                 return (
-                                    <video key={index}onClick={() => updateImage(index)} muted loop ref={videoRef} className={style.listePhoto__img}>
+                                    <video key={index} onClick={() => updateImage(index)} muted loop ref={videoRef} className={style.listePhoto__img}>
                                         <source src={element.liens} type="video/mp4" />
                                     </video>
                                 );
@@ -96,7 +114,7 @@ function Article() {
                 {Number(stockProduit.lxl) >= 0 ? <p id="lxl" onClick={() => setTaille('lxl')} className={Number(produit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
                 {Number(stockProduit.xl) >= 0 ? <p id="xl" onClick={() => setTaille('xl')} className={Number(produit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
             </div>
-            <button onClick={(() => addPanier(taille, informationsProduit.idProduit, Cookies.get('userId')))} className={style.button}>
+            <button onClick={(() => addPanier(taille, informationsProduit.idProduit))} className={style.button}>
                 ajouter au panier
             </button>
             {/* <Avis etoilesscore={4.5} /> */}

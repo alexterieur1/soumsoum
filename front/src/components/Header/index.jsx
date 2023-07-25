@@ -214,7 +214,6 @@ function Header() {
                     <div className={style.panier}><img src={panier} alt='panier' /></div>
                 </Link>
             </div>
-
             {isAuth ? (
                 <div id='auth' className={style.auth}>
                     <img onClick={() => setisAuth(isAuth => !isAuth)} className={style.auth__croix} src={croix} alt='enlever' />

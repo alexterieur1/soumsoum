@@ -49,7 +49,7 @@ exports.inscription = (req, res) => {
 exports.connexion = async (req, res) => {
     con.connect(async (err) => {
         if (err) throw err;
-        console.log('connecté ! connexion')
+        console.log('connecté !')
         var sql = `SELECT * from client WHERE mail='${req.body.mail}'`
         con.query(sql, async (err, result, fields) => {
             if (err) {

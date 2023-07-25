@@ -22,7 +22,7 @@ app.use(express.urlencoded({extended: true}))
 
 app.use(session({
   name: 'session',
-  secret: 'secret',
+  secret: process.env.MDPSESSION,
   resave: false,
   saveUninitialized: true,
   //cookie: { secure: true }
