@@ -65,7 +65,7 @@ export const getPanier = async (userID) => {
         }
         return requete.status
     }
-    else{
+    else {
         return []
     }
 }
@@ -75,7 +75,7 @@ export const addPanier = async (idPanier, contenu, idClient) => {
     dataPanier.append('idPanier', idPanier ? idPanier : Date.now())
     dataPanier.append('idClient', idClient)
     dataPanier.append('contenu', contenu)
-    dataPanier.append('quantite', 1)
+    //dataPanier.append('quantite', 1)
     await fetch('http://192.168.1.56:4200/panier', {
         method: "POST",
         headers: {
@@ -166,8 +166,21 @@ export const informationClient = async (userID) => {
     return arrayResponse
 }
 
-export const suiviLaPoste = async () => {
-
+export const suiviLaPoste = async (numero) => {
+    let result = await fetch(`https://api.laposte.fr/suivi/v2/idships/${numero}?lang=fr_FR`, {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'X-Okapi-Key': 'PJcJxlZ93SYOWCfoVe7yRPeDuOMPux5bIaCLEgQfpt3kOfE3ElrpZfs5BPduGtIe'
+        }
+    })
+    let resultjson = await result.json()
+    let response = {
+        'returnCode': resultjson.returnCode,
+        'timeline': resultjson.shipment.timeline,
+        'event': resultjson.shipment.event.reverse()
+    }
+    return response
 }
 
 export const mailVerification = async (userID) => {
@@ -175,6 +188,34 @@ export const mailVerification = async (userID) => {
         method: "GET",
         headers: {
             'id': userID
+        }
+    })
+    let requetejson = await requete.json()
+    return requetejson
+}
+
+export const CommandePaypal = async (idClient, idCommande, status, panier) => {
+    let dataPanier = new URLSearchParams()
+    dataPanier.append('idClient', idClient)
+    dataPanier.append('idCommande', idCommande)
+    dataPanier.append('status', status)
+    dataPanier.append('article', panier)
+    let requete = await fetch(`http://192.168.1.56:4200/commande`, {
+        method: "POST",
+        headers: {
+            'id': idClient
+        },
+        body: dataPanier
+    })
+    let requetejson = await requete.json()
+    return requetejson
+}
+
+export const getAllCommande = async (idClient) => {
+    let requete = await fetch(`http://192.168.1.56:4200/commande`, {
+        method: "GET",
+        headers: {
+            'id': idClient
         }
     })
     let requetejson = await requete.json()

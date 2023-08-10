@@ -141,7 +141,7 @@ function Header() {
         <header>
             <div className={style.navbar}>
                 <div onClick={() => updateMenu(menu => !menu)} className={style.menuBurger}>
-                    <img src={burger} alt='menu' />
+                    <img className={style.iconeMenu} src={burger} alt='menu' />
                 </div>
                 <div id='fondOpose' className={style.headerBalise__gauche__fondOpose} onClick={() => updateMenu(menu => !menu)}>
                 </div>
@@ -161,7 +161,6 @@ function Header() {
                         </div>
                     </div>
                     <div className={style.liste}>
-                        { }
                         <h3>Nouveautés</h3>
                         <h3>Promotions</h3>
                         <ul>
@@ -169,7 +168,7 @@ function Header() {
                         </ul>
                         <h3>Accesoires</h3>
                         <ul>
-                            <ListeHeader titre="Chaussures" elements={['Les Basket', 'Les sandales']} />
+                            <ListeHeader titre="Chaussures" elements={['Les Baskets', 'Les Sandales']} />
                         </ul>
                     </div>
                     <div className={style.connexion}>
@@ -186,8 +185,7 @@ function Header() {
                 </div>
                 {isRecherche ?
                     <span className={style.recherche__open}>
-                        <input type="text" className={style.recherche__input} value={valeurRecherche} onChange={(e) => updateValeurRecherche(e.target.value)} />
-                        {console.log(listeProduitRecherche)}
+                        <input type="text" className={style.recherche__input} placeholder='Rechercher' value={valeurRecherche} onChange={(e) => updateValeurRecherche(e.target.value)} />
                         <span className={style.recherche__resultat}>
                             {valeurRecherche.length > 2 ?
                                 listeProduitRecherche.length !== 0 ? listeProduitRecherche.map((element) =>
@@ -207,11 +205,11 @@ function Header() {
                     </Link>}
 
                 <div className={`${style.recherche}`}>
-                    <img onClick={() => updateIsRecherche(isRecherche => !isRecherche)} src={loupe} alt='recherche' />
+                    <img className={style.iconeMenu} onClick={() => updateIsRecherche(isRecherche => !isRecherche)} src={loupe} alt='recherche' />
 
                 </div>
                 <Link to='./panier'>
-                    <div className={style.panier}><img src={panier} alt='panier' /></div>
+                    <div><img className={style.iconeMenu} src={panier} alt='panier' /></div>
                 </Link>
             </div>
             {isAuth ? (

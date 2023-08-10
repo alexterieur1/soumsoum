@@ -1,6 +1,6 @@
 footer {
-    padding-top:2em;
-    margin-top:5em;
+    padding-top: 2em;
+    margin-top: 5em;
     color: white;
     font-size: 18px;
     background-color: #D0B69F;
@@ -14,6 +14,7 @@ footer {
         grid-template-columns: auto;
         gap: 2em;
     }
+
     .listeRS {
         display: flex;
         justify-content: space-around;
@@ -21,6 +22,7 @@ footer {
         width: 50%;
         margin: 1em auto;
     }
+
     &>p {
         margin: 0 auto;
         width: fit-content;
@@ -36,7 +38,8 @@ footer {
     &>p {
         text-transform: capitalize;
         font-weight: 700;
-        font-size: 22px;;
+        font-size: 22px;
+        ;
     }
 
     &>ul {
@@ -46,10 +49,16 @@ footer {
     }
 }
 
-
-
-
 .liensAlexandre {
     color: #B69F8B;
     filter: brightness(75%);
+}
+
+@media (min-width:820px) {
+    footer {
+        .footer_liste {
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+    }
 }

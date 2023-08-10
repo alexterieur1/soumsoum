@@ -157,6 +157,7 @@ exports.affichageRecherche = async (req, res) => {
         })
     })
 }
+
 exports.creation = async (req, res) => {
     res.status(500)
     let idProduit = Date.now()
@@ -311,5 +312,51 @@ exports.deleteUnProduitPanier = (req, res) => {
         catch (err) {
             return res.status(400).json({ err })
         }
+    })
+}
+
+exports.commandePanier = (req, res) => {
+    //recherche paniers client
+    con.connect((err) => {
+        if (err) throw err;
+        var sql = `INSERT INTO commande (idClient, idCommande, etat, article) VALUES ('${req.auth.token.idClient}', '${Date.now()}_${req.body.idCommande}', '${req.body.status}', '${req.body.article}')`
+        console.log(sql)
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                console.log(result)
+                return res.status(200).json(result)
+            }
+            catch (err) {
+                console.log(err)
+                return res.status(400).json({ err })
+            }
+        })
+    })
+}
+
+exports.getAllCommande = (req, res) => {
+    //recherche paniers client
+    con.connect((err) => {
+        if (err) throw err;
+        var sql = `SELECT * from commande WHERE commande.idCLient='${req.auth.token.idClient}'`
+        console.log(sql)
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                console.log(result)
+                return res.status(200).json(result)
+            }
+            catch (err) {
+                console.log(err)
+                return res.status(400).json({ err })
+            }
+        })
     })
 }

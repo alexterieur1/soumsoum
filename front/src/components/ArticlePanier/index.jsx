@@ -8,7 +8,7 @@ import moins from '../../assets/moins.svg'
 const supprimerArticle = async (constpanierLocal, functionPanierLocal, index, updateindex) => {
     //let test = await deletePanier(panier.id, Cookies.get('userId'))
     let nouveauPanier = [...constpanierLocal]
-    updateindex(index)
+    //updateindex(index)
     console.log(index)
     nouveauPanier.splice(index, 1)
     console.log(nouveauPanier)
@@ -57,6 +57,9 @@ function Panier({ index, panier, quantite, updateindex, constpanierLocal, functi
             }
         }
     }, [number1, number2, panier.prix, quantite, index, prixTotal, updateindex, panier.quantite])
+    useEffect(() => {
+        updateNumber1(panier.quantite)
+    }, [panier])
     return (
         <div className={style.article} id={index}>
             <div className={style.article_main}>

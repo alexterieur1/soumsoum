@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import style from './MonCompte.module.scss'
 import { useLoaderData } from 'react-router-dom'
-import { informationClient } from '../../api'
+import { informationClient, getAllCommande } from '../../api'
 import Cookies from 'js-cookie'
 
 export async function loadData() {
     const infoClient = await informationClient(Cookies.get('userId'))
-    console.log(infoClient)
-    return { infoClient }
+    const allCommande = await getAllCommande(Cookies.get('userId'))
+    return { infoClient, allCommande }
 }/*
 const envoiemail = async()=>{
     let test = await mailVerification(Cookies.get('userId'))
@@ -15,9 +15,10 @@ const envoiemail = async()=>{
 }*/
 
 function MonCompte() {
-    const { infoClient } = useLoaderData()
+    const { infoClient, allCommande } = useLoaderData()
     const [affichage, updateAffichage] = useState(true)
     console.log(infoClient[1])
+    console.log(allCommande)
     //envoiemail()
     return (
         <>
@@ -84,7 +85,11 @@ function MonCompte() {
                                     </div>
 
                                 </>
-                                : <></>}
+                                : <>{
+                                    allCommande.map((element, index) => {
+                                        return (<p>commande numéro {index +1}</p>)
+                                    })
+                                }</>}
                         </div>
 
                         : <p>chargement...</p>}

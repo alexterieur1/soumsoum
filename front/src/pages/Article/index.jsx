@@ -20,13 +20,35 @@ const addPanier = (taille, idProduit) => {
     // verfier que le panier existe
     if (panierLocal) {
         let JSONPanierLocal = JSON.parse(panierLocal)
-        JSONPanierLocal.push(objectaddPanier)
-        localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
-    }
-    else {
-        let JSONPanierLocal = []
-        JSONPanierLocal.push(objectaddPanier)
-        localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+
+        //verifier si le produit n'est pas deja dans le panier avec la meme taille
+        console.log(JSONPanierLocal)
+        if (JSONPanierLocal.length === 0) {
+            JSONPanierLocal.push(objectaddPanier)
+            localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+        }
+        else {
+            let i = 0
+            while (i < JSONPanierLocal.length) {
+                if (JSONPanierLocal[i].produit === idProduit && JSONPanierLocal[i].tailleProduit === taille) {
+                    JSONPanierLocal[i].quantite = JSONPanierLocal[i].quantite + 1
+                    localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+                    break
+                }
+                if (i === JSONPanierLocal.length - 1) {
+                    objectaddPanier.quantite = 1
+                    console.log(objectaddPanier.quantite)
+                    JSONPanierLocal.push(objectaddPanier)
+                    localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+                    break
+                }
+                i++
+            }
+            /* JSONPanierLocal.map((element) => {
+
+            }) */
+        }
+
     }
 }
 function Article() {
@@ -114,9 +136,17 @@ function Article() {
                 {Number(stockProduit.lxl) >= 0 ? <p id="lxl" onClick={() => setTaille('lxl')} className={Number(produit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
                 {Number(stockProduit.xl) >= 0 ? <p id="xl" onClick={() => setTaille('xl')} className={Number(produit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
             </div>
-            <button onClick={(() => addPanier(taille, informationsProduit.idProduit))} className={style.button}>
+            <button onClick={() => {
+                if (taille && taille !== 'NULL') {
+                    addPanier(taille, informationsProduit.idProduit)
+                }
+                else {
+                    setTaille('NULL')
+                }
+            }} className={style.button}>
                 ajouter au panier
             </button>
+            {taille === 'NULL' ? <p className={style.msgError}>Selectionnez une taille</p> : <></>}
             {/* <Avis etoilesscore={4.5} /> */}
         </>
     )

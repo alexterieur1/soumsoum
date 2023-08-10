@@ -100,3 +100,30 @@
         transform: translateY(0px);
     }
 }
+
+@media(min-width:820px) {
+    .image {
+        width: 90vw;
+        margin: 0 auto;
+    }
+
+    .titre {
+        font-size: 38px;
+    }
+
+    .article {
+        grid-template-columns: auto auto auto auto;
+    }
+    .categorie {
+        //background-color: #DBCAC3;
+        width: 100vw;
+        background: url('../../assets/marbre_blanc.png');
+        padding: 30px 20px 30px 20px;
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: 25vw 25vw;
+        gap: 20px;
+        position: relative;
+        overflow-x: scroll;
+    }
+}
