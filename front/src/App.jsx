@@ -5,7 +5,7 @@ import Banner from './components/Header'
 import Footer from './components/Footer'
 
 function App() {
-  localStorage.setItem('panier', '[]')
+  //localStorage.setItem('panier', '[]')
   return (
     <>
       <Banner/>

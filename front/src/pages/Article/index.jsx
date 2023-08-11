@@ -48,7 +48,37 @@ const addPanier = (taille, idProduit) => {
 
             }) */
         }
+    }
+    else{
+        let JSONPanierLocal = []
 
+        //verifier si le produit n'est pas deja dans le panier avec la meme taille
+        console.log(JSONPanierLocal)
+        if (JSONPanierLocal.length === 0) {
+            JSONPanierLocal.push(objectaddPanier)
+            localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+        }
+        else {
+            let i = 0
+            while (i < JSONPanierLocal.length) {
+                if (JSONPanierLocal[i].produit === idProduit && JSONPanierLocal[i].tailleProduit === taille) {
+                    JSONPanierLocal[i].quantite = JSONPanierLocal[i].quantite + 1
+                    localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+                    break
+                }
+                if (i === JSONPanierLocal.length - 1) {
+                    objectaddPanier.quantite = 1
+                    console.log(objectaddPanier.quantite)
+                    JSONPanierLocal.push(objectaddPanier)
+                    localStorage.setItem('panier', JSON.stringify(JSONPanierLocal))
+                    break
+                }
+                i++
+            }
+            /* JSONPanierLocal.map((element) => {
+
+            }) */
+        }
     }
 }
 function Article() {
