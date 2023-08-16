@@ -165,12 +165,14 @@ exports.creation = async (req, res) => {
         if (err) throw err
         const insertProduit = async () => {
             try {
+                console.log(req.body)
+                console.log(req.files)
                 await con.promise().query(`INSERT INTO produits (nomProduit, descriptionProduit, idProduit, prix, categorie, photoPrincipal, sousCategorie) VALUES ('${req.body.nomProduit}', '${req.body.descriptionProduit}', '${idProduit}', '${req.body.prix}', '${req.body.categorie}', '${req.protocol}://${req.get('host')}/images/${Object.values(req.files)[0][0].filename}', '${req.body.sousCategorie}')`)
                 res.status(200)
                 return res.statusCode
             }
             catch (err) {
-                //console.log(err)
+                console.log(err)
                 return 400
             }
         }
@@ -181,7 +183,7 @@ exports.creation = async (req, res) => {
                 return res.statusCode
             }
             catch (err) {
-                //console.log(err)
+                console.log(err)
                 res.status(400)
                 return res.statusCode
             }

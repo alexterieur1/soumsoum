@@ -33,7 +33,7 @@ function Formulaire() {
       "l": l,
       "lxl": lxl,
       "xl": xl,
-      "image": image,
+      "image1": image,
       "categorie": categorie
     }
     let test = creationProduit(valeurFormulaire)
@@ -135,6 +135,7 @@ function Formulaire() {
         </div>
       </div>
       <input type='file' id='file' onChange={(e) => previewFile(e.target.files[0])} />
+        <p>le seul format accepter est le format webp</p>
       {imageTelechargee ? <img src={`${imagePreview}`} id='imagePreview' alt='test' /> : <></>}
       <button type='button' onClick={envoieFormulaire} value='ajouter le produit'>ajouter le produit </button>
     </form >

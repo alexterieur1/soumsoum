@@ -86,7 +86,7 @@ function Commande() {
                     <p>frais de port : <span>{livraison === 'domicile' ? '3.00€' : 'gratuit'}</span></p>
                     <p>sous-total : <span>{livraison === 'domicile' ? total + 3 : total} €</span></p>
                 </div>
-                <PayPalScriptProvider
+                {infoClient[0] ? <PayPalScriptProvider
                     style={
                         {
                             disableMaxWidth: true,
@@ -131,6 +131,10 @@ function Commande() {
                             console.log(data, actions)
                         }} />
                 </PayPalScriptProvider>
+                    : <button className={style.button}>
+                        Vous n'etes pas connecté
+                    </button>}
+
             </div >
 
         </>

@@ -7,7 +7,7 @@ import logo from '../../assets/logo-header.webp'
 //import connexion from '../../assets/connexion.svg'
 import croix from '../../assets/croix.svg'
 import { Link, useNavigate } from 'react-router-dom'
-import { connexion, inscription, getCategorieRecherche, getAllProduit } from '../../api'
+import { connexion, inscription, getCategorieRecherche, getAllProduit, deconnexion } from '../../api'
 import ListeHeader from '../ListeHeader'
 import Cookies from 'js-cookie'
 import insta from '../../assets/instagram.svg'
@@ -137,6 +137,9 @@ function Header() {
         }
         testfunction()
     }, [valeurRecherche])
+    useEffect(() => {
+
+    })
     return (
         <header>
             <div className={style.navbar}>
@@ -161,6 +164,13 @@ function Header() {
                         </div>
                     </div>
                     <div className={style.liste}>
+                        {Cookies.get('userId') ? <h3 onClick={() => {
+                            console.log(isAuth)
+                            deconnexion()
+                            Cookies.remove('userId')
+                            window.location.reload()
+                        }}>je me déconnecte</h3>:<></>}
+
                         <h3>Nouveautés</h3>
                         <h3>Promotions</h3>
                         <ul>
@@ -174,11 +184,13 @@ function Header() {
                     <div className={style.connexion}>
                         {
                             Cookies.get('userId') ?
-                                <Link to='/moncompte'>
-                                    <h3 >Mon compte</h3>
-                                </Link>
+                                <>
+                                    <Link to='/moncompte'>
+                                        <h3 >Mon compte</h3>
+                                    </Link>
+                                </>
                                 :
-                                <h3 onClick={() => setisAuth(isAuth => !isAuth)}>Mon compte</h3>
+                                <h3 onClick={() => setisAuth(isAuth => !isAuth)}>Je me connecte</h3>
                         }
 
                     </div>
@@ -212,46 +224,48 @@ function Header() {
                     <div><img className={style.iconeMenu} src={panier} alt='panier' /></div>
                 </Link>
             </div>
-            {isAuth ? (
-                <div id='auth' className={style.auth}>
-                    <img onClick={() => setisAuth(isAuth => !isAuth)} className={style.auth__croix} src={croix} alt='enlever' />
-                    <div className={style.auth__formulaire__connexion}>
-                        <p>Connectez-vous</p>
-                        <form onSubmit={envoieFormulaire} className={style.formulaire}>
-                            <label htmlFor='emailConnexion'>Email :</label>
-                            <input name='emailConnexion' type='email' value={emailConnexion} onChange={(e) => setEmailConnexion(e.target.value)} />
-                            <label htmlFor='passwordConnexion'>Mot de passe :</label>
-                            <input name='passwordConnexion' type='password' value={passwordConnexion} onChange={(e) => setPasswordConnexion(e.target.value)} />
-                            <button type='submit' >Se connecter</button>
-                        </form >
+            {
+                isAuth ? (
+                    <div id='auth' className={style.auth}>
+                        <img onClick={() => setisAuth(isAuth => !isAuth)} className={style.auth__croix} src={croix} alt='enlever' />
+                        <div className={style.auth__formulaire__connexion}>
+                            <p>Connectez-vous</p>
+                            <form onSubmit={envoieFormulaire} className={style.formulaire}>
+                                <label htmlFor='emailConnexion'>Email :</label>
+                                <input name='emailConnexion' type='email' value={emailConnexion} onChange={(e) => setEmailConnexion(e.target.value)} />
+                                <label htmlFor='passwordConnexion'>Mot de passe :</label>
+                                <input name='passwordConnexion' type='password' value={passwordConnexion} onChange={(e) => setPasswordConnexion(e.target.value)} />
+                                <button type='submit' >Se connecter</button>
+                            </form >
+                        </div>
+                        <div className={style.auth__formulaire__inscription}>
+                            <p>Inscrivez-vous</p>
+                            <form onSubmit={envoieFormulaire} className={style.formulaire}>
+                                <label htmlFor='prenom'>Prénom :</label>
+                                <input name='prenom' value={prenom} onChange={(e) => setPrenom(e.target.value)} />
+                                <label htmlFor='nom' >Nom :</label>
+                                <input name='nom' value={nom} onChange={(e) => setNom(e.target.value)} />
+                                <label htmlFor='adress'>Adresse :</label>
+                                <input name='adress' value={adresse} onChange={(e) => setAdresse(e.target.value)} />
+                                <label htmlFor='codePostal'>Code postal :</label>
+                                <input name='codePostal' value={codePostal} onChange={(e) => setCodePostal(e.target.value)} />
+                                <label htmlFor='city'>Ville :</label>
+                                <input name='city' value={ville} onChange={(e) => setVille(e.target.value)} />
+                                <label htmlFor='telephone'>N° de téléphone :</label>
+                                <input name='telphone' type='tel' value={numTel} onChange={(e) => setNumtel(e.target.value)} />
+                                <label htmlFor='dateAnniv'>Date anniversaire :</label>
+                                <input name='dateAnniv' type='date' value={anniv} onChange={(e) => setAnniv(e.target.value)} />
+                                <label type='emailInscription'>Email :</label>
+                                <input name='emailInscription' type='email' value={emailInscription} onChange={(e) => setEmailInscription(e.target.value)} />
+                                <label htmlFor='passwordInscription'>Mot de passe :</label>
+                                <input name='passwordInscription' type='password' value={passwordInscription} onChange={(e) => setPasswordInscription(e.target.value)} />
+                                <button type='submit'>S'inscire</button>
+                            </form >
+                        </div>
                     </div>
-                    <div className={style.auth__formulaire__inscription}>
-                        <p>Inscrivez-vous</p>
-                        <form onSubmit={envoieFormulaire} className={style.formulaire}>
-                            <label htmlFor='prenom'>Prénom :</label>
-                            <input name='prenom' value={prenom} onChange={(e) => setPrenom(e.target.value)} />
-                            <label htmlFor='nom' >Nom :</label>
-                            <input name='nom' value={nom} onChange={(e) => setNom(e.target.value)} />
-                            <label htmlFor='adress'>Adresse :</label>
-                            <input name='adress' value={adresse} onChange={(e) => setAdresse(e.target.value)} />
-                            <label htmlFor='codePostal'>Code postal :</label>
-                            <input name='codePostal' value={codePostal} onChange={(e) => setCodePostal(e.target.value)} />
-                            <label htmlFor='city'>Ville :</label>
-                            <input name='city' value={ville} onChange={(e) => setVille(e.target.value)} />
-                            <label htmlFor='telephone'>N° de téléphone :</label>
-                            <input name='telphone' type='tel' value={numTel} onChange={(e) => setNumtel(e.target.value)} />
-                            <label htmlFor='dateAnniv'>Date anniversaire :</label>
-                            <input name='dateAnniv' type='date' value={anniv} onChange={(e) => setAnniv(e.target.value)} />
-                            <label type='emailInscription'>Email :</label>
-                            <input name='emailInscription' type='email' value={emailInscription} onChange={(e) => setEmailInscription(e.target.value)} />
-                            <label htmlFor='passwordInscription'>Mot de passe :</label>
-                            <input name='passwordInscription' type='password' value={passwordInscription} onChange={(e) => setPasswordInscription(e.target.value)} />
-                            <button type='submit'>S'inscire</button>
-                        </form >
-                    </div>
-                </div>
-            ) : <></>}
-        </header>
+                ) : <></>
+            }
+        </header >
     )
 }
 

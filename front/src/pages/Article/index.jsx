@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import style from './Article.module.scss'
-import { getUnProduit } from '../../api'
+import { getUnProduit, CompteurVue } from '../../api'
 //import { Link } from 'react-router-dom'
 import { useLoaderData } from 'react-router-dom'
 //import Cookies from 'js-cookie'
@@ -8,6 +8,7 @@ import { useLoaderData } from 'react-router-dom'
 
 export async function loadData(props) {
     const produit = await getUnProduit(props.params.id)
+    await CompteurVue(props.params.id)
     return { produit }
 }
 const addPanier = (taille, idProduit) => {
@@ -49,7 +50,7 @@ const addPanier = (taille, idProduit) => {
             }) */
         }
     }
-    else{
+    else {
         let JSONPanierLocal = []
 
         //verifier si le produit n'est pas deja dans le panier avec la meme taille
@@ -82,7 +83,7 @@ const addPanier = (taille, idProduit) => {
     }
 }
 function Article() {
-
+    const { produit } = useLoaderData()
     const videoRef = useRef(null);
 
     const togglePlayback = () => {
@@ -94,7 +95,6 @@ function Article() {
             video.pause();
         }
     };
-    const { produit } = useLoaderData()
     let informationsProduit = produit[0]
     let photosProduit = produit[1]
     let stockProduit = produit[2]
@@ -128,7 +128,7 @@ function Article() {
                 <div className={style.listePhoto}>
                     {photosProduit ? (
                         photosProduit.map((element, index) => {
-                            if (element.liens.split('.')[4] === 'webp') {
+                            if (produit[1][image].liens.split('.')[4] === 'webp') {
                                 return (
                                     <img
                                         key={index}

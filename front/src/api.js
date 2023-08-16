@@ -35,7 +35,7 @@ export const creationProduit = async (produit) => {
     dataProduit.append("l", (produit.l.length > 0) ? Number(produit.l) : -1)
     dataProduit.append("lxl", (produit.lxl.length > 0) ? Number(produit.lxl) : -1)
     dataProduit.append("xl", (produit.xl.length > 0) ? Number(produit.xl) : -1)
-    dataProduit.append("image", produit.image)
+    dataProduit.append("image1", produit.image1)
     let test = fetch('http://192.168.1.56:4200/produit', {
         method: 'POST',
         mode: 'cors',
@@ -221,3 +221,31 @@ export const getAllCommande = async (idClient) => {
     let requetejson = await requete.json()
     return requetejson
 }
+
+export const deconnexion = async () => {
+    let requete = await fetch(`http://192.168.1.56:4200/deconnexion`, {
+        method: "GET"
+    })
+    return requete
+}
+
+export const adminInfoProduit = async () => {
+    let result = await fetch('http://192.168.1.56:4200/admin/infoProduit')
+    return result.json()
+}
+
+export const CompteurVue = async (idProduit) => {
+    let data = new URLSearchParams()
+    data.append('idProduit', idProduit)
+    let result = await fetch('http://192.168.1.56:4200/admin/vue', {
+        method: "POST",
+        body: data
+    })
+    console.log(result)
+    return (await result.json())
+}
+/*
+export const adminInfoStock = async () => {
+    let result = await fetch('http://192.168.1.56:4200/admin/infoStock')
+    return result.json()
+}*/

@@ -1,0 +1,29 @@
+.article {
+    font-size: 18px;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr auto 1fr;
+    justify-items: center;
+    align-items: center;
+    border: solid 2px #D0B69F;
+    padding:0.5em;
+    color:black;
+
+    &_image {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+    }
+    &_liste{
+        margin-top :1em;
+        display:flex;
+        grid-column: span 3;
+    }
+}
+.containers{
+    padding-inline: 1em;;
+    display:flex;
+    flex-direction: column;
+    gap:2em;
+    margin-top:2em;
+}

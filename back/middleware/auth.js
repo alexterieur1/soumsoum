@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 module.exports = (req, res, next) => {
+   console.log(req)
    try {
       let idSession = req.headers.id
       console.log(req.headers.id)

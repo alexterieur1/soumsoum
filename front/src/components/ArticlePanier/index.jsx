@@ -13,6 +13,7 @@ const supprimerArticle = async (constpanierLocal, functionPanierLocal, index, up
     nouveauPanier.splice(index, 1)
     console.log(nouveauPanier)
     functionPanierLocal(nouveauPanier)
+    localStorage.setItem('panier', JSON.stringify(nouveauPanier))
 }
 function Panier({ index, panier, quantite, updateindex, constpanierLocal, functionPanierLocal }) {
     const [number1, updateNumber1] = useState(panier.quantite)

@@ -10,6 +10,7 @@ var con = mysql.createConnection({
     password: "root",
     database: 'milleetunemerveilles'
 })
+
 exports.inscription = (req, res) => {
     con.connect(async (err) => {
         if (err) throw err;
@@ -109,24 +110,34 @@ exports.informationClient = async (req, res) => {
         })
     })
 }
-/*
+
+exports.deconnexion = (req, res) => {
+    req.session.destroy()
+    console.log(req)
+    return res.status(200).json()
+}
+
 exports.mailVerification = (req, res) => {
     const transporter = nodemailer.createTransport({
+        pool: true,
         host: process.env.host,
         port: 465,
         secure: true,
         auth: {
             user: process.env.authUser,
             pass: process.env.authPass,
+        },
+        tls: {
+            rejectUnauthorized: true,
         }
     });
 
     const mailOptions = {
-        from: process.env.authUser,
+        from: 'mille et une merveilles <noreply@milleetunemerveilles.com>',
         to: `alexandrerichard45@sfr.fr`,
         subject: 'test avec ovh',
         text: 'This email was sent with Nodejs and nodemailer using gmail SMTP server',
-        html: process.env.contenueVerifMail,
+        html: "<p>merci beaucoup pour votre commande !</p>",
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -138,4 +149,4 @@ exports.mailVerification = (req, res) => {
             return res.status(200).json(info)
         }
     });
-}*/
+}

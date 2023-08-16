@@ -44,7 +44,7 @@ function Footer() {
                     <img className={style.liensRS} src={snapchat} alt="liens snapchat" />
                 </Link>
             </div>
-            <p>© 2023 - fait avec le ♡ par <Link className={style.liensAlexandre} to='https://alexandrerichard.fr' target="_blank"> Alexandre</Link></p>
+            <p>© {new Date().getFullYear()} - fait avec le ♡ par <Link className={style.liensAlexandre} to='https://alexandrerichard.fr' target="_blank"> Alexandre</Link></p>
         </footer>
     )
 }

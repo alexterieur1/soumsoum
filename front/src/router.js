@@ -4,7 +4,7 @@ import Accueil, { loadData as homeloader } from './pages/Accueil'
 import Article, { loadData as articleloader } from './pages/Article'
 import Panier, { loadData as panierloader } from './pages/Panier'
 import ArticleCategorie, { loadData as articleCategorieloader } from './pages/ArticleCategorie'
-import Admin from './pages/Admin'
+import Admin, { loadData as adminloader }from './pages/Admin'
 import { createBrowserRouter } from 'react-router-dom'
 import SuiviCommande from './pages/SuiviCommande'
 import MonCompte, { loadData as compteloader } from './pages/MonCompte'
@@ -46,7 +46,8 @@ const router = createBrowserRouter([
             },
             {
                 path: 'admin',
-                element: <Admin />
+                element: <Admin />,
+                loader: adminloader
             },
             {
                 path: 'moncompte',

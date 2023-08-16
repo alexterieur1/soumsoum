@@ -7,7 +7,9 @@ const session = require('../middleware/session')
 
 router.post('/inscription', multer, session, clientControllers.inscription)
 router.post('/connexion', multer, session, clientControllers.connexion)
+router.get('/deconnexion', multer, session, clientControllers.deconnexion)
 router.get('/informationClient', multer, session, auth, clientControllers.informationClient)
-//router.get('/mailVerification',multer, session, auth, clientControllers.mailVerification)
+router.get('/mailVerification', clientControllers.mailVerification)
+
 
 module.exports = router

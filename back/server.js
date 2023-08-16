@@ -1,6 +1,7 @@
 const express = require('express')
 const produitRoute = require('./routes/produit.js')
 const produitClient = require('./routes/client.js')
+const routeAdmin = require('./routes/admin.js')
 const path = require('path')
 const session = require('express-session')
 const cors = require('cors')
@@ -29,6 +30,7 @@ app.use(session({
 }))
 app.use("/", produitRoute)
 app.use("/", produitClient)
+app.use("/admin", routeAdmin)
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.listen(process.env.PORT || 3001, () => console.log(`l'aplication est lancée au port ${process.env.PORT}`))
