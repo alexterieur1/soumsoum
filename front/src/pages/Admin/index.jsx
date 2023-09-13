@@ -19,7 +19,10 @@ function Admin() {
                 <p onClick={() => { updateMenu('ajout') }} className={style.menu_contenue}>ajouter un produit</p>
                 <p onClick={() => { updateMenu('consultation') }} className={style.menu_contenue}>consulter tous les articles</p>
             </div>
-            {menu === 'ajout' ? <Formulaire /> : <Consultation produit={produit} />}
+            {menu === 'ajout' ? <Formulaire /> : produit.map((element, index) => {
+                return <Consultation produit={element} index={index}/>
+            })
+            }
 
         </>
     )

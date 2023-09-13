@@ -221,6 +221,28 @@ exports.creation = async (req, res) => {
     )
 }
 
+exports.modification = async (req, res) => {
+    console.log(req)
+    con.connect((err) => {
+        if (err) throw err;
+        var sql = `UPDATE stockproduits SET xs=${req.body.xs}, s=${req.body.s}, sm=${req.body.sm}, m=${req.body.m}, ml=${req.body.ml}, l=${req.body.l}, lxl=${req.body.lxl}, xl=${req.body.xl} WHERE idProduit=${req.body.id}`
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                console.log(200)
+                return res.status(200).json(result)
+            }
+            catch (err) {
+                console.log(err)
+                return res.status(400).json({ err })
+            }
+        })
+    })
+}
+
 exports.panier = (req, res) => {
     //recherche paniers client
     con.connect((err) => {
@@ -301,7 +323,7 @@ exports.addPanier = (req, res) => {
     })
 }
 
-exports.deleteUnProduitPanier = (req, res) => {
+exports.deletePanier = (req, res) => {
     let sql = `DELETE  from panier where id=${req.body.idProduit} and idClient=${req.auth.token.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {

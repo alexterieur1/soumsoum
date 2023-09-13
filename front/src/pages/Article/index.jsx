@@ -85,10 +85,11 @@ const addPanier = (taille, idProduit) => {
 function Article() {
     const { produit } = useLoaderData()
     const videoRef = useRef(null);
+    const [test, upadteTest] = useState('00')
 
     const togglePlayback = () => {
         const video = videoRef.current;
-
+        //console.log(videoRef.current.currentTime)
         if (video.paused) {
             video.play();
         } else {
@@ -100,6 +101,15 @@ function Article() {
     let stockProduit = produit[2]
     const [image, updateImage] = useState(0)
     const [taille, setTaille] = useState('')
+
+    const avancementVideo = () => {
+        const video = videoRef.current
+        console.log(videoRef.current.attributes.playsinline.nodeType)
+        //const minutes = Math.floor(video.currentTime / 60);
+        const seconds = Math.floor(video.currentTime % 60);
+
+        upadteTest(/* ${minutes} :  */`${seconds > 10 ? seconds : `0${seconds}`}`)
+    }
     useEffect(() => {
         let elementTaille = document.getElementById(taille)
         if (elementTaille === null) {
@@ -112,6 +122,11 @@ function Article() {
             elementTaille.classList.add(`${style.taille__unite__selected}`)
         }
     }, [taille])
+    if(Number(stockProduit.m) === 0){
+        console.log(Number(produit.m))
+    }
+    Number(produit.m) !== 1 ? console.log(style.taille__unite) : console.log(style.taille__unite__epuise)
+    console.log(stockProduit.m)
     return (
         <>
             <div className={style.photos}>
@@ -120,15 +135,20 @@ function Article() {
                         (produit[1][image].liens.split('.')[4] === 'webp') ?
                             <img className={style.photoGrand__img} src={produit[1][image].liens} alt="" />
                             :
-                            <video preload='auto' onClick={togglePlayback} muted loop ref={videoRef} className={style.photoGrand__img}>
-                                <source src={produit[1][image].liens} type="video/mp4" />
-                            </video>
+                            <>
+                                <video id='id' onTimeUpdate={avancementVideo} preload='auto' onClick={togglePlayback} muted loop poster='http://192.168.1.56:4200/images/test_minia.JPG' playsInline={true} ref={videoRef} className={style.photoGrand_video}>
+                                    <source src={produit[1][image].liens} type="video/mp4" />
+                                </video>
+                                <div className={style.photoGrand_description} style={{ width: videoRef.current.clientWidth + 'px'}}>
+                                    <p className={style.photoGrand_description_duree}>{test}:{Math.round(videoRef.current.duration) > 10 ? Math.round(videoRef.current.duration) : "0" + Math.round(videoRef.current.duration)}</p>
+                                </div>
+                            </>
                     }
                 </div>
                 <div className={style.listePhoto}>
                     {photosProduit ? (
                         photosProduit.map((element, index) => {
-                            if (produit[1][image].liens.split('.')[4] === 'webp') {
+                            if (element.liens.split('.')[4] === 'webp') {
                                 return (
                                     <img
                                         key={index}
@@ -140,7 +160,7 @@ function Article() {
                                 );
                             } else {
                                 return (
-                                    <video key={index} onClick={() => updateImage(index)} muted loop ref={videoRef} className={style.listePhoto__img}>
+                                    <video key={index} onClick={() => updateImage(index)} poster='http://192.168.1.56:4200/images/test_minia.JPG' preload='auto' muted loop ref={videoRef} className={style.listePhoto__img}>
                                         <source src={element.liens} type="video/mp4" />
                                     </video>
                                 );
@@ -157,14 +177,14 @@ function Article() {
                 <p>{informationsProduit.descriptionProduit}</p>
             </div>
             <div className={style.taille}>
-                {Number(stockProduit.xs) >= 0 ? <p id="xs" onClick={() => setTaille('xs')} className={Number(produit.xs) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xs</p> : <></>}
-                {Number(stockProduit.s) >= 0 ? <p id="s" onClick={() => setTaille('s')} className={Number(produit.s) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s</p> : <></>}
-                {Number(stockProduit.sm) >= 0 ? <p id="sm" onClick={() => setTaille('sm')} className={Number(produit.sm) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s-m</p> : <></>}
-                {Number(stockProduit.m) >= 0 ? <p id="m" onClick={() => setTaille('m')} className={Number(produit.m) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m</p> : <></>}
-                {Number(stockProduit.ml) >= 0 ? <p id="ml" onClick={() => setTaille('ml')} className={Number(produit.ml) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m-l</p> : <></>}
-                {Number(stockProduit.l) >= 0 ? <p id="l" onClick={() => setTaille('l')} className={Number(produit.l) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l</p> : <></>}
-                {Number(stockProduit.lxl) >= 0 ? <p id="lxl" onClick={() => setTaille('lxl')} className={Number(produit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
-                {Number(stockProduit.xl) >= 0 ? <p id="xl" onClick={() => setTaille('xl')} className={Number(produit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
+                {Number(stockProduit.xs) >= 0 ? <p id="xs" onClick={() => setTaille('xs')} className={Number(stockProduit.xs) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xs</p> : <></>}
+                {Number(stockProduit.s) >= 0 ? <p id="s" onClick={() => setTaille('s')} className={Number(stockProduit.s) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s</p> : <></>}
+                {Number(stockProduit.sm) >= 0 ? <p id="sm" onClick={() => setTaille('sm')} className={Number(stockProduit.sm) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s-m</p> : <></>}
+                {Number(stockProduit.m) >= 0 ? <p id="m" onClick={() => setTaille('m')} className={Number(stockProduit.m) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m</p> : <></>}
+                {Number(stockProduit.ml) >= 0 ? <p id="ml" onClick={() => setTaille('ml')} className={Number(stockProduit.ml) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m-l</p> : <></>}
+                {Number(stockProduit.l) >= 0 ? <p id="l" onClick={() => setTaille('l')} className={Number(stockProduit.l) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l</p> : <></>}
+                {Number(stockProduit.lxl) >= 0 ? <p id="lxl" onClick={() => setTaille('lxl')} className={Number(stockProduit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
+                {Number(stockProduit.xl) >= 0 ? <p id="xl" onClick={() => setTaille('xl')} className={Number(stockProduit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
             </div>
             <button onClick={() => {
                 if (taille && taille !== 'NULL') {
@@ -181,5 +201,6 @@ function Article() {
         </>
     )
 }
+
 
 export default Article;

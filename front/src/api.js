@@ -48,6 +48,33 @@ export const creationProduit = async (produit) => {
     return (await test)
 }
 
+export const modificationQuantite = async (produit) => {
+    console.log(produit.xs.length)
+    console.log(produit.xs)
+    console.log(typeof (produit.xs))
+    let dataProduit = new FormData()
+    dataProduit.append("id", produit.id)
+    dataProduit.append("xs", (produit.xs.length > 0) ? Number(produit.xs) : -1)
+    dataProduit.append("s", (produit.s.length > 0) ? Number(produit.s) : -1)
+    dataProduit.append("sm", (produit.sm.length > 0) ? Number(produit.sm) : -1)
+    dataProduit.append("m", (produit.m.length > 0) ? Number(produit.m) : -1)
+    dataProduit.append("ml", (produit.ml.length > 0) ? Number(produit.ml) : -1)
+    dataProduit.append("l", (produit.l.length > 0) ? Number(produit.l) : -1)
+    dataProduit.append("lxl", (produit.lxl.length > 0) ? Number(produit.lxl) : -1)
+    dataProduit.append("xl", (produit.xl.length > 0) ? Number(produit.xl) : -1)
+    dataProduit.append("image1", produit.image1)
+    let resultat = fetch('http://192.168.1.56:4200/modificationProduit', {
+        method: 'POST',
+        mode: 'cors',
+        body: dataProduit,
+    })
+    //.then(function (res) { alert(res.status) })
+    //.then(function (res) { return res.json(); })
+    //.then(function (data) { alert(data.message) })
+    //.then(function (data) { return data })
+    return ((await resultat).status)
+}
+
 export const getPanier = async (userID) => {
     if (userID) {
         let requete = await fetch('http://192.168.1.56:4200/panier', {
@@ -76,20 +103,22 @@ export const addPanier = async (idPanier, contenu, idClient) => {
     dataPanier.append('idClient', idClient)
     dataPanier.append('contenu', contenu)
     //dataPanier.append('quantite', 1)
-    await fetch('http://192.168.1.56:4200/panier', {
-        method: "POST",
-        headers: {
-            'id': idClient
-        },
-        body: dataPanier
-    })
+    if (idClient) {
+        await fetch('http://192.168.1.56:4200/panier', {
+            method: "POST",
+            headers: {
+                'id': idClient
+            },
+            body: dataPanier
+        })
+    }
 }
 
-export const deletePanier = async (idProduit, idClient) => {
+export const deletePanier = async (idPanier, idClient) => {
     let dataPanier = new URLSearchParams()
-    dataPanier.append('idProduit', idProduit)
+    dataPanier.append('idProduit', idPanier)
     dataPanier.append('idClient', idClient)
-    await fetch(`http://192.168.1.56:4200/panier/${idProduit}`, {
+    await fetch(`http://192.168.1.56:4200/panier/${idPanier}`, {
         method: "POST",
         headers: {
             'id': idClient

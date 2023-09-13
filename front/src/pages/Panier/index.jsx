@@ -74,10 +74,6 @@ const arrayQuantitePrix = (panierLocal, panierLocalStorage) => {
         array.splice(3, 1, totalFinal)
     }
 }
-/* const ajoutLocalstorageApi = () => {
-    let localStrg = localStorage.getItem('panier')
-
-} */
 export async function loadData() {
     const infoProduit = await getAllProduit()
     const panierAPI = await getPanier(Cookies.get('userId'))
@@ -111,15 +107,14 @@ function Panier() {
         }
         return updatedListeInfoProduit
     }, [panierLocal, infoProduit])
-
     useEffect(() => {
         if (indexModif >= 0) {
-            console.log('true')
-            console.log(indexModif)
-            console.log(panierLocal.length)
+            //console.log('true')
+            //console.log(indexModif)
+            //console.log(panierLocal.length)
             if (indexModif < panierLocal.length) {
                 panierLocal[indexModif].quantite = Quantite
-                console.log(indexModif, Quantite, panierLocal)
+                //console.log(indexModif, Quantite, panierLocal)
                 modiflocalStorage[indexModif].quantite = Quantite
                 localStorage.setItem('panier', JSON.stringify(modiflocalStorage))
             }
@@ -129,35 +124,28 @@ function Panier() {
             modiflocalStorage[indexModif].quantite = Quantite
             localStorage.setItem('panier', JSON.stringify(modiflocalStorage))*/
             // cherche si le panier n'existe pas deja, sinon il en créer un dans la base de données
-            console.log(Number(panierAPI[indexPanier].idPanier), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
-            console.log('test')
-            console.log('test')
-            console.log('test')
-            console.log('test')
-            console.log('test')
-            console.log('test')
+            //console.log(Number(panierAPI[indexPanier].idPanier), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
             if (panierAPI.length !== 0) {
                 if (indexPanier > panierAPI.length) {
+                    //console.log(panierAPI[indexPanier])
                     addPanier(Number(panierAPI[indexPanier].idPanier), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
                 }
                 else {
-                    addPanier(Number(panierAPI[indexPanier].idPanier), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
+                    //console.log(panierAPI[indexPanier].idPanier)
+                    addPanier(Number(panierAPI[indexPanier].idPanier), JSON.stringify(panierLocal), Cookies.get('userId'))
                 }
             }
             else {
                 addPanier(Date.now(), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
             }
-        }/* 
-            if (indexModif > panierLocal.length) {
-    
-            } */
+        }
         else {
             console.log('false')
         }
         arrayQuantitePrix(listeInfoProduit, panierLocal)
         let prixFinal = prixTotalArrondi(array[3])
         updateTotal(prixFinal)
-        console.log(listeInfoProduit)
+        //console.log(listeInfoProduit)
     }, [Quantite, indexModif, panierLocal, listeInfoProduit, panierAPI, indexPanier, modiflocalStorage])
     return (
         <>
@@ -195,34 +183,41 @@ function Panier() {
                     <p>oh non... votre panier est vide !</p>
                 </div>
             }
-            <h2 className={style.titre}>Mes autres paniers</h2>
             {
-                panierAPI.map((element, index) => {
-                    let quantitePanierAPI = 0
-                    console.log(element.idPanier)
-                    console.log(JSON.parse(localStorage.getItem('idPanier')))
-                    if (Number(element.idPanier) === JSON.parse(localStorage.getItem('idPanier'))) {
-                        return <></>
-                    }
-                    else {
-                        for (const e of JSON.parse(element.contenu)) {
-                            quantitePanierAPI = e.quantite + quantitePanierAPI
-                            console.log(quantitePanierAPI)
-                            console.log(element)
-                        }
-                        return <ListePanierAPI key={index} index={index} updateIndexPanier={updateIndexPanier} updatePanierLocal={updatePanierLocal} quantite={quantitePanierAPI} panier={JSON.parse(element.contenu)} idPanier={JSON.parse(element.idPanier)} />
+                Boolean(Cookies.get('userId')) ?
+                    <>
+                        <h2 className={style.titre}>Mes autres paniers</h2>
+                        {
+                            panierAPI.map((element, index) => {
+                                let quantitePanierAPI = 0
+                                //console.log(element.idPanier)
+                                //console.log(JSON.parse(localStorage.getItem('idPanier')))
+                                if (Number(element.idPanier) === JSON.parse(localStorage.getItem('idPanier'))) {
+                                    return <></>
+                                }
+                                else {
+                                    for (const e of JSON.parse(element.contenu)) {
+                                        quantitePanierAPI = e.quantite + quantitePanierAPI
+                                        //console.log(quantitePanierAPI)
+                                        //console.log(element)
+                                    }
+                                    return <ListePanierAPI key={index} index={index} updateIndexPanier={updateIndexPanier} updatePanierLocal={updatePanierLocal} quantite={quantitePanierAPI} panier={JSON.parse(element.contenu)} idPanier={JSON.parse(element.idPanier)} />
 
-                    }
-                })
+                                }
+                            })
+                        }
+                        <button onClick={async () => {
+                            addPanier(Date.now(), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
+                            localStorage.setItem('panier', '[]')
+                            updatePanierLocal([])
+                            localStorage.setItem('idPanier', JSON.stringify(''))
+                        }} className={style.button}>
+                            ajouter un nouveau panier
+                        </button>
+                    </>
+                    :
+                    <></>
             }
-            <button onClick={async () => {
-                addPanier(Date.now(), JSON.stringify(modiflocalStorage), Cookies.get('userId'))
-                localStorage.setItem('panier', '[]')
-                updatePanierLocal([])
-                localStorage.setItem('idPanier', JSON.stringify(''))
-            }} className={style.button}>
-                ajouter un nouveau panier
-            </button>
         </>
     )
 }

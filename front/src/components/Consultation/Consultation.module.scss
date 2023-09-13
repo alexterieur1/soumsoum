@@ -18,6 +18,17 @@
         margin-top :1em;
         display:flex;
         grid-column: span 3;
+        align-items: center;
+        gap:15px;
+        &_element{
+            display:flex;
+            flex-direction:column;
+            justify-content: center;
+        }
+        &_modification{
+            width:20px;
+            gap:20px;
+        }
     }
 }
 .containers{
