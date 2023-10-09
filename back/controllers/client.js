@@ -134,10 +134,9 @@ exports.mailVerification = (req, res) => {
 
     const mailOptions = {
         from: 'mille et une merveilles <noreply@milleetunemerveilles.com>',
-        to: `alexandrerichard45@sfr.fr`,
-        subject: 'test avec ovh',
-        text: 'This email was sent with Nodejs and nodemailer using gmail SMTP server',
-        html: "<p>merci beaucoup pour votre commande !</p>",
+        to: `alexandrerichard45@sfr.fr, alexandre.richard@rcbd.fr`,
+        subject: 'nouveau test',
+        html: `merci beaucoup ${req.headers.prenom} pour ta commande !`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

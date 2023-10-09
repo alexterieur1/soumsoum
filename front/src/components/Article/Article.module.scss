@@ -6,6 +6,7 @@
     &_element {
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 }
 
@@ -18,12 +19,69 @@
     display: block;
     max-height: 500px;
     box-shadow: 4px 5px 16px -5px #A0A0A0;
+    z-index: -1;
 }
 
 .description,
 .prix {
     display: flex;
     justify-content: center;
+}
+
+.prix {
+    font-size: 18px;
+
+    &_solde {
+        font-size: 12px;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            background-color: #D19FA1;
+            height: 2px;
+            width: 2.5em;
+            rotate: 145deg;
+            top: 50%;
+            left: 0%;
+        }
+    }
+}
+
+.promotion {
+    &_base {
+        position: absolute;
+        top: 75%;
+        right: 0;
+    }
+
+    &_texte {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        height: 1em;
+        width: 2em;
+        background-color: #D0B69F;
+
+        &::after {
+            content: '';
+            background-color: white;
+            height: 1em;
+            width: 2em;
+            position: absolute;
+            z-index: -1;
+            top: 4px;
+            right: 4px;
+        }
+    }
+
+    &_prix {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
 }
 
 .description {

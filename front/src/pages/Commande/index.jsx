@@ -115,7 +115,7 @@ function Commande() {
                         }}
                         onApprove={(data, actions) => {
                             actions.order.capture().then((details) => {
-                                console.log(`Transaction completed by ${details.payer.name.given_name}`);
+                                alert(`Transaction completed by ${details.payer.name.given_name}`);
                                 //actions.redirect('http://192.168.1.56:3000/panier')
                             })
                             actions.order.capture().then((details) => {

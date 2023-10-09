@@ -163,36 +163,42 @@ function Header() {
                             </Link>
                         </div>
                     </div>
-                    <div className={style.liste}>
-                        {Cookies.get('userId') ? <h3 onClick={() => {
-                            console.log(isAuth)
-                            deconnexion()
-                            Cookies.remove('userId')
-                            window.location.reload()
-                        }}>je me déconnecte</h3>:<></>}
+                    <div className={style.element_header}>
+                        <div className={style.liste}>
+                            <Link to='/nouveau'>
+                                <h3>Nouveautées</h3>
+                            </Link><Link to={`./article/promotions`}>
+                                <h3>Promotions</h3>
+                            </Link>
+                            <ul>
+                                <ListeHeader titre="Vetements" elements={['Les Hauts', 'Les Bas', 'Les Ensembles']} />
+                            </ul>
+                            <Link to={`./article/accesoires`}>
+                                <h3>Accesoires</h3>
+                            </Link>
+                            <ul>
+                                <ListeHeader titre="Chaussures" elements={['Les Baskets', 'Les Sandales']} />
+                            </ul>
+                        </div>
+                        <div className={style.connexion}>
+                            {
+                                Cookies.get('userId') ?
+                                    <>
+                                        <Link to='/moncompte'>
+                                            <h3 >Mon compte</h3>
+                                        </Link>
+                                        <h3 onClick={() => {
+                                        console.log(isAuth)
+                                        deconnexion()
+                                        Cookies.remove('userId')
+                                        window.location.reload()
+                                    }}>je me déconnecte</h3>
+                                    </>
+                                    :
+                                    <h3 onClick={() => setisAuth(isAuth => !isAuth)}>Je me connecte</h3>
+                            }
 
-                        <h3>Nouveautés</h3>
-                        <h3>Promotions</h3>
-                        <ul>
-                            <ListeHeader titre="Vetements" elements={['Les Hauts', 'Les Bas', 'Les Ensembles']} />
-                        </ul>
-                        <h3>Accesoires</h3>
-                        <ul>
-                            <ListeHeader titre="Chaussures" elements={['Les Baskets', 'Les Sandales']} />
-                        </ul>
-                    </div>
-                    <div className={style.connexion}>
-                        {
-                            Cookies.get('userId') ?
-                                <>
-                                    <Link to='/moncompte'>
-                                        <h3 >Mon compte</h3>
-                                    </Link>
-                                </>
-                                :
-                                <h3 onClick={() => setisAuth(isAuth => !isAuth)}>Je me connecte</h3>
-                        }
-
+                        </div>
                     </div>
                 </div>
                 {isRecherche ?

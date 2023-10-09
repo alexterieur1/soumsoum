@@ -212,11 +212,12 @@ export const suiviLaPoste = async (numero) => {
     return response
 }
 
-export const mailVerification = async (userID) => {
+export const mailVerification = async (userID, prenom) => {
     let requete = await fetch(`http://192.168.1.56:4200/mailVerification`, {
         method: "GET",
         headers: {
-            'id': userID
+            'id': userID,
+            'prenom': prenom
         }
     })
     let requetejson = await requete.json()
@@ -273,8 +274,15 @@ export const CompteurVue = async (idProduit) => {
     console.log(result)
     return (await result.json())
 }
-/*
-export const adminInfoStock = async () => {
-    let result = await fetch('http://192.168.1.56:4200/admin/infoStock')
-    return result.json()
-}*/
+
+export const apiVisible = async (produit) => {
+    let dataProduit = new FormData()
+    dataProduit.append("idProduit", produit.idProduit)
+    dataProduit.append("visible", produit.visible)
+    let result = await fetch('http://192.168.1.56:4200/visible', {
+        method: "POST",
+        body: dataProduit
+    })
+    console.log(result)
+    return (result.status)
+}

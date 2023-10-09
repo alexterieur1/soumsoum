@@ -10,9 +10,10 @@ var con = mysql.createConnection({
 exports.affichageAllProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
-        var sql = "SELECT * FROM produits"
+        var sql = "SELECT * FROM produits WHERE visible=1"
         con.query(sql, (err, result, fields) => {
             if (err) {
+                console.log(err)
                 return res.status(500).json({ message: 'bad request' })
             }
             try {
@@ -376,6 +377,29 @@ exports.getAllCommande = (req, res) => {
             try {
                 console.log(result)
                 return res.status(200).json(result)
+            }
+            catch (err) {
+                console.log(err)
+                return res.status(400).json({ err })
+            }
+        })
+    })
+}
+
+exports.rendreVisible = (req, res) => {
+    console.log(req.body)
+    con.connect((err) => {
+        if (err) throw err;
+        var sql = `UPDATE produits SET visible=${req.body.visible} WHERE idProduit=${req.body.idProduit}`
+        console.log(sql)
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                console.log(result)
+                return res.status(200).json(200)
             }
             catch (err) {
                 console.log(err)

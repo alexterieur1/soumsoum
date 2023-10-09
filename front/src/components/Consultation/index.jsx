@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import style from './Consultation.module.scss'
 import { Link } from 'react-router-dom';
-import { modificationQuantite, adminInfoProduit } from '../../api';
+import { modificationQuantite, adminInfoProduit, apiVisible } from '../../api';
 
-
+let resultatApiVisible = false
 function Consultation({ produit, index }) {
   console.log(produit)
+  const [isChecked, setIschecked] = useState(produit.visible)
+  console.log(isChecked)
   const [modeModification, setmodemodification] = useState(false)
   const [xs, setXs] = useState(produit.xs);
   const [s, setS] = useState(produit.s);
@@ -18,7 +20,7 @@ function Consultation({ produit, index }) {
 
   const envoieFormulaire = async () => {
     let valeurFormulaire = {
-      "id":produit.idProduit,
+      "id": produit.idProduit,
       "xs": xs,
       "s": s,
       "sm": sm,
@@ -28,9 +30,9 @@ function Consultation({ produit, index }) {
       "lxl": lxl,
       "xl": xl,
     }
-    let resultat = await modificationQuantite(valeurFormulaire)
-    console.log(resultat)
-    if(resultat === 200){
+    let resultatvaleurFormulaire = await modificationQuantite(valeurFormulaire)
+    console.log(resultatvaleurFormulaire)
+    if (resultatvaleurFormulaire === 200) {
       setmodemodification(false)
       let MAJ = await adminInfoProduit()
       console.log(MAJ[index])
@@ -44,15 +46,40 @@ function Consultation({ produit, index }) {
       setXl(MAJ[index].xl)
     }
   }
+
+  const envoieVisible = useCallback(async () => {
+    let valeurFormulaire = {
+      "idProduit": produit.idProduit,
+      "visible": isChecked,
+    }
+    resultatApiVisible = await apiVisible(valeurFormulaire)
+    console.log(resultatApiVisible)
+    return resultatApiVisible
+  }, [isChecked, produit])
+
+  useEffect(() => {
+    envoieVisible()
+  }, [isChecked, envoieVisible])
   return (
     <div className={style.containers}>
       {produit ?
         <div>
-          <Link key={index} to={`/article/${produit.categorie}/${produit.idProduit}`} className={style.article}>
-            <span>{produit.nomProduit}</span>
-            <img className={style.article_image} src={produit.photoPrincipal} alt='article' />
-            <span>vues {produit.NbrVues}</span>
-          </Link>
+          <div className={style.article}>
+            <span>
+              <div>{produit.nomProduit}</div>
+              <div>{produit.NbrVues} vues</div>
+            </span>
+            <Link key={index} to={`/article/${produit.categorie}/${produit.idProduit}`}>
+              <img className={style.article_image} src={produit.photoPrincipal} alt='article' />
+            </Link>
+            <div className={style.visible}>
+              <span className={style.visible_element}>
+                <label htmlFor='visible'>visible</label>
+                <input type="checkbox" checked={isChecked} onChange={() => setIschecked(isChecked => !isChecked)} />
+              </span>
+              {resultatApiVisible ? <div className={` ${resultatApiVisible === 200 ? style.visible_valide : style.visible_erreur}`}>{resultatApiVisible === 200 ? 'modification réussi !' : 'un problème est apparue'}</div> : <></>}
+            </div>
+          </div>
           <ul className={style.article_liste}>
             {modeModification ?
               <>
@@ -108,8 +135,9 @@ function Consultation({ produit, index }) {
             <button onClick={() => { setmodemodification(true) }}>modifier valeur</button>
           }
         </div>
-        : <></>}
-    </div>
+        : <></>
+      }
+    </div >
   )
 }
 

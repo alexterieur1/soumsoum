@@ -21,7 +21,6 @@ function Footer() {
                     <p>à Propos</p>
                     <ul>
                         <li><Link to='/CGV'>Conditions générales de vente</Link></li>
-                        <li><Link to='/credit'>Crédit</Link></li>
                         <li><Link to='/mentionslegales'>Mentions légales</Link></li>
                     </ul>
                 </div>

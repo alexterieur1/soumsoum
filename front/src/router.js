@@ -1,6 +1,7 @@
 import App from './App'
 import Erreur from './pages/Erreur'
 import Accueil, { loadData as homeloader } from './pages/Accueil'
+import Nouveau, { loadData as nouveauloader } from './pages/Nouveau'
 import Article, { loadData as articleloader } from './pages/Article'
 import Panier, { loadData as panierloader } from './pages/Panier'
 import ArticleCategorie, { loadData as articleCategorieloader } from './pages/ArticleCategorie'
@@ -24,10 +25,16 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Accueil />,
                 loader: homeloader
-            }, {
+            },
+            {
                 path: 'article/:categorie',
                 element: <ArticleCategorie />,
                 loader: articleCategorieloader
+            },
+            {
+                path: 'nouveau',
+                element: <Nouveau />,
+                loader: nouveauloader
             },
             {
                 path: 'article/:ensembles/:id',

@@ -16,5 +16,6 @@ router.post('/panier', multer, session, auth, produitControllers.addPanier)
 router.post('/panier/:idPanier', multer, session, auth, produitControllers.deletePanier)
 router.post('/commande', multer, session, auth, produitControllers.commandePanier)
 router.get('/commande', multer, session, auth, produitControllers.getAllCommande)
+router.post('/visible', multer, produitControllers.rendreVisible)
 
 module.exports = router

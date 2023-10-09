@@ -81,7 +81,6 @@ export async function loadData() {
 }
 function Panier() {
     const { panierAPI, infoProduit } = useLoaderData()
-    console.log(panierAPI)
     const [panierLocal, updatePanierLocal] = useState(JSON.parse(localStorage.getItem('panier')) ? JSON.parse(localStorage.getItem('panier')) : localStorage.setItem('panier', '[]'))
     const [Total, updateTotal] = useState()
     const [Quantite, setQuantite] = useState(1)

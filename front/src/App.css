@@ -8,3 +8,6 @@ body{
   background-color: #efefef;
   font-family: 'Cormorant';
 }
+main{
+  min-height: calc(100vh - 48px - 90px);
+}

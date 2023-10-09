@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import style from './Article.module.scss'
-import { getUnProduit, CompteurVue } from '../../api'
+import { getUnProduit, CompteurVue, mailVerification} from '../../api'
 //import { Link } from 'react-router-dom'
 import { useLoaderData } from 'react-router-dom'
-//import Cookies from 'js-cookie'
-//import Avis from '../../components/Avis'
+import Cookies from 'js-cookie'
+import Avis from '../../components/Avis'
 
 export async function loadData(props) {
     const produit = await getUnProduit(props.params.id)
+    mailVerification(Cookies.get('userId'), 'Alexandre')
     await CompteurVue(props.params.id)
     return { produit }
 }
@@ -83,17 +84,19 @@ const addPanier = (taille, idProduit) => {
     }
 }
 function Article() {
-    const { produit } = useLoaderData()
     const videoRef = useRef(null);
+    const { produit } = useLoaderData()
     const [test, upadteTest] = useState('00')
+    const [isImage, setIsimage] = useState(true)
 
     const togglePlayback = () => {
         const video = videoRef.current;
-        //console.log(videoRef.current.currentTime)
-        if (video.paused) {
-            video.play();
+        console.log(video)
+        if (video.paused && videoRef.current.attributes.playsinline.nodeType === 2) {
+            console.log(video.load())
+            video.play()
         } else {
-            video.pause();
+            video.pause()
         }
     };
     let informationsProduit = produit[0]
@@ -104,7 +107,6 @@ function Article() {
 
     const avancementVideo = () => {
         const video = videoRef.current
-        console.log(videoRef.current.attributes.playsinline.nodeType)
         //const minutes = Math.floor(video.currentTime / 60);
         const seconds = Math.floor(video.currentTime % 60);
 
@@ -122,27 +124,56 @@ function Article() {
             elementTaille.classList.add(`${style.taille__unite__selected}`)
         }
     }, [taille])
-    if(Number(stockProduit.m) === 0){
-        console.log(Number(produit.m))
-    }
-    Number(produit.m) !== 1 ? console.log(style.taille__unite) : console.log(style.taille__unite__epuise)
-    console.log(stockProduit.m)
+
+    useEffect(() => {
+        if (image < 3) {
+            setIsimage(true)
+        }
+        else {
+            setIsimage(false)
+        }
+    }, [image])
+    const [metadataLoaded, setMetadataLoaded] = useState(false);
+    const [largeurVideo, setLargeurvideo] = useState()
+    useEffect(() => {
+        const video = videoRef.current
+        // Fonction de rappel appelée lorsque les métadonnées de la vidéo sont chargées
+        const handleMetadataLoaded = () => {
+            // Mettre à jour l'état pour indiquer que les métadonnées sont chargées
+            setMetadataLoaded(true);
+            setLargeurvideo(videoRef.current.clientWidth)
+            // Vous pouvez accéder aux métadonnées de la vidéo ici
+            console.log('Durée de la vidéo :', videoRef.current.duration);
+            console.log('Largeur de la vidéo :', videoRef.current.videoWidth);
+            console.log('Hauteur de la vidéo :', videoRef.current.videoHeight);
+        };
+
+        // Écoutez l'événement 'loadedmetadata' pour détecter le chargement des métadonnées
+        video.addEventListener('canplay', handleMetadataLoaded);
+
+        // N'oubliez pas de supprimer l'écouteur d'événements lorsque le composant est démonté
+        return () => {
+            video.removeEventListener('loadedmetadata', handleMetadataLoaded);
+        };
+    }, []);
     return (
         <>
             <div className={style.photos}>
                 <div className={style.photoGrand}>
                     {
-                        (produit[1][image].liens.split('.')[4] === 'webp') ?
-                            <img className={style.photoGrand__img} src={produit[1][image].liens} alt="" />
-                            :
-                            <>
-                                <video id='id' onTimeUpdate={avancementVideo} preload='auto' onClick={togglePlayback} muted loop poster='http://192.168.1.56:4200/images/test_minia.JPG' playsInline={true} ref={videoRef} className={style.photoGrand_video}>
+                        <>
+                            <img className={style.photoGrand__img} style={{ display: isImage ? 'block' : 'none' }} src={produit[1][image].liens} alt="" />
+                            <span style={{ display: !isImage ? 'contents' : 'none' }}>
+                                <video ref={videoRef} id='id' onTimeUpdate={avancementVideo} preload='auto' poster="http://192.168.1.56:4200/images/test_minia.JPG" onClick={togglePlayback} muted loop playsInline={true} className={style.photoGrand_video}>
                                     <source src={produit[1][image].liens} type="video/mp4" />
                                 </video>
-                                <div className={style.photoGrand_description} style={{ width: videoRef.current.clientWidth + 'px'}}>
+                                {metadataLoaded ? <div className={style.photoGrand_description} style={{ width: largeurVideo + 'px' }}>
                                     <p className={style.photoGrand_description_duree}>{test}:{Math.round(videoRef.current.duration) > 10 ? Math.round(videoRef.current.duration) : "0" + Math.round(videoRef.current.duration)}</p>
-                                </div>
-                            </>
+                                </div> : <></>}
+
+                            </span>
+                        </>
+
                     }
                 </div>
                 <div className={style.listePhoto}>
@@ -160,9 +191,13 @@ function Article() {
                                 );
                             } else {
                                 return (
-                                    <video key={index} onClick={() => updateImage(index)} poster='http://192.168.1.56:4200/images/test_minia.JPG' preload='auto' muted loop ref={videoRef} className={style.listePhoto__img}>
-                                        <source src={element.liens} type="video/mp4" />
-                                    </video>
+                                    <img
+                                        key={index}
+                                        onClick={() => updateImage(index)}
+                                        className={style.listePhoto__img}
+                                        src="http://192.168.1.56:4200/images/test_minia.JPG"
+                                        alt=""
+                                    />
                                 );
                             }
                         })
@@ -197,7 +232,7 @@ function Article() {
                 ajouter au panier
             </button>
             {taille === 'NULL' ? <p className={style.msgError}>Selectionnez une taille</p> : <></>}
-            {/* <Avis etoilesscore={4.5} /> */}
+            <Avis etoilesscore={4.3} />
         </>
     )
 }

@@ -2,7 +2,6 @@ import React from 'react'
 import style from './panierAPI.module.scss'
 
 const AjoutPanierLocalStorage = (panier, functionPanierLocal, idPanier) => {
-    console.log(functionPanierLocal)
     functionPanierLocal(panier)
     localStorage.setItem('panier', JSON.stringify(panier))
     localStorage.setItem('idPanier', JSON.stringify(idPanier))
