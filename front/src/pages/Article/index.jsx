@@ -100,6 +100,9 @@ function Article() {
         }
     };
     let informationsProduit = produit[0]
+    let prixEuros = informationsProduit.prix.split('.')
+    let prixReduit = String((Number(informationsProduit.prix)*((100-Number(informationsProduit.promotion))/100)).toFixed(2))
+    let prixEurosSolde = prixReduit.split('.')
     let photosProduit = produit[1]
     let stockProduit = produit[2]
     const [image, updateImage] = useState(0)
@@ -208,7 +211,12 @@ function Article() {
             </div>
             <div className={style.description}>
                 <p>{informationsProduit.nomProduit}</p>
-                <p>{informationsProduit.prix} €</p>
+                {produit.promotion !== 0 ?
+                    <div className={style.promotion_prix}>
+                        <p className={style.prix}>{prixEurosSolde[0]},{prixEurosSolde[1]} €</p>
+                        <p className={style.prix_solde}>{prixEuros[0]},{prixEuros[1]} €</p>
+                    </div>
+                    : <p className={style.prix}>{prixEuros[0]},{prixEuros[1]} €</p>}
                 <p>{informationsProduit.descriptionProduit}</p>
             </div>
             <div className={style.taille}>

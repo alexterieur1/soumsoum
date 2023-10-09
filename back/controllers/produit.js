@@ -32,7 +32,7 @@ exports.affichageUnProduit = async (req, res) => {
         let arrayResponse = []
         const informationProduit = async () => {
             try {
-                const [rows, fields] = await con.promise().query(`SELECT idProduit, categorie, nomProduit, descriptionProduit, prix, photoPrincipal FROM produits WHERE produits.idProduit = ${req.params.id}`)
+                const [rows, fields] = await con.promise().query(`SELECT idProduit, categorie, nomProduit, descriptionProduit, promotion, prix, photoPrincipal FROM produits WHERE produits.idProduit = ${req.params.id}`)
                 arrayResponse.push(rows[0])
                 res.status(200)
                 return rows

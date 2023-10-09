@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position:relative;
+    position: relative;
 
     &__img {
         width: inherit;
@@ -30,19 +30,21 @@
         position: relative;
         z-index: 1;
     }
+
     &_description {
         position: absolute;
-        width:200px;
+        width: 200px;
         z-index: 1;
-        display:flex;
+        display: flex;
         align-items: flex-end;
         justify-content: flex-end;
-        bottom:5px;
-        &_duree{
-            color:white;
+        bottom: 5px;
+
+        &_duree {
+            color: white;
             font-weight: 700;
             background-color: #D0B69F;
-            padding:2px;
+            padding: 2px;
         }
     }
 }
@@ -137,4 +139,28 @@
     color: #D19FA1;
     font-weight: 700;
     font-size: 18px;
+}
+.promotion {
+    &_prix {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+}
+.prix {
+    &_solde {
+        font-size: 12px;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            background-color: #D19FA1;
+            height: 2px;
+            width: 2.5em;
+            rotate: 145deg;
+            top: 50%;
+            left: 0%;
+        }
+    }
 }
