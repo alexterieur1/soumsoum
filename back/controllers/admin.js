@@ -27,7 +27,6 @@ exports.infoAllproduit = async (req, res) => {
     })
 }
 exports.incrementationVue = async (req, res) => {
-    console.log(req.body)
     con.connect((err) => {
         if (err) throw err;
         var sql = `UPDATE produits SET NbrVues = NbrVues + 1 WHERE produits.idProduit=${req.body.idProduit}`

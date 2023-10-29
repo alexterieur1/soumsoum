@@ -47,6 +47,7 @@
         }
     }
 }
+
 .promotion {
     &_base {
         position: absolute;
@@ -122,5 +123,19 @@ a {
     .description,
     .prix {
         font-size: 25px;
+    }
+
+    .prix {
+        font-size: 25px;
+
+        &_solde {
+            font-size: 19px;
+        }
+    }
+
+    .promotion {
+        &_texte {
+            font-size: 38px;
+        }
     }
 }

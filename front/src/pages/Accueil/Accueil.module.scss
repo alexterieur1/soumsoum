@@ -3,9 +3,11 @@
     object-fit: cover;
     opacity: 0.8;
     display: block;
+    cursor: pointer;
 }
 
 .titre {
+    cursor: context-menu;
     display: flex;
     justify-content: center;
     padding-block: 1em 0.3em;
@@ -51,12 +53,14 @@
     }
 
     &__image {
+        cursor: pointer;
         height: 100%;
         width: 100%;
         object-fit: cover;
         position: absolute;
 
         &__bottom {
+            cursor: pointer;
             height: 100%;
             width: 100%;
             object-fit: cover;
@@ -65,6 +69,7 @@
         }
 
         &__top {
+            cursor: pointer;
             height: 100%;
             width: 100%;
             object-fit: cover;
@@ -103,7 +108,7 @@
 
 @media(min-width:820px) {
     .image {
-        width: 90vw;
+        width: 30vw;
         margin: 0 auto;
     }
 
@@ -112,18 +117,18 @@
     }
 
     .article {
-        grid-template-columns: auto auto auto auto;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
     }
     .categorie {
         //background-color: #DBCAC3;
-        width: 100vw;
+        width: calc(100vw - 18px);
         background: url('../../assets/marbre_blanc.png');
         padding: 30px 20px 30px 20px;
         display: grid;
-        grid-template-columns: auto auto auto;
-        grid-template-rows: 25vw 25vw;
+        grid-template-columns: auto auto auto auto auto auto;
+        grid-template-rows: 30vh;
         gap: 20px;
         position: relative;
-        overflow-x: scroll;
+        overflow-x: hidden;
     }
 }

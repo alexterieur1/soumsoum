@@ -18,17 +18,32 @@
 }
 
 .prixFinal {
-    margin-block:0.5em;
+    margin-block: 0.5em;
     display: flex;
     flex-direction: row-reverse;
-    width:90vw;
+    width: 90vw;
     font-weight: 600;
     font-size: 22px;
 }
-.panierVide{
+
+.panierVide {
     height: calc(100vh - 48px - 90px);
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+@media(min-width:820px) {
+    .listePanier {
+        padding-inline: 30vw;
+    }
+    .prixFinal {
+        padding-inline: 25vw;
+    }
+    .panierAutre{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        row-gap: 1em;
+    }
 }

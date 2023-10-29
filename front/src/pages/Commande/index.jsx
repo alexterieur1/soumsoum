@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import style from './Commande.module.scss'
 import { useLoaderData } from 'react-router-dom'
 import Cookies from 'js-cookie'
-import { getPanier, informationClient, getAllProduit, CommandePaypal } from '../../api'
+import { getPanier, informationClient, getAllProduit, CommandePaypal, decompteCommandePaypal } from '../../api'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 export async function loadData() {
@@ -16,9 +16,16 @@ export async function loadData() {
 let prixTotalArticle = 0
 const sousTotal = (panier) => {
     prixTotalArticle = 0
-    panier.map((element) =>
-        prixTotalArticle = prixTotalArticle + Number(element.prix) * element.quantite
-    )
+    panier.map((element) => {
+        console.log(panier)
+        if (element.promotion !== 0) {
+            prixTotalArticle = prixTotalArticle + (Number(element.prix) * ((100 - Number(element.promotion)) / 100)).toFixed(2) * element.quantite
+        }
+        else {
+            prixTotalArticle = prixTotalArticle + Number(element.prix) * element.quantite
+        }
+        return prixTotalArticle
+    })
     return prixTotalArticle
 }
 /* 
@@ -51,7 +58,6 @@ function Commande() {
         return updatedListeInfoProduit
     }, [panier, infoProduit])
     let total = sousTotal(listeInfoProduit)
-    console.log(total, infoClient)
     return (
         <>
             <h1>Récapitulatif de la commande</h1>
@@ -63,78 +69,86 @@ function Commande() {
                             <p>{element.nomProduit}</p>
                             <p>Quantité: {element.quantite}</p>
                             <p>taille: {element.taille}</p>
-                            <p>{element.prix * element.quantite} € soit {element.prix} € l'unité</p>
+                            {element.promotion !== 0 ? <p>{(Number(element.prix) * ((100 - Number(element.promotion)) / 100)).toFixed(2) * element.quantite} € soit {(Number(element.prix) * ((100 - Number(element.promotion)) / 100)).toFixed(2)} € l'unité</p> : <p>{element.prix * element.quantite} € soit {element.prix} € l'unité</p>}
+
+
                         </div>
                     </div>
 
                 )}
-                <p>livraison</p>
-                <form>
-                    <fieldset className={style.livraison}>
-                        <div className={style.livraison_element}>
-                            <input type='radio' id='domicile' name='domicile' value='domicile' checked={livraison === 'domicile'} onChange={(e) => setLivraison(e.target.value)} />
-                            <label className={style.livraison_description} htmlFor='domicile'>Livraison à domicile en 2 à 4 jours<span className={style.livraison_prix}>3 €</span></label>
+                <div className={style.gridTotal}>
+                    <div>
+                        <p>livraison</p>
+                        <form>
+                            <fieldset className={style.livraison}>
+                                <div className={style.livraison_element}>
+                                    <input type='radio' id='domicile' name='domicile' value='domicile' checked={livraison === 'domicile'} onChange={(e) => setLivraison(e.target.value)} />
+                                    <label className={style.livraison_description} htmlFor='domicile'>Livraison à domicile en 2 à 4 jours<span className={style.livraison_prix}>3 €</span></label>
+                                </div>
+                                <div className={style.livraison_element}>
+                                    <input type='radio' id='relay' name='relay' value='relay' checked={livraison === 'relay'} onChange={(e) => setLivraison(e.target.value)} />
+                                    <label className={style.livraison_description} htmlFor='relay'>Livraison en point relay en 2 à 4 jours<span className={style.livraison_prix}>gratuit</span></label>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <div className={style.recapPrix}>
+                            <p>sous-total : <span>{total.toFixed(2)} €</span></p>
+                            <p>frais de port : <span>{livraison === 'domicile' ? '3.00€' : 'gratuit'}</span></p>
+                            <p>sous-total : <span>{livraison === 'domicile' ? (total + 3).toFixed(2) : total.toFixed(2)} €</span></p>
                         </div>
-                        <div className={style.livraison_element}>
-                            <input type='radio' id='relay' name='relay' value='relay' checked={livraison === 'relay'} onChange={(e) => setLivraison(e.target.value)} />
-                            <label className={style.livraison_description} htmlFor='relay'>Livraison en point relay en 2 à 4 jours<span className={style.livraison_prix}>gratuit</span></label>
-                        </div>
-                    </fieldset>
-                </form>
-                <div className={style.recapPrix}>
-                    <p>sous-total : <span>{total} €</span></p>
-                    <p>frais de port : <span>{livraison === 'domicile' ? '3.00€' : 'gratuit'}</span></p>
-                    <p>sous-total : <span>{livraison === 'domicile' ? total + 3 : total} €</span></p>
-                </div>
-                {infoClient[0] ? <PayPalScriptProvider
-                    style={
-                        {
-                            disableMaxWidth: true,
-                            width: '100%',
-                            height: '100vh'
+                    </div>
+                    {infoClient[0] ? <PayPalScriptProvider
+                        style={
+                            {
+                                disableMaxWidth: true,
+                                width: '100%',
+                                height: '100vh'
+                            }
                         }
-                    }
-                    options={{
-                        "clientId":
-                            "Ae7Ncikmzv1zaXolykUCsDMSSnu5J5CavM9djOBzqYy23lM_GVgd5W-4Mq3g8K5_VW1dJ7NgZrvrps7k",
-                        currency: "EUR"
-                    }}
-                >
-                    <PayPalButtons style={{ layout: 'vertical', shape: 'pill' }}
-                        createOrder={(data, actions) => {
-                            console.log(data, actions)
-                            return actions.order.create({
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            value: livraison === 'domicile' ? total + 3 : total
+                        options={{
+                            "clientId":
+                                "Ae7Ncikmzv1zaXolykUCsDMSSnu5J5CavM9djOBzqYy23lM_GVgd5W-4Mq3g8K5_VW1dJ7NgZrvrps7k",
+                            currency: "EUR"
+                        }}
+                    >
+                        <PayPalButtons style={{ layout: 'vertical', shape: 'pill' }}
+                            createOrder={(data, actions) => {
+                                console.log(data, actions)
+                                return actions.order.create({
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                value: livraison === 'domicile' ? (total + 3).toFixed(2) : total.toFixed(2)
+                                            }
                                         }
-                                    }
-                                ]
-                            })
-                        }}
-                        onApprove={(data, actions) => {
-                            actions.order.capture().then((details) => {
-                                alert(`Transaction completed by ${details.payer.name.given_name}`);
-                                //actions.redirect('http://192.168.1.56:3000/panier')
-                            })
-                            actions.order.capture().then((details) => {
-                                CommandePaypal(Cookies.get('userId'), details.id, details.status, localStorage.getItem('panier'))
-                                //actions.redirect('http://192.168.1.56:3000/#')
-                                console.log(details)
-                            })
-                            actions.order.get().then((details) => {
-                                console.log(details)
-                            })
-                        }}
-                        onCancel={(data, actions) => {
-                            console.log(data, actions)
-                        }} />
-                </PayPalScriptProvider>
-                    : <button className={style.button}>
-                        Vous n'etes pas connecté
-                    </button>}
-
+                                    ]
+                                })
+                            }}
+                            onApprove={(data, actions) => {
+                                actions.order.capture().then((details) => {
+                                    alert(`Transaction completed by ${details.payer.name.given_name}`);
+                                    //actions.redirect('http://192.168.1.56:3000/panier')
+                                })
+                                actions.order.capture().then((details) => {
+                                    CommandePaypal(Cookies.get('userId'), details.id, details.status, localStorage.getItem('panier'))
+                                    decompteCommandePaypal(Cookies.get('userId'), localStorage.getItem('idPanier'), localStorage.getItem('panier'))
+                                    localStorage.removeItem('idPanier')
+                                    localStorage.setItem('panier', '[]')
+                                    actions.redirect('http://192.168.1.56:3000/panier')
+                                    console.log(details)
+                                })
+                                actions.order.get().then((details) => {
+                                    console.log(details)
+                                })
+                            }}
+                            onCancel={(data, actions) => {
+                                console.log(data, actions)
+                            }} />
+                    </PayPalScriptProvider>
+                        : <button className={style.button}>
+                            Vous n'etes pas connecté
+                        </button>}
+                </div>
             </div >
 
         </>

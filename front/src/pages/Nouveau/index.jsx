@@ -14,6 +14,7 @@ export async function loadData() {
 }
 function Nouveau() {
     const { infoProduit } = useLoaderData()
+    console.log(infoProduit)
     return (
         <>
             <h2 className={style.titre}>Les dernières nouveautées</h2>

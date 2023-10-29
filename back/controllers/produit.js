@@ -1,4 +1,5 @@
 const mysql = require('mysql2')
+const ffmpeg = require('fluent-ffmpeg');
 
 var con = mysql.createConnection({
     host: "127.0.0.1",
@@ -10,7 +11,7 @@ var con = mysql.createConnection({
 exports.affichageAllProduit = async (req, res) => {
     con.connect((err) => {
         if (err) throw err;
-        var sql = "SELECT * FROM produits WHERE visible=1"
+        var sql = "SELECT * FROM produits WHERE visible=1 limit 10 offset 0"
         con.query(sql, (err, result, fields) => {
             if (err) {
                 console.log(err)
@@ -160,15 +161,16 @@ exports.affichageRecherche = async (req, res) => {
 }
 
 exports.creation = async (req, res) => {
+    console.log(req)
     res.status(500)
     let idProduit = Date.now()
     con.connect(async (err) => {
         if (err) throw err
         const insertProduit = async () => {
             try {
-                console.log(req.body)
-                console.log(req.files)
-                await con.promise().query(`INSERT INTO produits (nomProduit, descriptionProduit, idProduit, prix, categorie, photoPrincipal, sousCategorie) VALUES ('${req.body.nomProduit}', '${req.body.descriptionProduit}', '${idProduit}', '${req.body.prix}', '${req.body.categorie}', '${req.protocol}://${req.get('host')}/images/${Object.values(req.files)[0][0].filename}', '${req.body.sousCategorie}')`)
+                //console.log(req.body)
+                //console.log(req.files)
+                await con.promise().query(`INSERT INTO produits (nomProduit, descriptionProduit, idProduit, prix, categorie, photoPrincipal, sousCategorie, NbrVues) VALUES ('${req.body.nomProduit}', '${req.body.descriptionProduit}', '${idProduit}', '${req.body.prix}', '${req.body.categorie}', '${req.protocol}://${req.get('host')}/images/${Object.values(req.files)[0][0].filename}', '${req.body.sousCategorie}', 0)`)
                 res.status(200)
                 return res.statusCode
             }
@@ -352,7 +354,8 @@ exports.commandePanier = (req, res) => {
                 return res.status(500).json({ message: 'bad request' })
             }
             try {
-                console.log(result)
+                //console.log(result)
+                //console.log(req.body)
                 return res.status(200).json(result)
             }
             catch (err) {
@@ -362,6 +365,88 @@ exports.commandePanier = (req, res) => {
         })
     })
 }
+
+/* exports.decompteCommandePaypal = (req, res) => {
+    let tableau = JSON.parse(req.body.article)
+    console.log(tableau)
+    let i = 0
+    while (i < tableau.length) {
+        con.connect((err) => {
+            if (err) throw err;
+            var sql = `SELECT ${tableau[i].tailleProduit} FROM stockproduits WHERE idProduit='${tableau[i].produit}'`
+            console.log(i)
+            console.log('valeur de i1')
+            con.query(sql, (err, result, fields) => {
+                console.log(i)
+                console.log('valeur de i2')
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({ message: 'bad request' })
+                }
+                try {
+                    i=0
+                    console.log(i)
+                    console.log('valeur de i3')
+                    let resultat = result
+                    var valeurs = Object.values(resultat[0]);
+                    console.log(i)
+                    console.log('i')
+                    console.log(tableau[0].quantite)
+                    console.log('valeur du panier')
+                    let calcul = Number(valeurs) - tableau[0].quantite
+                    console.log(calcul)
+                    console.log('valeur du stock apres')
+                    var sql = `UPDATE stockproduits SET ${tableau[0].tailleProduit} = '${calcul}' where idproduit = ${tableau[0].produit}`
+                    con.query(sql, (err, result, fields) => {
+                        if (err) {
+                            console.log(err)
+                            return res.status(500).json({ message: 'bad request' })
+                        }
+                        try {
+                            console.log(result)
+                        }
+                        catch (err) {
+                            console.log(err)
+                            return res.status(400).json({ err })
+                        }
+                    })
+                }
+                catch (err) {
+                    console.log(err)
+                    return res.status(400).json({ err })
+                }
+            })
+        })
+        i++
+    }
+    return res.status(200)
+} */
+
+exports.decompteCommandePaypal = async (req, res) => {
+    const tableau = JSON.parse(req.body.article);
+    console.log(tableau);
+
+    try {
+        for (let i = 0; i < tableau.length; i++) {
+            const [rows] = await con.promise().execute(
+                `SELECT ${tableau[i].tailleProduit} FROM stockproduits WHERE idProduit='${tableau[i].produit}'`
+            );
+            const valeurs = Object.values(rows[0]);
+            const calcul = Number(valeurs[0]) - tableau[i].quantite;
+            
+            await con.promise().execute(
+                `UPDATE stockproduits SET ${tableau[i].tailleProduit} = ? WHERE idproduit = ?`,
+                [calcul, tableau[i].produit]
+            );
+        }
+
+        return res.status(200).json({ message: 'Success' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Bad request' });
+    }
+};
+
 
 exports.getAllCommande = (req, res) => {
     //recherche paniers client

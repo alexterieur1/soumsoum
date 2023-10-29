@@ -5,6 +5,7 @@ header {
 ul,
 li {
     list-style-type: none;
+    cursor: pointer;
 }
 
 .navbar {
@@ -322,12 +323,13 @@ li {
     }
 
     .logo {
-        font-size: 34px;
+        font-size: 30px;
     }
 
     .iconeMenu {
         aspect-ratio: 1/1;
-        height: 40px;
+        height: 30px;
+        cursor: pointer;
     }
 
     .recherche {
@@ -339,6 +341,7 @@ li {
             border-bottom: 3px solid #D0B69F;
             margin: 0.5em;
             background-color: #efefef;
+            width:350.55px;
 
             &:focus-visible {
                 outline: none;
@@ -347,6 +350,21 @@ li {
 
         &__resultat {
             top: 88px;
+            left:25vw;
+            right: 25vw;
+            bottom:auto;
+        }
+    }
+
+    .headerBalise {
+        &__gauche {
+            width: 25vw;
+        }
+    }
+
+    .liste {
+        &__balise__titre {
+            width: 30%;
         }
     }
 }

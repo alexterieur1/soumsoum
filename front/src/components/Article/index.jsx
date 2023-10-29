@@ -7,6 +7,7 @@ function Article({ image, description, categorie, prix, promotion, epuise, id })
     let prixEuros = prix.split('.')
     let prixReduit = String((Number(prix)*((100-Number(promotion))/100)).toFixed(2))
     let prixEurosSolde = prixReduit.split('.')
+    console.log(prixEuros)
     return (
         <div className={style.article}>
             {epuise ? <>
@@ -30,7 +31,7 @@ function Article({ image, description, categorie, prix, promotion, epuise, id })
                         <p className={style.prix}>{prixEurosSolde[0]},{prixEurosSolde[1]} €</p>
                         <p className={style.prix_solde}>{prixEuros[0]},{prixEuros[1]} €</p>
                     </div>
-                    : <p className={style.prix}>{prixEuros[0]},{prixEuros[1]} €</p>}
+                    : <p className={style.prix}>{prixEuros[0]},{prixEuros[1] ? prixEuros[1]: '00'} €</p>}
             </div>
         </div>
     )

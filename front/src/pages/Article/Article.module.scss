@@ -18,7 +18,7 @@
         object-fit: contain;
         max-height: 50vh;
         display: block;
-        padding-bottom: 5px;
+        //padding-bottom: 5px;
     }
 
     &_video {
@@ -26,7 +26,7 @@
         object-fit: contain;
         max-height: 422px;
         display: block;
-        padding-bottom: 5px;
+        //padding-bottom: 5px;
         position: relative;
         z-index: 1;
     }
@@ -38,7 +38,7 @@
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
-        bottom: 5px;
+        bottom: 0px;
 
         &_duree {
             color: white;
@@ -90,6 +90,7 @@
     padding-block: 1em;
 
     &__unite {
+        cursor: pointer;
         border: solid #D0B69F 2px;
         display: flex;
         align-items: center;
@@ -98,6 +99,7 @@
         padding-block: 5px;
 
         &__epuise {
+            cursor:pointer;
             position: relative;
             color: grey;
             border: solid #E6D7CA 2px;
@@ -140,6 +142,7 @@
     font-weight: 700;
     font-size: 18px;
 }
+
 .promotion {
     &_prix {
         display: flex;
@@ -147,6 +150,7 @@
         justify-content: space-evenly;
     }
 }
+
 .prix {
     &_solde {
         font-size: 12px;
@@ -162,5 +166,69 @@
             top: 50%;
             left: 0%;
         }
+    }
+}
+
+@media(min-width:820px) {
+    .photos {
+        flex-direction: row-reverse;
+        gap: 50px;
+        width: 100%;
+    }
+
+    .description::after {
+        width: 45vw;
+    }
+
+    .photoGrand {
+        width: 350px;
+        margin-right: 70px;
+
+        &__img {
+            padding-bottom: -25px;
+        }
+    }
+
+    .listePhoto {
+        grid-template-columns: 1fr;
+        width: 70px;
+        height: 50vh;
+        justify-items: center;
+
+        &__img {
+            height: 100px;
+        }
+    }
+
+    .promotion {
+        &_prix {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            width: 10vw;
+        }
+    }
+
+    .prix {
+        &_solde {
+            font-size: 19px;
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                background-color: #D19FA1;
+                height: 2px;
+                width: 2.5em;
+                rotate: 145deg;
+                top: 50%;
+                left: 0%;
+            }
+        }
+    }
+
+    .taille {
+        padding-inline: 25%;
+        width: 75%;
     }
 }

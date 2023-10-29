@@ -45,8 +45,6 @@
 }
 
 .sousCategorie {
-    display: flex;
-    flex-direction: column;
     align-items: center;
 
     display: grid;
@@ -81,5 +79,31 @@
     &_label {
         display: flex;
         gap: 1em;
+    }
+}
+
+@media(min-width:820px) {
+    .sousCategorie {
+        display: flex;
+        width: 50vw;
+        justify-content: space-evenly;
+
+        &_element {
+            width: auto;
+
+            &::after {
+                height: 3px;
+                width: 100%;
+                left: 0px;
+            }
+        }
+
+        &_label {
+            width: 4vw;
+        }
+    }
+
+    .article {
+        grid-template-columns: auto auto auto auto;
     }
 }

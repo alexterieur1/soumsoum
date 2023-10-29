@@ -68,8 +68,14 @@ function Accueil() {
             <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={false} />
           ))
         ) : <>chargement ...</>}
-        {/* <Article image={image1} description={"lorem ipsum"} prix={"25,00"} epuise={false} />
-        <Article image={image2} description={"lorem ipsum"} prix={"25,00"} epuise={true} /> */}
+      </div>
+      <h2 className={style.titre}>Les tendances</h2>
+      <div className={style.article}>
+        {produit ? (
+          produit.map((produit, index) => (
+            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={false} />
+          ))
+        ) : <>chargement ...</>}
       </div>
     </>
   )

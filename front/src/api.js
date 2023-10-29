@@ -19,14 +19,13 @@ export const getCategorieRecherche = async () => {
 }
 
 export const creationProduit = async (produit) => {
-    console.log(produit.xs.length)
-    console.log(produit.xs)
-    console.log(typeof (produit.xs))
+    console.log(produit)
     let dataProduit = new FormData()
     dataProduit.append("nomProduit", produit.nomProduit)
     dataProduit.append("descriptionProduit", produit.descriptionProduit)
     dataProduit.append("prix", produit.prix)
     dataProduit.append("categorie", produit.categorie)
+    dataProduit.append("sousCategorie", produit.sousCategorie)
     dataProduit.append("xs", (produit.xs.length > 0) ? Number(produit.xs) : -1)
     dataProduit.append("s", (produit.s.length > 0) ? Number(produit.s) : -1)
     dataProduit.append("sm", (produit.sm.length > 0) ? Number(produit.sm) : -1)
@@ -36,6 +35,10 @@ export const creationProduit = async (produit) => {
     dataProduit.append("lxl", (produit.lxl.length > 0) ? Number(produit.lxl) : -1)
     dataProduit.append("xl", (produit.xl.length > 0) ? Number(produit.xl) : -1)
     dataProduit.append("image1", produit.image1)
+    dataProduit.append("image2", produit.image2)
+    dataProduit.append("image3", produit.image3)
+    dataProduit.append("image4", produit.image4)
+    dataProduit.append("imageposter", produit.imagePoster)
     let test = fetch('http://192.168.1.56:4200/produit', {
         method: 'POST',
         mode: 'cors',
@@ -231,6 +234,20 @@ export const CommandePaypal = async (idClient, idCommande, status, panier) => {
     dataPanier.append('status', status)
     dataPanier.append('article', panier)
     let requete = await fetch(`http://192.168.1.56:4200/commande`, {
+        method: "POST",
+        headers: {
+            'id': idClient
+        },
+        body: dataPanier
+    })
+    let requetejson = await requete.json()
+    return requetejson
+}
+export const decompteCommandePaypal = async (idClient, idPanier, panier) => {
+    let dataPanier = new URLSearchParams()
+    dataPanier.append('idPanier', idPanier)
+    dataPanier.append('article', panier)
+    let requete = await fetch(`http://192.168.1.56:4200/decompteCommandePaypal`, {
         method: "POST",
         headers: {
             'id': idClient

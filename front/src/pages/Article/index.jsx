@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import style from './Article.module.scss'
-import { getUnProduit, CompteurVue, mailVerification} from '../../api'
+import { getUnProduit, CompteurVue, mailVerification } from '../../api'
 //import { Link } from 'react-router-dom'
 import { useLoaderData } from 'react-router-dom'
 import Cookies from 'js-cookie'
-import Avis from '../../components/Avis'
+//import Avis from '../../components/Avis'
 
 export async function loadData(props) {
     const produit = await getUnProduit(props.params.id)
-    mailVerification(Cookies.get('userId'), 'Alexandre')
+    //mailVerification(Cookies.get('userId'), 'Alexandre')
     await CompteurVue(props.params.id)
     return { produit }
 }
@@ -92,7 +92,7 @@ function Article() {
     const togglePlayback = () => {
         const video = videoRef.current;
         console.log(video)
-        if (video.paused && videoRef.current.attributes.playsinline.nodeType === 2) {
+        if (video.paused) {
             console.log(video.load())
             video.play()
         } else {
@@ -101,7 +101,7 @@ function Article() {
     };
     let informationsProduit = produit[0]
     let prixEuros = informationsProduit.prix.split('.')
-    let prixReduit = String((Number(informationsProduit.prix)*((100-Number(informationsProduit.promotion))/100)).toFixed(2))
+    let prixReduit = String((Number(informationsProduit.prix) * ((100 - Number(informationsProduit.promotion)) / 100)).toFixed(2))
     let prixEurosSolde = prixReduit.split('.')
     let photosProduit = produit[1]
     let stockProduit = produit[2]
@@ -159,6 +159,11 @@ function Article() {
             video.removeEventListener('loadedmetadata', handleMetadataLoaded);
         };
     }, []);
+    useEffect(() => {
+        if (!isImage) {
+
+        }
+    }, [videoRef, isImage])
     return (
         <>
             <div className={style.photos}>
@@ -167,11 +172,11 @@ function Article() {
                         <>
                             <img className={style.photoGrand__img} style={{ display: isImage ? 'block' : 'none' }} src={produit[1][image].liens} alt="" />
                             <span style={{ display: !isImage ? 'contents' : 'none' }}>
-                                <video ref={videoRef} id='id' onTimeUpdate={avancementVideo} preload='auto' poster="http://192.168.1.56:4200/images/test_minia.JPG" onClick={togglePlayback} muted loop playsInline={true} className={style.photoGrand_video}>
+                                <video ref={videoRef} id='id' onTimeUpdate={avancementVideo} preload='auto' poster="http://192.168.1.56:4200/images/Bas_premierTest_1697991252196.jpg" onClick={togglePlayback} muted loop playsInline={true} className={style.photoGrand_video}>
                                     <source src={produit[1][image].liens} type="video/mp4" />
                                 </video>
                                 {metadataLoaded ? <div className={style.photoGrand_description} style={{ width: largeurVideo + 'px' }}>
-                                    <p className={style.photoGrand_description_duree}>{test}:{Math.round(videoRef.current.duration) > 10 ? Math.round(videoRef.current.duration) : "0" + Math.round(videoRef.current.duration)}</p>
+                                    {videoRef.current.duration ? <p className={style.photoGrand_description_duree}>{test}:{Math.round(videoRef.current.duration) > 10 ? Math.round(videoRef.current.duration) : "0" + Math.round(videoRef.current.duration)}</p> : <p className={style.photoGrand_description_duree}>{test}:{Math.round(videoRef.current.duration) > 10 ? Math.round(videoRef.current.duration) : "00"}</p>}
                                 </div> : <></>}
 
                             </span>
@@ -192,15 +197,21 @@ function Article() {
                                         alt=""
                                     />
                                 );
-                            } else {
+                            }
+                            if (element.liens.split('.')[4] === 'mp4') {
                                 return (
                                     <img
                                         key={index}
                                         onClick={() => updateImage(index)}
                                         className={style.listePhoto__img}
-                                        src="http://192.168.1.56:4200/images/test_minia.JPG"
+                                        src="http://192.168.1.56:4200/images/Bas_premierTest_1697991252196.jpg"
                                         alt=""
                                     />
+                                );
+                            }
+                            else {
+                                return (
+                                    <></>
                                 );
                             }
                         })
@@ -211,12 +222,13 @@ function Article() {
             </div>
             <div className={style.description}>
                 <p>{informationsProduit.nomProduit}</p>
-                {produit.promotion !== 0 ?
+                {console.log(prixEuros)}
+                {produit[0].promotion !== 0 ?
                     <div className={style.promotion_prix}>
                         <p className={style.prix}>{prixEurosSolde[0]},{prixEurosSolde[1]} €</p>
                         <p className={style.prix_solde}>{prixEuros[0]},{prixEuros[1]} €</p>
                     </div>
-                    : <p className={style.prix}>{prixEuros[0]},{prixEuros[1]} €</p>}
+                    : <p className={style.prix}>{prixEuros[0]},{prixEuros[1] ? prixEuros[1]: '00'} €</p>}
                 <p>{informationsProduit.descriptionProduit}</p>
             </div>
             <div className={style.taille}>
@@ -240,7 +252,7 @@ function Article() {
                 ajouter au panier
             </button>
             {taille === 'NULL' ? <p className={style.msgError}>Selectionnez une taille</p> : <></>}
-            <Avis etoilesscore={4.3} />
+            {/* <Avis etoilesscore={4.3} /> */}
         </>
     )
 }

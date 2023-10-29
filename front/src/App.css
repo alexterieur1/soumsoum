@@ -1,13 +1,31 @@
-a{
+a {
   text-decoration: none;
+  cursor: pointer;
 }
-img{
-  display:block;
+
+img {
+  display: block;
 }
-body{
+
+body {
   background-color: #efefef;
   font-family: 'Cormorant';
 }
-main{
+
+main {
+  margin: 0 auto;
   min-height: calc(100vh - 48px - 90px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+@media(min-width:820px) {
+  main {
+    max-width: 1500px;
+  }
 }

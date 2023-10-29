@@ -13,7 +13,6 @@ function PanierAPI({ index, quantite, panier, updateIndexPanier, updatePanierLoc
         <div onClick={() => {
             AjoutPanierLocalStorage(panier, updatePanierLocal, idPanier)
             updateIndexPanier(index)
-            console.log(index)
         }
         } className={style.autrePanier} id={`${index}`}>
             <p>votre panier n°{index + 1}</p>
