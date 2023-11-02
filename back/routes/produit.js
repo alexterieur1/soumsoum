@@ -6,6 +6,7 @@ const auth = require('../middleware/auth')
 const session = require('../middleware/session')
 
 router.get('/produit', produitControllers.affichageAllProduit)
+router.get('/produitStock', produitControllers.affichageAllProduitStock)
 router.get('/produit/:id', produitControllers.affichageUnProduit)
 router.get('/categorie/:categorie', produitControllers.affichageCategorieProduit)
 router.get('/recherche', produitControllers.affichageRecherche)

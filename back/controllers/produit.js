@@ -27,6 +27,25 @@ exports.affichageAllProduit = async (req, res) => {
     })
 }
 
+exports.affichageAllProduitStock = async (req, res) => {
+    con.connect((err) => {
+        if (err) throw err;
+        var sql = "SELECT * FROM stockProduits limit 10 offset 0"
+        con.query(sql, (err, result, fields) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({ message: 'bad request' })
+            }
+            try {
+                return res.status(200).json(result)
+            }
+            catch (err) {
+                return res.status(400).json({ err })
+            }
+        })
+    })
+}
+
 exports.affichageUnProduit = async (req, res) => {
     con.connect(async (err) => {
         if (err) throw err;
