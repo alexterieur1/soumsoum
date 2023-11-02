@@ -6,16 +6,39 @@ import imagechaussure from '../../assets/imagechaussure.jpg'
 import imagehaut from '../../assets/imagehaut.jpg'
 import imagebas from '../../assets/imagebas.jpg'
 import imageaccessoire from '../../assets/imageaccessoire.jpg'
-import { getAllProduit } from '../../api';
+import { getAllProduit, getAllProduitStock } from '../../api';
 import { Link, useLoaderData } from 'react-router-dom';
 
 export async function loadData() {
   const produit = await getAllProduit()
-  return { produit }
+  const stock = await getAllProduitStock()
+  return { produit, stock }
 }
 
 function Accueil() {
-  const { produit } = useLoaderData()
+  const { produit, stock } = useLoaderData()
+  const verificationStock = () => {
+    const arrayStock = stock.map((element) => {
+      if (
+        Number(element.xs) > 1 ||
+        Number(element.s) > 1 ||
+        Number(element.sm) > 1 ||
+        Number(element.m) > 1 ||
+        Number(element.ml) > 1 ||
+        Number(element.l) > 1 ||
+        Number(element.lxl) > 1 ||
+        Number(element.xl) > 1
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  
+    return arrayStock;
+  };
+  let stockproduit = verificationStock()
+  console.log(stockproduit[0])
   //let elementCategorie = document.querySelector(`.${style.categorie}`)
   //console.log(elementCategorie)
   //console.log({marbre})
@@ -65,7 +88,7 @@ function Accueil() {
       <div className={style.article}>
         {produit ? (
           produit.map((produit, index) => (
-            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={false} />
+            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={stockproduit[index]} />
           ))
         ) : <>chargement ...</>}
       </div>
@@ -73,7 +96,7 @@ function Accueil() {
       <div className={style.article}>
         {produit ? (
           produit.map((produit, index) => (
-            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={false} />
+            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={stockproduit[index]} />
           ))
         ) : <>chargement ...</>}
       </div>

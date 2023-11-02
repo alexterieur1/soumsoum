@@ -228,29 +228,34 @@ function Article() {
                         <p className={style.prix}>{prixEurosSolde[0]},{prixEurosSolde[1]} €</p>
                         <p className={style.prix_solde}>{prixEuros[0]},{prixEuros[1]} €</p>
                     </div>
-                    : <p className={style.prix}>{prixEuros[0]},{prixEuros[1] ? prixEuros[1]: '00'} €</p>}
+                    : <p className={style.prix}>{prixEuros[0]},{prixEuros[1] ? prixEuros[1] : '00'} €</p>}
                 <p>{informationsProduit.descriptionProduit}</p>
             </div>
             <div className={style.taille}>
-                {Number(stockProduit.xs) >= 0 ? <p id="xs" onClick={() => setTaille('xs')} className={Number(stockProduit.xs) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xs</p> : <></>}
-                {Number(stockProduit.s) >= 0 ? <p id="s" onClick={() => setTaille('s')} className={Number(stockProduit.s) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s</p> : <></>}
-                {Number(stockProduit.sm) >= 0 ? <p id="sm" onClick={() => setTaille('sm')} className={Number(stockProduit.sm) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s-m</p> : <></>}
-                {Number(stockProduit.m) >= 0 ? <p id="m" onClick={() => setTaille('m')} className={Number(stockProduit.m) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m</p> : <></>}
-                {Number(stockProduit.ml) >= 0 ? <p id="ml" onClick={() => setTaille('ml')} className={Number(stockProduit.ml) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m-l</p> : <></>}
-                {Number(stockProduit.l) >= 0 ? <p id="l" onClick={() => setTaille('l')} className={Number(stockProduit.l) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l</p> : <></>}
-                {Number(stockProduit.lxl) >= 0 ? <p id="lxl" onClick={() => setTaille('lxl')} className={Number(stockProduit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
-                {Number(stockProduit.xl) >= 0 ? <p id="xl" onClick={() => setTaille('xl')} className={Number(stockProduit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
-            </div>
-            <button onClick={() => {
-                if (taille && taille !== 'NULL') {
-                    addPanier(taille, informationsProduit.idProduit)
-                }
-                else {
-                    setTaille('NULL')
-                }
-            }} className={style.button}>
-                ajouter au panier
-            </button>
+                {Number(stockProduit.xs) >= 0 ? <p id="xs" onClick={() => { if (Number(stockProduit.xs) !== 0) { setTaille('xs') } }} className={Number(stockProduit.xs) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xs</p> : <></>}
+                {Number(stockProduit.s) >= 0 ? <p id="s" onClick={() => { if (Number(stockProduit.s) !== 0) { setTaille('s') } }} className={Number(stockProduit.s) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s</p> : <></>}
+                {Number(stockProduit.sm) >= 0 ? <p id="sm" onClick={() => { if (Number(stockProduit.sm) !== 0) { setTaille('sm') } }} className={Number(stockProduit.sm) !== 0 ? style.taille__unite : style.taille__unite__epuise}>s-m</p> : <></>}
+                {Number(stockProduit.m) >= 0 ? <p id="m" onClick={() => { if (Number(stockProduit.m) !== 0) { setTaille('m') } }} className={Number(stockProduit.m) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m</p> : <></>}
+                {Number(stockProduit.ml) >= 0 ? <p id="ml" onClick={() => { if (Number(stockProduit.ml) !== 0) { setTaille('ml') } }} className={Number(stockProduit.ml) !== 0 ? style.taille__unite : style.taille__unite__epuise}>m-l</p> : <></>}
+                {Number(stockProduit.l) >= 0 ? <p id="l" onClick={() => { if (Number(stockProduit.l) !== 0) { setTaille('l') } }} className={Number(stockProduit.l) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l</p> : <></>}
+                {Number(stockProduit.lxl) >= 0 ? <p id="lxl" onClick={() => { if (Number(stockProduit.lxl) !== 0) { setTaille('lxl') } }} className={Number(stockProduit.lxl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>l-xl</p> : <></>}
+                {Number(stockProduit.xl) >= 0 ? <p id="xl" onClick={() => { if (Number(stockProduit.xl) !== 0) { setTaille('xl') } }} className={Number(stockProduit.xl) !== 0 ? style.taille__unite : style.taille__unite__epuise}>xl</p> : <></>}
+            </div >
+            {
+                stockProduit.xs > 0 || stockProduit.s > 0 || stockProduit.sm > 0 || stockProduit.m > 0 || stockProduit.ml > 0 || stockProduit.l > 0 || stockProduit.lxl > 0 || stockProduit.xl > 0 ?
+                    <button onClick={() => {
+                        if (taille && taille !== 'NULL') {
+                            addPanier(taille, informationsProduit.idProduit)
+                        }
+                        else {
+                            setTaille('NULL')
+                        }
+                    }} className={style.button}>
+                        ajouter au panier
+                    </button>
+                    : <div className={style.button}>rupture de stock</div>
+            }
+
             {taille === 'NULL' ? <p className={style.msgError}>Selectionnez une taille</p> : <></>}
             {/* <Avis etoilesscore={4.3} /> */}
         </>

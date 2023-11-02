@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react'
 import style from './Commande.module.scss'
-import { useLoaderData } from 'react-router-dom'
+import { Link, useLoaderData } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { getPanier, informationClient, getAllProduit, CommandePaypal, decompteCommandePaypal } from '../../api'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 export async function loadData() {
     const panier = await getPanier(Cookies.get('userId'))
@@ -39,6 +40,8 @@ function Commande() {
     const { infoClient, infoProduit } = useLoaderData()
     let panier = JSON.parse(localStorage.getItem('panier'))
     const [livraison, setLivraison] = useState('domicile')
+    const [isChecked, setIschecked] = useState(false)
+    const position = [51.505, -0.09];
 
     const listeInfoProduit = useMemo(() => {
         const updatedListeInfoProduit = []
@@ -96,61 +99,85 @@ function Commande() {
                             <p>frais de port : <span>{livraison === 'domicile' ? '3.00€' : 'gratuit'}</span></p>
                             <p>sous-total : <span>{livraison === 'domicile' ? (total + 3).toFixed(2) : total.toFixed(2)} €</span></p>
                         </div>
+                        <span className={style.validationCGV}>
+                            <input id='cgv' type="checkbox" checked={isChecked} onChange={() => setIschecked(isChecked => !isChecked)} />
+                            <label for="cgv"><p>Vous acceptez les <Link to={`/CGV`} className={style.liens_cgv}> conditions génrales de ventes.</Link></p></label>
+                        </span>
                     </div>
-                    {infoClient[0] ? <PayPalScriptProvider
-                        style={
-                            {
-                                disableMaxWidth: true,
-                                width: '100%',
-                                height: '100vh'
-                            }
-                        }
-                        options={{
-                            "clientId":
-                                "Ae7Ncikmzv1zaXolykUCsDMSSnu5J5CavM9djOBzqYy23lM_GVgd5W-4Mq3g8K5_VW1dJ7NgZrvrps7k",
-                            currency: "EUR"
-                        }}
-                    >
-                        <PayPalButtons style={{ layout: 'vertical', shape: 'pill' }}
-                            createOrder={(data, actions) => {
-                                console.log(data, actions)
-                                return actions.order.create({
-                                    purchase_units: [
-                                        {
-                                            amount: {
-                                                value: livraison === 'domicile' ? (total + 3).toFixed(2) : total.toFixed(2)
-                                            }
-                                        }
-                                    ]
-                                })
-                            }}
-                            onApprove={(data, actions) => {
-                                actions.order.capture().then((details) => {
-                                    alert(`Transaction completed by ${details.payer.name.given_name}`);
-                                    //actions.redirect('http://192.168.1.56:3000/panier')
-                                })
-                                actions.order.capture().then((details) => {
-                                    CommandePaypal(Cookies.get('userId'), details.id, details.status, localStorage.getItem('panier'))
-                                    decompteCommandePaypal(Cookies.get('userId'), localStorage.getItem('idPanier'), localStorage.getItem('panier'))
-                                    localStorage.removeItem('idPanier')
-                                    localStorage.setItem('panier', '[]')
-                                    actions.redirect('http://192.168.1.56:3000/panier')
-                                    console.log(details)
-                                })
-                                actions.order.get().then((details) => {
-                                    console.log(details)
-                                })
-                            }}
-                            onCancel={(data, actions) => {
-                                console.log(data, actions)
-                            }} />
-                    </PayPalScriptProvider>
-                        : <button className={style.button}>
-                            Vous n'etes pas connecté
-                        </button>}
+                    {
+                        isChecked ?
+                            infoClient[0] ? <PayPalScriptProvider
+                                style={
+                                    {
+                                        disableMaxWidth: true,
+                                        width: '100%',
+                                        height: '100vh'
+                                    }
+                                }
+                                options={{
+                                    "clientId":
+                                        "Ae7Ncikmzv1zaXolykUCsDMSSnu5J5CavM9djOBzqYy23lM_GVgd5W-4Mq3g8K5_VW1dJ7NgZrvrps7k",
+                                    currency: "EUR"
+                                }}
+                            >
+                                <PayPalButtons style={{ layout: 'vertical', shape: 'pill' }}
+                                    createOrder={(data, actions) => {
+                                        console.log(data, actions)
+                                        return actions.order.create({
+                                            purchase_units: [
+                                                {
+                                                    amount: {
+                                                        value: livraison === 'domicile' ? (total + 3).toFixed(2) : total.toFixed(2)
+                                                    }
+                                                }
+                                            ]
+                                        })
+                                    }}
+                                    onApprove={(data, actions) => {
+                                        actions.order.capture().then((details) => {
+                                            alert(`Transaction completed by ${details.payer.name.given_name}`);
+                                            //actions.redirect('http://192.168.1.56:3000/panier')
+                                        })
+                                        actions.order.capture().then((details) => {
+                                            CommandePaypal(Cookies.get('userId'), details.id, details.status, localStorage.getItem('panier'))
+                                            decompteCommandePaypal(Cookies.get('userId'), localStorage.getItem('idPanier'), localStorage.getItem('panier'))
+                                            localStorage.removeItem('idPanier')
+                                            localStorage.setItem('panier', '[]')
+                                            actions.redirect('http://192.168.1.56:3000/panier')
+                                            console.log(details)
+                                        })
+                                        actions.order.get().then((details) => {
+                                            console.log(details)
+                                        })
+                                    }}
+                                    onCancel={(data, actions) => {
+                                        console.log(data, actions)
+                                    }} />
+                            </PayPalScriptProvider>
+                                : <button className={style.button}>
+                                    Vous n'etes pas connecté
+                                </button> : <></>
+                    }
+
                 </div>
             </div >
-
+            {livraison === "relay" ?
+                <div className={style.choixPointRelay}>
+                    <p>Veuillez choisir votre point relais</p>
+                    <MapContainer center={[51.505, -0.09]} zoom={13} style={{ width: '100px', height: '400px' }}>
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        <Marker position={[51.505, -0.09]}>
+                            <Popup>
+                                A pretty CSS3 popup. Easily customizable.
+                            </Popup>
+                        </Marker>
+                    </MapContainer>
+                </div>
+                : <></>
+            }
         </>
     )
 }

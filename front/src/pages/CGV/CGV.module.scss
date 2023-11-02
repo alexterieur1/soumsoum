@@ -1,0 +1,17 @@
+.liste{
+    &>li{
+        padding-bottom: 15px;
+    }
+}
+P{
+    line-height: 1.5em;
+    text-align:start;
+}
+.text{
+    &_gras{
+        font-weight: 700;
+    }
+}
+h2{
+    padding-block: 1.5em 1em;
+}
