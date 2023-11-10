@@ -3,7 +3,6 @@ import style from './Article.module.scss'
 import { getUnProduit, CompteurVue, mailVerification } from '../../api'
 //import { Link } from 'react-router-dom'
 import { useLoaderData } from 'react-router-dom'
-import Cookies from 'js-cookie'
 //import Avis from '../../components/Avis'
 
 export async function loadData(props) {
@@ -12,7 +11,8 @@ export async function loadData(props) {
     await CompteurVue(props.params.id)
     return { produit }
 }
-const addPanier = (taille, idProduit) => {
+const addPanierfunction = (taille, idProduit, idClient) => {
+    console.log(idClient)
     let panierLocal = localStorage.getItem('panier')
     let objectaddPanier = {
         produit: idProduit,
@@ -46,9 +46,6 @@ const addPanier = (taille, idProduit) => {
                 }
                 i++
             }
-            /* JSONPanierLocal.map((element) => {
-
-            }) */
         }
     }
     else {
@@ -77,9 +74,6 @@ const addPanier = (taille, idProduit) => {
                 }
                 i++
             }
-            /* JSONPanierLocal.map((element) => {
-
-            }) */
         }
     }
 }
@@ -245,7 +239,7 @@ function Article() {
                 stockProduit.xs > 0 || stockProduit.s > 0 || stockProduit.sm > 0 || stockProduit.m > 0 || stockProduit.ml > 0 || stockProduit.l > 0 || stockProduit.lxl > 0 || stockProduit.xl > 0 ?
                     <button onClick={() => {
                         if (taille && taille !== 'NULL') {
-                            addPanier(taille, informationsProduit.idProduit)
+                            addPanierfunction(taille, informationsProduit.idProduit)
                         }
                         else {
                             setTaille('NULL')

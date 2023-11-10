@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import style from './MonCompte.module.scss'
 import { useLoaderData } from 'react-router-dom'
-import { informationClient, getAllCommande } from '../../api'
+import { informationClient, getAllCommande, getAllProduit } from '../../api'
 import Cookies from 'js-cookie'
+import ListeCommande from '../../components/ListeCommande'
 
 export async function loadData() {
+    const produit = await getAllProduit()
     const infoClient = await informationClient(Cookies.get('userId'))
     const allCommande = await getAllCommande(Cookies.get('userId'))
-    return { infoClient, allCommande }
+    return { infoClient, allCommande, produit }
 }/*
 const envoiemail = async()=>{
     let test = await mailVerification(Cookies.get('userId'))
@@ -15,7 +17,7 @@ const envoiemail = async()=>{
 }*/
 
 function MonCompte() {
-    const { infoClient, allCommande } = useLoaderData()
+    const { infoClient, allCommande, produit } = useLoaderData()
     const [affichage, updateAffichage] = useState(true)
     console.log(infoClient[1])
     console.log(allCommande)
@@ -87,7 +89,8 @@ function MonCompte() {
                                 </>
                                 : <>{
                                     allCommande.map((element, index) => {
-                                        return (<p>commande numéro {index +1}</p>)
+                                        console.log(element, index)
+                                        return (<ListeCommande commande={element} allProduit={produit} />)
                                     })
                                 }</>}
                         </div>

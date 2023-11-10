@@ -1,0 +1,16 @@
+.Commande {
+    border: solid 2px #D0B69F;
+    padding: 0.5em;
+
+    &_header {
+        display: flex;
+    }
+}
+
+.fleche_bas {
+    height: 50px;
+
+    & path {
+        stroke: #D0B69F;
+    }
+}

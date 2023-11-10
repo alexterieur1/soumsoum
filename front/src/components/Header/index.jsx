@@ -188,11 +188,11 @@ function Header() {
                                             <h3 >Mon compte</h3>
                                         </Link>
                                         <h3 onClick={() => {
-                                        console.log(isAuth)
-                                        deconnexion()
-                                        Cookies.remove('userId')
-                                        window.location.reload()
-                                    }}>je me déconnecte</h3>
+                                            console.log(isAuth)
+                                            deconnexion()
+                                            Cookies.remove('userId')
+                                            window.location.reload()
+                                        }}>je me déconnecte</h3>
                                     </>
                                     :
                                     <h3 onClick={() => setisAuth(isAuth => !isAuth)}>Je me connecte</h3>
@@ -224,7 +224,6 @@ function Header() {
 
                 <div className={`${style.recherche}`}>
                     <img className={style.iconeMenu} onClick={() => updateIsRecherche(isRecherche => !isRecherche)} src={loupe} alt='recherche' />
-
                 </div>
                 <Link to='./panier'>
                     <div><img className={style.iconeMenu} src={panier} alt='panier' /></div>

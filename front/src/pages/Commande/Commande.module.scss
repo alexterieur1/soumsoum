@@ -102,6 +102,13 @@
     right:0px;
     background-color: white;
 }
+.test{
+    height:300px;
+}
+.listePointRelais{
+    display:flex;
+    flex-direction: column;
+}
 @media(min-width:820px) {
     .panier {
         width: 100%;

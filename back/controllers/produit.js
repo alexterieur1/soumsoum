@@ -104,7 +104,7 @@ exports.affichageCategorieProduit = async (req, res) => {
         if (err) throw err;
         let arrayResponse = []
         const informationProduit = async () => {
-            const [rows, fields] = await con.promise().query(`SELECT * FROM produits WHERE produits.categorie = '${req.params.categorie}'`)
+            const [rows, fields] = await con.promise().query(`SELECT * FROM produits WHERE produits.categorie = '${req.params.categorie}' AND visible=1`)
             if (err) {
                 res.status(500)
                 return res.statusCode
@@ -120,7 +120,57 @@ exports.affichageCategorieProduit = async (req, res) => {
             }
         }
         const sousCategorie = async () => {
-            const [rows, fields] = await con.promise().query(`SELECT distinct sousCategorie FROM produits WHERE produits.categorie = '${req.params.categorie}'`)
+            const [rows, fields] = await con.promise().query(`SELECT distinct sousCategorie FROM produits WHERE produits.categorie = '${req.params.categorie}'AND visible=1`)
+            if (err) {
+                res.status(500)
+                return res.statusCode
+            }
+            try {
+                arrayResponse.unshift(rows)
+                res.status(200)
+                return res.statusCode
+            }
+            catch (err) {
+                console.log(err)
+                res.status(400)
+                return res.statusCode
+            }
+        }
+        let resultInformationProduit = await informationProduit()
+        console.log(resultInformationProduit)
+        let resultSousCategorie = await sousCategorie()
+        console.log(resultSousCategorie)
+        if (resultInformationProduit === 200 && resultSousCategorie === 200) {
+            return res.status(200).json(arrayResponse)
+        } else {
+            return res.status(400).json(arrayResponse)
+        }
+    })
+}
+
+exports.affichageProduitPromotion = async (req, res) => {
+    console.log('test')
+    con.connect(async (err) => {
+        if (err) throw err;
+        let arrayResponse = []
+        const informationProduit = async () => {
+            const [rows, fields] = await con.promise().query(`SELECT * FROM produits WHERE produits.promotion > 1 AND visible=1`)
+            if (err) {
+                res.status(500)
+                return res.statusCode
+            }
+            try {
+                arrayResponse.push(rows)
+                res.status(200)
+                return res.statusCode
+            }
+            catch (err) {
+                res.status(400)
+                return res.statusCode
+            }
+        }
+        const sousCategorie = async () => {
+            const [rows, fields] = await con.promise().query(`SELECT distinct sousCategorie FROM produits WHERE produits.promotion > 1 AND visible=1`)
             if (err) {
                 res.status(500)
                 return res.statusCode
@@ -452,7 +502,7 @@ exports.decompteCommandePaypal = async (req, res) => {
             );
             const valeurs = Object.values(rows[0]);
             const calcul = Number(valeurs[0]) - tableau[i].quantite;
-            
+
             await con.promise().execute(
                 `UPDATE stockproduits SET ${tableau[i].tailleProduit} = ? WHERE idproduit = ?`,
                 [calcul, tableau[i].produit]

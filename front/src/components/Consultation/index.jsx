@@ -60,6 +60,7 @@ function Consultation({ produit, index }) {
   useEffect(() => {
     envoieVisible()
   }, [isChecked, envoieVisible])
+  console.log(resultatApiVisible)
   return (
     <div className={style.containers}>
       {produit ?

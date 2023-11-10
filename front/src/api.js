@@ -13,10 +13,15 @@ export const getUnProduit = async (id) => {
     return result.json()
 }
 
-
 export const getCategorieProduit = async (categorie) => {
-    let result = await fetch(`http://192.168.1.56:4200/categorie/${categorie}`)
-    return result.json()
+    if (categorie !== 'promotions') {
+        let result = await fetch(`http://192.168.1.56:4200/categorie/${categorie}`)
+        return result.json()
+    }
+    else {
+        let result = await fetch(`http://192.168.1.56:4200/categorie/promotions`)
+        return result.json()
+    }
 }
 
 export const getCategorieRecherche = async () => {
@@ -209,7 +214,7 @@ export const suiviLaPoste = async (numero) => {
         method: "GET",
         headers: {
             'Accept': 'application/json',
-            'X-Okapi-Key': 'PJcJxlZ93SYOWCfoVe7yRPeDuOMPux5bIaCLEgQfpt3kOfE3ElrpZfs5BPduGtIe'
+            'X-Okapi-Key': '6+mHtkLCkvhhEx0gqNhRvpOJ5CekEHASxF9zq+hjquzorPaQ2a2uBP+wTDZcnKFV'
         }
     })
     let resultjson = await result.json()
@@ -249,6 +254,7 @@ export const CommandePaypal = async (idClient, idCommande, status, panier) => {
     let requetejson = await requete.json()
     return requetejson
 }
+
 export const decompteCommandePaypal = async (idClient, idPanier, panier) => {
     let dataPanier = new URLSearchParams()
     dataPanier.append('idPanier', idPanier)
@@ -308,4 +314,13 @@ export const apiVisible = async (produit) => {
     })
     console.log(result)
     return (result.status)
+}
+
+export const pointRelais = async (codePostal) => {
+    let result = await fetch(`https://datanova.laposte.fr/data-fair/api/v1/datasets/laposte-poincont2/values_agg?field=localite&format=json&metric=avg&metric_field=latitude&q=${codePostal}&size=1&select=caracteristique_du_site%2Cadresse%2Ccomplement_d_adresse%2Ccode_postal%2Clocalite%2Clatitude%2Clongitude%2C_geopoint`, {
+        method: "GET"
+    })
+    let resultjson = await result.json()
+    console.log(resultjson)
+    return resultjson.aggs
 }

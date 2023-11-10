@@ -3,16 +3,18 @@ import style from './ArticleCategorie.module.scss'
 import { useLoaderData } from 'react-router-dom'
 import Article from '../../components/Article'
 //import imgFiltre from '../../assets/filtre.svg'
-import { getCategorieProduit } from '../../api'
+import { getAllProduitStock, getCategorieProduit } from '../../api'
 
 export async function loadData(props) {
-  const produit = await getCategorieProduit(props.params.categorie)
+    const produit = await getCategorieProduit(props.params.categorie)
+  console.log(props.params.categorie)
   let categorieProduit = props.params.categorie
-  return { produit, categorieProduit }
+  const stock = await getAllProduitStock()
+  return { produit, categorieProduit, stock }
 }
 function ArticleCategorie() {
   const [listeFiltre, updateListeFiltre] = useState(false);
-  const { produit, categorieProduit } = useLoaderData();
+  const { produit, categorieProduit, stock } = useLoaderData();
   const [isChecked, setIsChecked] = useState(new Array(produit?.[0]?.length ?? 0).fill(false))
   let listeSousCategorie = []
   let listeArticleFiltre = []
@@ -49,6 +51,27 @@ function ArticleCategorie() {
   useEffect(() => {
 
   })
+  const verificationStock = () => {
+    const arrayStock = stock.map((element) => {
+      if (
+        Number(element.xs) > 1 ||
+        Number(element.s) > 1 ||
+        Number(element.sm) > 1 ||
+        Number(element.m) > 1 ||
+        Number(element.ml) > 1 ||
+        Number(element.l) > 1 ||
+        Number(element.lxl) > 1 ||
+        Number(element.xl) > 1
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  
+    return arrayStock;
+  };
+  let stockproduit = verificationStock()
   return (
     <>
       <h1 className={style.titre}>Les {categorieProduit}</h1>
@@ -73,7 +96,7 @@ function ArticleCategorie() {
       <div className={style.article}>
         {produit ? (
           (listeArticleFiltre.length === 0 ? produit[1]: listeArticleFiltre).map((produit, index) => (
-            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} epuise={false} />
+            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={stockproduit[index]} />
           ))
         ) : <>chargement ...</>}
       </div>

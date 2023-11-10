@@ -14,7 +14,10 @@
 }
 
 .MonCompte_body {
-    padding-inline: 1em;
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    gap:2em;
 
     &>h2 {
         padding-block: 2em 1em;
