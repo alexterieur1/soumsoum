@@ -8,7 +8,8 @@ import {
     getAllProduit,
     CommandePaypal,
     decompteCommandePaypal,
-    pointRelais
+    pointRelais,
+    deletePanier
 } from '../../api';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import "leaflet/dist/leaflet.css";
@@ -38,7 +39,11 @@ function sousTotal(panier) {
 
     return prixTotalArticle;
 }
-
+const supprimeCarteLivraison = ()=>{
+    let element = document.querySelector(`.${style.choixPointRelay}`)
+    console.log(element)
+    element.style.display = 'none'
+}
 function Commande() {
     const { infoClient, infoProduit } = useLoaderData();
     const panier = JSON.parse(localStorage.getItem('panier'));
@@ -47,6 +52,8 @@ function Commande() {
     const [codePostal, setCodePostal] = useState('00000');
     const [openMap, setOpenmap] = useState(false);
     const [markerArray, setMarkerArray] = useState([]);
+    const [adresseLivraison, setAdresselivraison] = useState(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)
+    console.log(infoClient)
 
     // Calcul des informations de produits
     const listeInfoProduit = useMemo(() => {
@@ -92,7 +99,6 @@ function Commande() {
     }, []);
 
     useEffect(() => {
-        console.log(markerArray);
     }, [markerArray]);
 
     return (
@@ -107,7 +113,7 @@ function Commande() {
                             <p>Quantité: {element.quantite}</p>
                             <p>taille: {element.taille}</p>
                             {element.promotion !== 0 ?
-                                <p>{(Number(element.prix) * ((100 - Number(element.promotion)) / 100)).toFixed(2) * element.quantite} € soit {(Number(element.prix) * ((100 - Number(element.promotion)) / 100)).toFixed(2)} € l'unité</p>
+                                <p>{(Number(element.prix) * ((100 - Number(element.promotion)) / 100)).toFixed(2) * element.quantite} € soit {(Number(element.prix) * ((100 - Number(element.promotion)) / 100)).toFixed(2)} €&nbsp;l'unité</p>
                                 : <p>{element.prix * element.quantite} € soit {element.prix} € l'unité</p>}
                         </div>
                     </div>
@@ -118,7 +124,9 @@ function Commande() {
                         <form>
                             <fieldset className={style.livraison}>
                                 <div className={style.livraison_element}>
-                                    <input type='radio' id='domicile' name='domicile' value='domicile' checked={livraison === 'domicile'} onChange={(e) => setLivraison(e.target.value)} />
+                                    <input type='radio' id='domicile' name='domicile' value='domicile' checked={livraison === 'domicile'} onChange={(e) => {
+                                        setLivraison(e.target.value)
+                                        setAdresselivraison(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)}} />
                                     <label className={style.livraison_description} htmlFor='domicile'>Livraison à domicile en 2 à 4 jours<span className={style.livraison_prix}>3 €</span></label>
                                 </div>
                                 <div className={style.livraison_element}>
@@ -126,8 +134,8 @@ function Commande() {
                                     <label className={style.livraison_description} htmlFor='relay'>Livraison en point relay en 2 à 4 jours<span className={style.livraison_prix}>gratuit</span></label>
                                 </div>
                             </fieldset>
-                            <p>livré a cette adresse : {}</p>
                         </form>
+                            <p>livré a cette adresse : {adresseLivraison}</p>
                         <div className={style.recapPrix}>
                             <p>sous-total : <span>{total.toFixed(2)} €</span></p>
                             <p>frais de port : <span>{livraison === 'domicile' ? '3.00€' : 'gratuit'}</span></p>
@@ -166,8 +174,9 @@ function Commande() {
                                     onApprove={async (data, actions) => {
                                         const details = await actions.order.capture();
                                         alert(`Transaction completed by ${details.payer.name.given_name}`);
-                                        CommandePaypal(Cookies.get('userId'), details.id, details.status, localStorage.getItem('panier'));
+                                        CommandePaypal(Cookies.get('userId'), details.id, details.status, localStorage.getItem('panier'), adresseLivraison);
                                         decompteCommandePaypal(Cookies.get('userId'), localStorage.getItem('idPanier'), localStorage.getItem('panier'));
+                                        deletePanier(localStorage.getItem('idPanier'), Cookies.get('userId'))
                                         localStorage.removeItem('idPanier');
                                         localStorage.setItem('panier', '[]');
                                         actions.redirect('http://192.168.1.56:3000/panier');
@@ -183,7 +192,7 @@ function Commande() {
                                 Vous n'êtes pas connecté
                             </button>
                         )
-                        : <></>
+                        : <span className={style.button}> Veuillez accepter les conditions d'utilisations</span>
                     }
                 </div>
             </div>
@@ -210,7 +219,10 @@ function Commande() {
                             {console.log(markerArray)}
                             <div className={style.listePointRelais}>
                                 {markerArray.map((marker, index) => (
-                                    <p key={index}>{marker.adresse}</p>
+                                    <p onClick={() => {
+                                        setAdresselivraison(marker.adresse)
+                                        supprimeCarteLivraison()
+                                    }} key={index}>{marker.adresse}</p>
                                 )
                                 )}
                             </div>

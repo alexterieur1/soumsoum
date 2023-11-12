@@ -396,7 +396,8 @@ exports.addPanier = (req, res) => {
 }
 
 exports.deletePanier = (req, res) => {
-    let sql = `DELETE  from panier where id=${req.body.idProduit} and idClient=${req.auth.token.idClient}`
+    console.log(req)
+    let sql = `DELETE  from panier where idPanier=${req.body.idProduit} and idClient=${req.auth.token.idClient}`
     con.query(sql, (err, result, fields) => {
         if (err) {
             console.log(err)
@@ -415,7 +416,7 @@ exports.commandePanier = (req, res) => {
     //recherche paniers client
     con.connect((err) => {
         if (err) throw err;
-        var sql = `INSERT INTO commande (idClient, idCommande, etat, article) VALUES ('${req.auth.token.idClient}', '${Date.now()}_${req.body.idCommande}', '${req.body.status}', '${req.body.article}')`
+        var sql = `INSERT INTO commande (idClient, idCommande, etat, article, adresse) VALUES ('${req.auth.token.idClient}', '${Date.now()}_${req.body.idCommande}', '${req.body.status}', '${req.body.article}', '${req.body.adresse}')`
         console.log(sql)
         con.query(sql, (err, result, fields) => {
             if (err) {

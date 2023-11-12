@@ -129,6 +129,7 @@ export const addPanier = async (idPanier, contenu, idClient) => {
 }
 
 export const deletePanier = async (idPanier, idClient) => {
+    console.log(idClient)
     let dataPanier = new URLSearchParams()
     dataPanier.append('idProduit', idPanier)
     dataPanier.append('idClient', idClient)
@@ -238,12 +239,13 @@ export const mailVerification = async (userID, prenom) => {
     return requetejson
 }
 
-export const CommandePaypal = async (idClient, idCommande, status, panier) => {
+export const CommandePaypal = async (idClient, idCommande, status, panier, adresse) => {
     let dataPanier = new URLSearchParams()
     dataPanier.append('idClient', idClient)
     dataPanier.append('idCommande', idCommande)
     dataPanier.append('status', status)
     dataPanier.append('article', panier)
+    dataPanier.append('adresse', adresse)
     let requete = await fetch(`http://192.168.1.56:4200/commande`, {
         method: "POST",
         headers: {
