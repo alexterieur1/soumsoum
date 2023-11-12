@@ -64,6 +64,19 @@ function Header() {
     const [anniv, setAnniv] = useState('')
     const [emailInscription, setEmailInscription] = useState('')
     const [passwordInscription, setPasswordInscription] = useState('')
+    
+    const [emailConnexionregex, setEmailConnexionregex] = useState(false)
+    const [passwordConnexionregex, setPasswordConnexionregex] = useState(false)
+    const [prenomregex, setPrenomregex] = useState(false)
+    const [nomregex, setNomregex] = useState(false)
+    const [adresseregex, setAdresseregex] = useState(false)
+    const [codePostalregex, setCodePostalregex] = useState(false)
+    const [villeregex, setVilleregex] = useState(false)
+    const [numTelregex, setNumtelregex] = useState(false)
+    const [annivregex, setAnnivregex] = useState(false)
+    const [emailInscriptionregex, setEmailInscriptionregex] = useState(false)
+    const [passwordInscriptionregex, setPasswordInscriptionregex] = useState(false)
+
     const navigate = useNavigate()
 
     const envoieFormulaire = async (e) => {
@@ -138,8 +151,9 @@ function Header() {
         testfunction()
     }, [valeurRecherche])
     useEffect(() => {
-
-    })
+        setEmailConnexionregex(/^[a-zA-Z-0-9]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/gm.test(emailConnexion))
+        console.log(emailConnexion)
+    },[emailConnexion])
     return (
         <header>
             <div className={style.navbar}>
@@ -239,6 +253,7 @@ function Header() {
                             <form onSubmit={envoieFormulaire} className={style.formulaire}>
                                 <label htmlFor='emailConnexion'>Email :</label>
                                 <input name='emailConnexion' type='email' value={emailConnexion} onChange={(e) => setEmailConnexion(e.target.value)} />
+                                {emailConnexionregex && emailConnexion ? <></> :<>probleme</>}
                                 <label htmlFor='passwordConnexion'>Mot de passe :</label>
                                 <input name='passwordConnexion' type='password' value={passwordConnexion} onChange={(e) => setPasswordConnexion(e.target.value)} />
                                 <button type='submit' >Se connecter</button>

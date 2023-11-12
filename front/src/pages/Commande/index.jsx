@@ -102,6 +102,8 @@ function Commande() {
     }, []);
 
     useEffect(() => {
+        console.log(/^\d{5}$/.test(codePostalFormulaire))
+
         if (infoClient[0]) {
             setAdresselivraison(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)
         }
@@ -155,7 +157,6 @@ function Commande() {
                                         <input name='codepostal' value={codePostalFormulaire} onChange={(e) => setcodepostalFormulaire(e.target.value)} />
                                         <label htmlFor='ville'>Ville :</label>
                                         <input name='ville' value={villeFormulaire} onChange={(e) => setVilleFormualre(e.target.value)} />
-                                        <label htmlFor='codePostal'>Code postal :</label>
                                     </div>
                                     :
                                     <></>}

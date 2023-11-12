@@ -6,19 +6,20 @@ import imagechaussure from '../../assets/imagechaussure.jpg'
 import imagehaut from '../../assets/imagehaut.jpg'
 import imagebas from '../../assets/imagebas.jpg'
 import imageaccessoire from '../../assets/imageaccessoire.jpg'
-import { getAllProduit, getAllProduitStock } from '../../api';
+import { getAllProduit, getAllProduitStock, getproduitTendances } from '../../api';
 import { Link, useLoaderData } from 'react-router-dom';
 
 export async function loadData() {
   const produit = await getAllProduit()
+  const tendances = await getproduitTendances()
   const stock = await getAllProduitStock()
-  return { produit, stock }
+  return { produit, tendances, stock }
 }
 
 function Accueil() {
-  const { produit, stock } = useLoaderData()
-  const verificationStock = () => {
-    const arrayStock = stock.map((element) => {
+  const { produit, stock, tendances } = useLoaderData()
+  const verificationStock = (array) => {
+    const arrayStock = array.map((element) => {
       if (
         Number(element.xs) > 1 ||
         Number(element.s) > 1 ||
@@ -37,23 +38,14 @@ function Accueil() {
   
     return arrayStock;
   };
-  let stockproduit = verificationStock()
-  console.log(stockproduit[0])
-  //let elementCategorie = document.querySelector(`.${style.categorie}`)
-  //console.log(elementCategorie)
-  //console.log({marbre})
-  //setTimeout(elementCategorie.style.background = `http://192.168.1.56:3000/${marbre}`, 10)
-  /* const [affichage, updateAffichage] = useState("")
-  const [fait, updateFait] = useState(false)
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > 0 || fait ) {
-      updateAffichage(`${style.scroll}`)
-      updateFait(true)
-      console.log(fait)
-    } else {
-      updateAffichage(``)
-    }
-  }) */
+  let stockproduit = verificationStock(stock)
+  
+
+  const fusion = tendances.map((element) => {
+    const correspondance = stock.find((item) => item.idProduit === element.idProduit);
+    return { ...element, ...correspondance };
+  });
+  let stockTendances = verificationStock(fusion)
   return (
     <>
       <img className={style.image} src={logo} alt='carousel' />
@@ -94,9 +86,9 @@ function Accueil() {
       </div>
       <h2 className={style.titre}>Les tendances</h2>
       <div className={style.article}>
-        {produit ? (
-          produit.map((produit, index) => (
-            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={stockproduit[index]} />
+        {tendances ? (
+          tendances.map((produit, index) => (
+            <Article key={index} id={produit.idProduit} image={produit.photoPrincipal} categorie={produit.categorie} description={produit.nomProduit} prix={produit.prix} promotion={produit.promotion} epuise={stockTendances[index]} />
           ))
         ) : <>chargement ...</>}
       </div>

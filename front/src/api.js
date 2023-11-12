@@ -2,6 +2,10 @@ export const getAllProduit = async () => {
     let result = await fetch('http://192.168.1.56:4200/produit')
     return result.json()
 }
+export const getproduitTendances = async () => {
+    let result = await fetch('http://192.168.1.56:4200/produitTendances')
+    return result.json()
+}
 
 export const getAllProduitStock = async (id) => {
     let result = await fetch(`http://192.168.1.56:4200/produitStock`)
