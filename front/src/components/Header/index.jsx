@@ -190,6 +190,7 @@ function Header() {
                                         <h3 onClick={() => {
                                             console.log(isAuth)
                                             deconnexion()
+                                            localStorage.removeItem('idPanier')
                                             Cookies.remove('userId')
                                             window.location.reload()
                                         }}>je me déconnecte</h3>

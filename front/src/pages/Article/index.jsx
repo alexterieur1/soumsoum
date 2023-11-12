@@ -14,10 +14,14 @@ export async function loadData(props) {
 const addPanierfunction = (taille, idProduit, idClient) => {
     console.log(idClient)
     let panierLocal = localStorage.getItem('panier')
+    let idPanierLocal = localStorage.getItem('idPanier')
     let objectaddPanier = {
         produit: idProduit,
         tailleProduit: taille,
         quantite: 1
+    }
+    if(!idPanierLocal){
+localStorage.setItem('idPanier', new Date().getTime())
     }
     // verfier que le panier existe
     if (panierLocal) {

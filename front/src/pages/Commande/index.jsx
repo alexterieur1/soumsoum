@@ -39,7 +39,7 @@ function sousTotal(panier) {
 
     return prixTotalArticle;
 }
-const supprimeCarteLivraison = ()=>{
+const supprimeCarteLivraison = () => {
     let element = document.querySelector(`.${style.choixPointRelay}`)
     console.log(element)
     element.style.display = 'none'
@@ -47,13 +47,16 @@ const supprimeCarteLivraison = ()=>{
 function Commande() {
     const { infoClient, infoProduit } = useLoaderData();
     const panier = JSON.parse(localStorage.getItem('panier'));
-    const [livraison, setLivraison] = useState('domicile');
+    const [livraison, setLivraison] = useState('');
     const [isChecked, setIschecked] = useState(false);
     const [codePostal, setCodePostal] = useState('00000');
     const [openMap, setOpenmap] = useState(false);
     const [markerArray, setMarkerArray] = useState([]);
-    const [adresseLivraison, setAdresselivraison] = useState(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)
-    console.log(infoClient)
+    const [adresseLivraison, setAdresselivraison] = useState('')
+    const [adresseFormulaire, setadresseFormualire] = useState('')
+    const [codePostalFormulaire, setcodepostalFormulaire] = useState('')
+    const [villeFormulaire, setVilleFormualre] = useState('')
+
 
     // Calcul des informations de produits
     const listeInfoProduit = useMemo(() => {
@@ -99,7 +102,13 @@ function Commande() {
     }, []);
 
     useEffect(() => {
-    }, [markerArray]);
+        if (infoClient[0]) {
+            setAdresselivraison(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)
+        }
+        if (livraison === 'personnaliser'){
+            setAdresselivraison(`${adresseFormulaire}, ${codePostalFormulaire}, ${villeFormulaire}`)
+        }
+    }, [adresseFormulaire, codePostalFormulaire, villeFormulaire, infoClient, livraison])
 
     return (
         <>
@@ -126,16 +135,34 @@ function Commande() {
                                 <div className={style.livraison_element}>
                                     <input type='radio' id='domicile' name='domicile' value='domicile' checked={livraison === 'domicile'} onChange={(e) => {
                                         setLivraison(e.target.value)
-                                        setAdresselivraison(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)}} />
+                                        setAdresselivraison(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)
+                                    }} />
                                     <label className={style.livraison_description} htmlFor='domicile'>Livraison à domicile en 2 à 4 jours<span className={style.livraison_prix}>3 €</span></label>
                                 </div>
                                 <div className={style.livraison_element}>
                                     <input type='radio' id='relay' name='relay' value='relay' checked={livraison === 'relay'} onChange={(e) => setLivraison(e.target.value)} />
                                     <label className={style.livraison_description} htmlFor='relay'>Livraison en point relay en 2 à 4 jours<span className={style.livraison_prix}>gratuit</span></label>
                                 </div>
+                                <div className={style.livraison_element}>
+                                    <input type='radio' id='personnaliser' name='personnaliser' value='personnaliser' checked={livraison === 'personnaliser'} onChange={(e) => setLivraison(e.target.value)} />
+                                    <label className={style.livraison_description} htmlFor='personnaliser'>Choisisser votre adresse de livraison<span className={style.livraison_prix}>3 €</span></label>
+                                </div>
+                                {livraison === 'personnaliser' ?
+                                    <div>
+                                        <label htmlFor='adresse'>Adresse</label>
+                                        <input name='adresse' value={adresseFormulaire} onChange={(e) => setadresseFormualire(e.target.value)} />
+                                        <label htmlFor='codepostal' >Code Postal :</label>
+                                        <input name='codepostal' value={codePostalFormulaire} onChange={(e) => setcodepostalFormulaire(e.target.value)} />
+                                        <label htmlFor='ville'>Ville :</label>
+                                        <input name='ville' value={villeFormulaire} onChange={(e) => setVilleFormualre(e.target.value)} />
+                                        <label htmlFor='codePostal'>Code postal :</label>
+                                    </div>
+                                    :
+                                    <></>}
                             </fieldset>
                         </form>
-                            <p>livré a cette adresse : {adresseLivraison}</p>
+                        {console.log(adresseLivraison.length, Boolean(infoClient[0]))}
+                        {adresseLivraison.length < 4 || infoClient[0] ? <p>livré a cette adresse : {adresseLivraison}</p> : null}
                         <div className={style.recapPrix}>
                             <p>sous-total : <span>{total.toFixed(2)} €</span></p>
                             <p>frais de port : <span>{livraison === 'domicile' ? '3.00€' : 'gratuit'}</span></p>
@@ -205,7 +232,7 @@ function Commande() {
                     </span>
                     {openMap ? (
                         <>
-                            <MapContainer className={style.test} center={markerArray[0].geocode} zoom={12}>
+                            <MapContainer className={style.test} center={markerArray.length > 0 ? markerArray[0].geocode : [0, 0]} zoom={12}>
                                 <TileLayer
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
