@@ -64,7 +64,7 @@ function Header() {
     const [anniv, setAnniv] = useState('')
     const [emailInscription, setEmailInscription] = useState('')
     const [passwordInscription, setPasswordInscription] = useState('')
-    
+
     const [emailConnexionregex, setEmailConnexionregex] = useState(false)
     const [passwordConnexionregex, setPasswordConnexionregex] = useState(false)
     const [prenomregex, setPrenomregex] = useState(false)
@@ -77,52 +77,86 @@ function Header() {
     const [emailInscriptionregex, setEmailInscriptionregex] = useState(false)
     const [passwordInscriptionregex, setPasswordInscriptionregex] = useState(false)
 
+    const [emailConnexionfocus, setEmailConnexionfocus] = useState(false)
+    const [passwordConnexionfocus, setPasswordConnexionfocus] = useState(false)
+    const [prenomfocus, setPrenomfocus] = useState(false)
+    const [nomfocus, setNomfocus] = useState(false)
+    const [adressefocus, setAdressefocus] = useState(false)
+    const [codePostalfocus, setCodePostalfocus] = useState(false)
+    const [villefocus, setVillefocus] = useState(false)
+    const [numTelfocus, setNumtelfocus] = useState(false)
+    const [annivfocus, setAnnivfocus] = useState(false)
+    const [emailInscriptionfocus, setEmailInscriptionfocus] = useState(false)
+    const [passwordInscriptionfocus, setPasswordInscriptionfocus] = useState(false)
+
+    const [etatConnexion, setEtatconnexion] = useState([])
+
     const navigate = useNavigate()
 
     const envoieFormulaire = async (e) => {
         e.preventDefault()
-        if (emailConnexion && passwordConnexion) {
-            let objetConnexion = {
-                "email": emailConnexion,
-                "password": passwordConnexion
+        if (e.target.id === 'connexion') {
+            if (emailConnexionregex && passwordConnexionregex && emailConnexion && passwordConnexion) {
+                let objetConnexion = {
+                    "email": emailConnexion,
+                    "password": passwordConnexion
+                }
+                try {
+                    let cookieplayload = await connexion(objetConnexion)
+                    if (cookieplayload[0]) {
+                        console.log(cookieplayload)
+                        Cookies.set('userId', cookieplayload[1])
+                        updateMenu(false)
+                        setisAuth(false)
+                        navigate('./')
+                    }
+                    else {
+                        setEtatconnexion(cookieplayload)
+                    }
+                }
+                catch (err) {
+                    console.log(err)
+                }
             }
-            try {
-                let cookieplayload = await connexion(objetConnexion)
-                console.log(cookieplayload)
-                Cookies.set('userId', cookieplayload)
-                updateMenu(false)
-                setisAuth(false)
-                navigate('./')
-            }
-            catch (err) {
-                console.log(err)
+            else {
+                setEtatconnexion([false, "un des champs n'est pas rempli", "connexion"])
             }
         }
-        else {
-            let objetInscription = {
-                "prenom": prenom,
-                "nom": nom,
-                "adresse": adresse,
-                "codePostal": codePostal,
-                "ville": ville,
-                "numTel": numTel,
-                "annee": anniv.split('-')[0],
-                "mois": anniv.split('-')[1],
-                "jours": anniv.split('-')[2],
-                "email": emailInscription,
-                "password": passwordInscription
+        if (e.target.id === 'inscription') {
+            console.log(prenomregex, nomregex, adresseregex, codePostalregex, villeregex, numTelregex, annivregex, emailInscriptionregex, passwordInscriptionregex)
+            if (prenomregex && nomregex && adresseregex && codePostalregex && villeregex && numTelregex && annivregex && emailInscriptionregex && passwordInscriptionregex && prenom && nom && adresse && codePostal && ville && numTel && anniv && emailInscription && passwordInscription) {
+                let objetInscription = {
+                    "prenom": prenom,
+                    "nom": nom,
+                    "adresse": adresse,
+                    "codePostal": codePostal,
+                    "ville": ville,
+                    "numTel": numTel,
+                    "annee": anniv.split('-')[0],
+                    "mois": anniv.split('-')[1],
+                    "jours": anniv.split('-')[2],
+                    "email": emailInscription,
+                    "password": passwordInscription
+                }
+                try {
+                    let cookieplayload = await inscription(objetInscription)
+                    if (cookieplayload[0]) {
+                        console.log(cookieplayload)
+                        Cookies.set('userId', cookieplayload[1])
+                        updateMenu(false)
+                        setisAuth(false)
+                        navigate('./')
+                    }
+                    else {
+                        setEtatconnexion(cookieplayload)
+                    }
+                }
+                catch (err) {
+                    console.log(err)
+                }
             }
-            try {
-                let cookieplayload = await inscription(objetInscription)
-                console.log(cookieplayload)
-                Cookies.set('userId', cookieplayload)
-                updateMenu(false)
-                setisAuth(false)
-                navigate('./')
-
-            }
-            catch (err) {
-                console.log(err)
+            else {
+                setEtatconnexion([false, "un des champs n'est pas rempli", "inscription"])
             }
         }
     }
@@ -150,10 +184,65 @@ function Header() {
         }
         testfunction()
     }, [valeurRecherche])
+
     useEffect(() => {
-        setEmailConnexionregex(/^[a-zA-Z-0-9]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/gm.test(emailConnexion))
-        console.log(emailConnexion)
-    },[emailConnexion])
+        //console.log(Boolean(emailConnexion.length < 1), emailConnexionfocus)
+        if (emailConnexion.length < 1 || emailConnexionfocus) {
+            setEmailConnexionregex(true)
+        } else {
+            setEmailConnexionregex(/^[a-zA-Z-0-9]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/.test(emailConnexion))
+        }
+        if (passwordConnexion.length < 1 || passwordConnexionfocus) {
+            setPasswordConnexionregex(true)
+        } else {
+            setPasswordConnexionregex(/^[a-zA-Z-0-9]{8,}$/.test(passwordConnexion))
+        }
+        if (prenom.length < 1 || prenomfocus) {
+            setPrenomregex(true)
+        } else {
+            setPrenomregex(/^[a-zA-Z]+(?: [a-zA-Z]+)?$/.test(prenom))
+        }
+        if (nom.length < 1 || nomfocus) {
+            setNomregex(true)
+        } else {
+            setNomregex(/[a-zA-Z- ]{3,}/.test(nom))
+        }
+        if (adresse.length < 1 || adressefocus) {
+            setAdresseregex(true)
+        } else {
+            setAdresseregex(/^\d+\s(?:rue|route|chemin)\s[a-zA-Zéèî\s]+$/.test(adresse))
+        }
+        if (codePostal.length < 1 || codePostalfocus) {
+            setCodePostalregex(true)
+        } else {
+            setCodePostalregex(/^\d{5}$/.test(codePostal))
+        }
+        if (ville.length < 1 || villefocus) {
+            setVilleregex(true)
+        } else {
+            setVilleregex(/^[a-zA-Z]+(?: [a-zA-Z]+)?$/.test(ville))
+        }
+        if (numTel.length < 1 || numTelfocus) {
+            setNumtelregex(true)
+        } else {
+            setNumtelregex(/^0+\d{9}/.test(numTel))
+        }
+        if (anniv.length < 1 || annivfocus) {
+            setAnnivregex(true)
+        } else {
+            setAnnivregex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/gm.test(anniv))
+        }
+        if (emailInscription.length < 1 || emailInscriptionfocus) {
+            setEmailInscriptionregex(true)
+        } else {
+            setEmailInscriptionregex(/^[a-zA-Z-0-9]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/gm.test(emailInscription))
+        }
+        if (passwordInscription.length < 1 || passwordInscriptionfocus) {
+            setPasswordInscriptionregex(true)
+        } else {
+            setPasswordInscriptionregex(/^[a-zA-Z-0-9]{8,}$/.test(passwordInscription))
+        }
+    }, [emailConnexion, passwordConnexion, prenom, nom, adresse, codePostal, ville, numTel, anniv, emailInscription, passwordInscription, emailConnexionfocus, passwordConnexionfocus, prenomfocus, nomfocus, adressefocus, codePostalfocus, villefocus, numTelfocus, annivfocus, emailInscriptionfocus, passwordInscriptionfocus])
     return (
         <header>
             <div className={style.navbar}>
@@ -250,37 +339,53 @@ function Header() {
                         <img onClick={() => setisAuth(isAuth => !isAuth)} className={style.auth__croix} src={croix} alt='enlever' />
                         <div className={style.auth__formulaire__connexion}>
                             <p>Connectez-vous</p>
-                            <form onSubmit={envoieFormulaire} className={style.formulaire}>
+                            <form id='connexion' onSubmit={envoieFormulaire} className={style.formulaire}>
                                 <label htmlFor='emailConnexion'>Email :</label>
-                                <input name='emailConnexion' type='email' value={emailConnexion} onChange={(e) => setEmailConnexion(e.target.value)} />
-                                {emailConnexionregex && emailConnexion ? <></> :<>probleme</>}
+                                <input name='emailConnexion' type='email' onFocus={() => setEmailConnexionfocus(true)} onBlur={() => setEmailConnexionfocus(false)} value={emailConnexion} onChange={(e) => setEmailConnexion(e.target.value)} />
+                                {emailConnexionregex ? <></> : <p>Veuillez inscire une adresse mail valide</p>}
                                 <label htmlFor='passwordConnexion'>Mot de passe :</label>
-                                <input name='passwordConnexion' type='password' value={passwordConnexion} onChange={(e) => setPasswordConnexion(e.target.value)} />
+                                <input name='passwordConnexion' type='password' onFocus={() => setPasswordConnexionfocus(true)} onBlur={() => setPasswordConnexionfocus(false)} value={passwordConnexion} onChange={(e) => setPasswordConnexion(e.target.value)} />
+                                {passwordConnexionregex ? <></> : <p>Veuillez inscire un mot de passe valide</p>}
                                 <button type='submit' >Se connecter</button>
+                                {(etatConnexion.length !== 0 && etatConnexion[2] === 'connexion') ? <p>{etatConnexion[1]}</p> : <></>}
+
                             </form >
                         </div>
                         <div className={style.auth__formulaire__inscription}>
                             <p>Inscrivez-vous</p>
-                            <form onSubmit={envoieFormulaire} className={style.formulaire}>
+                            <form id='inscription' onSubmit={envoieFormulaire} className={style.formulaire}>
                                 <label htmlFor='prenom'>Prénom :</label>
-                                <input name='prenom' value={prenom} onChange={(e) => setPrenom(e.target.value)} />
+                                <input name='prenom' onFocus={() => setPrenomfocus(true)} onBlur={() => setPrenomfocus(false)} value={prenom} onChange={(e) => setPrenom(e.target.value)} />
+                                {prenomregex ? <></> : <p>Veuillez inscire un prénom valide</p>}
                                 <label htmlFor='nom' >Nom :</label>
-                                <input name='nom' value={nom} onChange={(e) => setNom(e.target.value)} />
+                                <input name='nom' onFocus={() => setNomfocus(true)} onBlur={() => setNomfocus(false)} value={nom} onChange={(e) => setNom(e.target.value)} />
+                                {nomregex ? <></> : <p>Veuillez inscire un nom valide</p>}
                                 <label htmlFor='adress'>Adresse :</label>
-                                <input name='adress' value={adresse} onChange={(e) => setAdresse(e.target.value)} />
+                                <input name='adress' onFocus={() => setAdressefocus(true)} onBlur={() => setAdressefocus(false)} value={adresse} onChange={(e) => setAdresse(e.target.value)} />
+                                {adresseregex ? <></> : <p>Veuillez inscire une adresse valide</p>}
                                 <label htmlFor='codePostal'>Code postal :</label>
-                                <input name='codePostal' value={codePostal} onChange={(e) => setCodePostal(e.target.value)} />
+                                <input name='codePostal' onFocus={() => setCodePostalfocus(true)} onBlur={() => setCodePostalfocus(false)} value={codePostal} onChange={(e) => setCodePostal(e.target.value)} />
+                                {codePostalregex ? <></> : <p>Veuillez inscire un code Postal valide</p>}
                                 <label htmlFor='city'>Ville :</label>
-                                <input name='city' value={ville} onChange={(e) => setVille(e.target.value)} />
+                                <input name='city' onFocus={() => setVillefocus(true)} onBlur={() => setVillefocus(false)} value={ville} onChange={(e) => setVille(e.target.value)} />
+                                {villeregex ? <></> : <p>Veuillez inscire une ville valide</p>}
                                 <label htmlFor='telephone'>N° de téléphone :</label>
-                                <input name='telphone' type='tel' value={numTel} onChange={(e) => setNumtel(e.target.value)} />
+                                <input name='telphone' type='tel' onFocus={() => setNumtelfocus(true)} onBlur={() => setNumtelfocus(false)} value={numTel} onChange={(e) => setNumtel(e.target.value)} />
+                                {numTelregex ? <></> : <p>Veuillez inscire un numéro de téléphone valide</p>}
                                 <label htmlFor='dateAnniv'>Date anniversaire :</label>
-                                <input name='dateAnniv' type='date' value={anniv} onChange={(e) => setAnniv(e.target.value)} />
+                                <input name='dateAnniv' type='date' onFocus={() => setAnnivfocus(true)} onBlur={() => setAnnivfocus(false)} value={anniv} onChange={(e) => setAnniv(e.target.value)} />
+                                {annivregex ? <></> : <p>Veuillez inscire un date d'anniversaire valide</p>}
                                 <label type='emailInscription'>Email :</label>
-                                <input name='emailInscription' type='email' value={emailInscription} onChange={(e) => setEmailInscription(e.target.value)} />
+                                <input name='emailInscription' type='email' onFocus={() => setEmailInscriptionfocus(true)} onBlur={() => setEmailInscriptionfocus(false)} value={emailInscription} onChange={(e) => setEmailInscription(e.target.value)} />
+                                {emailInscriptionregex ? <></> : <p>Veuillez inscire une adresse mail valide</p>}
                                 <label htmlFor='passwordInscription'>Mot de passe :</label>
-                                <input name='passwordInscription' type='password' value={passwordInscription} onChange={(e) => setPasswordInscription(e.target.value)} />
+                                <input name='passwordInscription' type='password' onFocus={() => setPasswordInscriptionfocus(true)} onBlur={() => setPasswordInscriptionfocus(false)} value={passwordInscription} onChange={(e) => setPasswordInscription(e.target.value)} />
+                                {passwordInscriptionregex ? <></> : <p>Veuillez inscire un mot de passe valide</p>}
                                 <button type='submit'>S'inscire</button>
+                                {console.log(etatConnexion)}
+                                {console.log(Boolean(etatConnexion.length !== 0), Boolean(etatConnexion[2] === 'connexion'))}
+                                {console.log(Boolean(etatConnexion.length !== 0), Boolean(etatConnexion[2] === 'inscription'))}
+                                {etatConnexion.length !== 0 && etatConnexion[2] === 'inscription' ? <p>{etatConnexion[1]}</p> : <></>}
                             </form >
                         </div>
                     </div>

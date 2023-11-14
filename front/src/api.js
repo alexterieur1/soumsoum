@@ -159,9 +159,14 @@ export const connexion = async (objetConnexion) => {
             }, */
             body: dataConnexion
         })
-        let playload = await apiPlayload.json()
-        console.log(playload)
-        return playload
+        if (apiPlayload.ok) {
+            let playload = await apiPlayload.json()
+            console.log(playload.status)
+            return [true, playload]
+        }
+        if (!apiPlayload.ok) {
+            return [false, "Une erreur s'est produite", "connexion"]
+        }
     }
     catch (err) {
         console.log(err)
@@ -191,8 +196,14 @@ export const inscription = async (objetinscription) => {
             }, */
             body: dataInscription
         })
-        let playload = await apiPlayload.json()
-        return playload
+        if (apiPlayload.ok) {
+            let playload = await apiPlayload.json()
+            console.log(playload.status)
+            return [true, playload]
+        }
+        if (!apiPlayload.ok) {
+            return [false, "Une erreur s'est produite", "inscription"]
+        }
     }
     catch (err) {
         console.log(err)

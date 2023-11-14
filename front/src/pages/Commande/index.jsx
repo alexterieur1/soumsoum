@@ -102,8 +102,6 @@ function Commande() {
     }, []);
 
     useEffect(() => {
-        console.log(/^\d{5}$/.test(codePostalFormulaire))
-
         if (infoClient[0]) {
             setAdresselivraison(`${infoClient[0].adresse}, ${infoClient[0].ville}, ${infoClient[0].codePostale}`)
         }
@@ -163,7 +161,7 @@ function Commande() {
                             </fieldset>
                         </form>
                         {console.log(adresseLivraison.length, Boolean(infoClient[0]))}
-                        {adresseLivraison.length < 4 || infoClient[0] ? <p>livré a cette adresse : {adresseLivraison}</p> : null}
+                        {adresseLivraison.length > 4 || infoClient[0] ? <p>livré a cette adresse : {adresseLivraison}</p> : null}
                         <div className={style.recapPrix}>
                             <p>sous-total : <span>{total.toFixed(2)} €</span></p>
                             <p>frais de port : <span>{livraison === 'domicile' ? '3.00€' : 'gratuit'}</span></p>

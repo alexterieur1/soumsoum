@@ -12,7 +12,6 @@ export async function loadData(props) {
     return { produit }
 }
 const addPanierfunction = (taille, idProduit, idClient) => {
-    console.log(idClient)
     let panierLocal = localStorage.getItem('panier')
     let idPanierLocal = localStorage.getItem('idPanier')
     let objectaddPanier = {
