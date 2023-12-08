@@ -19,6 +19,7 @@ export async function loadData() {
 function Accueil() {
   const { produit, stock, tendances } = useLoaderData()
   const verificationStock = (array) => {
+    console.log(array)
     const arrayStock = array.map((element) => {
       if (
         Number(element.xs) > 1 ||

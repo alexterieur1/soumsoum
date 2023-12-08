@@ -205,7 +205,7 @@ function Commande() {
                                         deletePanier(localStorage.getItem('idPanier'), Cookies.get('userId'))
                                         localStorage.removeItem('idPanier');
                                         localStorage.setItem('panier', '[]');
-                                        actions.redirect('http://192.168.1.56:3000/panier');
+                                        actions.redirect('http://192.168.1.16:3000/panier');
                                         console.log(details);
                                     }}
                                     onCancel={(data, actions) => {

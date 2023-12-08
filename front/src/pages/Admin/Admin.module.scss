@@ -1,11 +1,15 @@
 .menu {
-    &_contenant {
+    &_titre {
         display:flex;
         margin: 0 auto;
         justify-content: space-around;
     }
     &_contenue{
         width:fit-content;
+    }
+    &_contenant{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 }
 

@@ -1,35 +1,35 @@
 export const getAllProduit = async () => {
-    let result = await fetch('http://192.168.1.56:4200/produit')
+    let result = await fetch('http://test.zwch8757.odns.fr/produit')
     return result.json()
 }
 export const getproduitTendances = async () => {
-    let result = await fetch('http://192.168.1.56:4200/produitTendances')
+    let result = await fetch('http://test.zwch8757.odns.fr/produitTendances')
     return result.json()
 }
 
 export const getAllProduitStock = async (id) => {
-    let result = await fetch(`http://192.168.1.56:4200/produitStock`)
+    let result = await fetch(`http://test.zwch8757.odns.fr/produitStock`)
     return result.json()
 }
 
 export const getUnProduit = async (id) => {
-    let result = await fetch(`http://192.168.1.56:4200/produit/${id}`)
+    let result = await fetch(`http://test.zwch8757.odns.fr/produit/${id}`)
     return result.json()
 }
 
 export const getCategorieProduit = async (categorie) => {
     if (categorie !== 'promotions') {
-        let result = await fetch(`http://192.168.1.56:4200/categorie/${categorie}`)
+        let result = await fetch(`http://test.zwch8757.odns.fr/categorie/${categorie}`)
         return result.json()
     }
     else {
-        let result = await fetch(`http://192.168.1.56:4200/categorie/promotions`)
+        let result = await fetch(`http://test.zwch8757.odns.fr/categorie/promotions`)
         return result.json()
     }
 }
 
 export const getCategorieRecherche = async () => {
-    let result = await fetch(`http://192.168.1.56:4200/recherche`)
+    let result = await fetch(`http://test.zwch8757.odns.fr/recherche`)
     return result.json()
 }
 
@@ -54,7 +54,7 @@ export const creationProduit = async (produit) => {
     dataProduit.append("image3", produit.image3)
     dataProduit.append("image4", produit.image4)
     dataProduit.append("imageposter", produit.imagePoster)
-    let test = fetch('http://192.168.1.56:4200/produit', {
+    let test = fetch('http://test.zwch8757.odns.fr/produit', {
         method: 'POST',
         mode: 'cors',
         body: dataProduit,
@@ -81,7 +81,7 @@ export const modificationQuantite = async (produit) => {
     dataProduit.append("lxl", (produit.lxl.length > 0) ? Number(produit.lxl) : -1)
     dataProduit.append("xl", (produit.xl.length > 0) ? Number(produit.xl) : -1)
     dataProduit.append("image1", produit.image1)
-    let resultat = fetch('http://192.168.1.56:4200/modificationProduit', {
+    let resultat = fetch('http://test.zwch8757.odns.fr/modificationProduit', {
         method: 'POST',
         mode: 'cors',
         body: dataProduit,
@@ -95,7 +95,7 @@ export const modificationQuantite = async (produit) => {
 
 export const getPanier = async (userID) => {
     if (userID) {
-        let requete = await fetch('http://192.168.1.56:4200/panier', {
+        let requete = await fetch('http://test.zwch8757.odns.fr/panier', {
             method: "GET",
             headers: {
                 'id': userID
@@ -122,7 +122,7 @@ export const addPanier = async (idPanier, contenu, idClient) => {
     dataPanier.append('contenu', contenu)
     //dataPanier.append('quantite', 1)
     if (idClient) {
-        await fetch('http://192.168.1.56:4200/panier', {
+        await fetch('http://test.zwch8757.odns.fr/panier', {
             method: "POST",
             headers: {
                 'id': idClient
@@ -137,7 +137,7 @@ export const deletePanier = async (idPanier, idClient) => {
     let dataPanier = new URLSearchParams()
     dataPanier.append('idProduit', idPanier)
     dataPanier.append('idClient', idClient)
-    await fetch(`http://192.168.1.56:4200/panier/${idPanier}`, {
+    await fetch(`http://test.zwch8757.odns.fr/panier/${idPanier}`, {
         method: "POST",
         headers: {
             'id': idClient
@@ -152,7 +152,7 @@ export const connexion = async (objetConnexion) => {
     dataConnexion.append('mail', objetConnexion.email)
     dataConnexion.append('password', objetConnexion.password)
     try {
-        let apiPlayload = await fetch('http://192.168.1.56:4200/connexion', {
+        let apiPlayload = await fetch('http://test.zwch8757.odns.fr/connexion', {
             method: "POST",
             /* headers: {
                 'Content-Type': 'multipart/form-data; boundary=----azertyuiop',
@@ -189,7 +189,7 @@ export const inscription = async (objetinscription) => {
     dataInscription.append('jours', objetinscription.jours)
 
     try {
-        let apiPlayload = await fetch('http://192.168.1.56:4200/inscription', {
+        let apiPlayload = await fetch('http://test.zwch8757.odns.fr/inscription', {
             method: "POST",
             /* headers: {
                 'Content-Type': 'multipart/form-data; boundary=----azertyuiop',
@@ -213,7 +213,7 @@ export const inscription = async (objetinscription) => {
 
 export const informationClient = async (userID) => {
     let arrayResponse = []
-    let requete = await fetch(`http://192.168.1.56:4200/informationClient`, {
+    let requete = await fetch(`http://test.zwch8757.odns.fr/informationClient`, {
         method: "GET",
         headers: {
             'id': userID
@@ -243,7 +243,7 @@ export const suiviLaPoste = async (numero) => {
 }
 
 export const mailVerification = async (userID, prenom) => {
-    let requete = await fetch(`http://192.168.1.56:4200/mailVerification`, {
+    let requete = await fetch(`http://test.zwch8757.odns.fr/mailVerification`, {
         method: "GET",
         headers: {
             'id': userID,
@@ -261,7 +261,7 @@ export const CommandePaypal = async (idClient, idCommande, status, panier, adres
     dataPanier.append('status', status)
     dataPanier.append('article', panier)
     dataPanier.append('adresse', adresse)
-    let requete = await fetch(`http://192.168.1.56:4200/commande`, {
+    let requete = await fetch(`http://test.zwch8757.odns.fr/commande`, {
         method: "POST",
         headers: {
             'id': idClient
@@ -276,7 +276,7 @@ export const decompteCommandePaypal = async (idClient, idPanier, panier) => {
     let dataPanier = new URLSearchParams()
     dataPanier.append('idPanier', idPanier)
     dataPanier.append('article', panier)
-    let requete = await fetch(`http://192.168.1.56:4200/decompteCommandePaypal`, {
+    let requete = await fetch(`http://test.zwch8757.odns.fr/decompteCommandePaypal`, {
         method: "POST",
         headers: {
             'id': idClient
@@ -288,7 +288,7 @@ export const decompteCommandePaypal = async (idClient, idPanier, panier) => {
 }
 
 export const getAllCommande = async (idClient) => {
-    let requete = await fetch(`http://192.168.1.56:4200/commande`, {
+    let requete = await fetch(`http://test.zwch8757.odns.fr/commande`, {
         method: "GET",
         headers: {
             'id': idClient
@@ -299,21 +299,21 @@ export const getAllCommande = async (idClient) => {
 }
 
 export const deconnexion = async () => {
-    let requete = await fetch(`http://192.168.1.56:4200/deconnexion`, {
+    let requete = await fetch(`http://test.zwch8757.odns.fr/deconnexion`, {
         method: "GET"
     })
     return requete
 }
 
 export const adminInfoProduit = async () => {
-    let result = await fetch('http://192.168.1.56:4200/admin/infoProduit')
+    let result = await fetch('http://test.zwch8757.odns.fr/admin/infoProduit')
     return result.json()
 }
 
 export const CompteurVue = async (idProduit) => {
     let data = new URLSearchParams()
     data.append('idProduit', idProduit)
-    let result = await fetch('http://192.168.1.56:4200/admin/vue', {
+    let result = await fetch('http://test.zwch8757.odns.fr/admin/vue', {
         method: "POST",
         body: data
     })
@@ -325,7 +325,7 @@ export const apiVisible = async (produit) => {
     let dataProduit = new FormData()
     dataProduit.append("idProduit", produit.idProduit)
     dataProduit.append("visible", produit.visible)
-    let result = await fetch('http://192.168.1.56:4200/visible', {
+    let result = await fetch('http://test.zwch8757.odns.fr/visible', {
         method: "POST",
         body: dataProduit
     })

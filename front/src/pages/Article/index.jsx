@@ -169,7 +169,7 @@ function Article() {
                         <>
                             <img className={style.photoGrand__img} style={{ display: isImage ? 'block' : 'none' }} src={produit[1][image].liens} alt="" />
                             <span style={{ display: !isImage ? 'contents' : 'none' }}>
-                                <video ref={videoRef} id='id' onTimeUpdate={avancementVideo} preload='auto' poster="http://192.168.1.56:4200/images/Bas_premierTest_1697991252196.jpg" onClick={togglePlayback} muted loop playsInline={true} className={style.photoGrand_video}>
+                                <video ref={videoRef} id='id' onTimeUpdate={avancementVideo} preload='auto' poster="http://192.168.1.16:4200/images/Bas_premierTest_1697991252196.jpg" onClick={togglePlayback} muted loop playsInline={true} className={style.photoGrand_video}>
                                     <source src={produit[1][image].liens} type="video/mp4" />
                                 </video>
                                 {metadataLoaded ? <div className={style.photoGrand_description} style={{ width: largeurVideo + 'px' }}>
@@ -201,7 +201,7 @@ function Article() {
                                         key={index}
                                         onClick={() => updateImage(index)}
                                         className={style.listePhoto__img}
-                                        src="http://192.168.1.56:4200/images/Bas_premierTest_1697991252196.jpg"
+                                        src="http://192.168.1.16:4200/images/Bas_premierTest_1697991252196.jpg"
                                         alt=""
                                     />
                                 );
